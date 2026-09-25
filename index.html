@@ -31,7 +31,7 @@
         /* HEADER */
 
         header {
-            background: #ffffff;
+            background: white;
             padding: 15px 6%;
             display: flex;
             align-items: center;
@@ -42,21 +42,17 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
         .logo img {
             width: 150px;
             height: auto;
-            object-fit: contain;
         }
 
         nav {
             display: flex;
-            gap: 22px;
+            gap: 20px;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         nav a {
@@ -94,8 +90,8 @@
 
         .hero p {
             font-size: 21px;
-            margin-bottom: 30px;
             line-height: 1.6;
+            margin-bottom: 30px;
         }
 
         .button {
@@ -105,6 +101,8 @@
             text-decoration: none;
             font-weight: bold;
             margin: 6px;
+            border: none;
+            cursor: pointer;
             transition: 0.3s;
         }
 
@@ -127,7 +125,7 @@
             color: white;
         }
 
-        /* COMMON SECTION */
+        /* COMMON */
 
         section {
             padding: 80px 6%;
@@ -150,7 +148,7 @@
         /* PLANS */
 
         .plans {
-            background: #ffffff;
+            background: white;
         }
 
         .plans-container {
@@ -173,7 +171,6 @@
 
         .plan-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
         }
 
         .popular {
@@ -202,7 +199,6 @@
         .speed {
             font-size: 38px;
             font-weight: bold;
-            color: #222;
         }
 
         .speed span {
@@ -295,12 +291,6 @@
             background: white;
             border-radius: 18px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: 0.3s;
-        }
-
-        .area-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
         }
 
         .area-icon {
@@ -325,6 +315,78 @@
         .area-contact p {
             color: #555;
             margin: 6px;
+        }
+
+        /* NEW CONNECTION */
+
+        .connection {
+            background: white;
+        }
+
+        .connection-box {
+            max-width: 700px;
+            margin: auto;
+            background: #f5f8fc;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #07549a;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #1ebe5d;
+        }
+
+        .form-note {
+            text-align: center;
+            color: #666;
+            margin-top: 15px;
+            font-size: 14px;
         }
 
         /* SUPPORT */
@@ -383,7 +445,7 @@
             margin: 5px;
         }
 
-        /* FLOATING WHATSAPP */
+        /* WHATSAPP FLOAT */
 
         .whatsapp-float {
             position: fixed;
@@ -419,8 +481,6 @@
 
             nav {
                 gap: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
             }
 
             nav a {
@@ -448,23 +508,15 @@
                 font-size: 30px;
             }
 
-            .plan-card {
-                width: 100%;
-                max-width: 350px;
-            }
-
-            .why-card {
-                width: 100%;
-                max-width: 350px;
-            }
-
+            .plan-card,
+            .why-card,
             .area-card {
                 width: 100%;
                 max-width: 350px;
             }
 
-            .contact-box {
-                padding: 25px 15px;
+            .connection-box {
+                padding: 25px 18px;
             }
 
         }
@@ -497,6 +549,8 @@
 
         <a href="#service-area">Service Area</a>
 
+        <a href="#connection">New Connection</a>
+
         <a href="#about">About</a>
 
         <a href="#support">Support</a>
@@ -528,9 +582,8 @@
             View Plans
         </a>
 
-        <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20a%20new%20internet%20connection."
-           class="button green">
-            💬 Get Connection
+        <a href="#connection" class="button green">
+            💬 Get New Connection
         </a>
 
     </div>
@@ -554,8 +607,6 @@
     <div class="plans-container">
 
 
-        <!-- 100 Mbps -->
-
         <div class="plan-card">
 
             <h3>100 Mbps</h3>
@@ -572,15 +623,13 @@
                 High-speed internet connection
             </p>
 
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20100%20Mbps%20plan%20for%20Rs%20499."
+            <a href="#connection"
                class="button green">
                 Get Connection
             </a>
 
         </div>
 
-
-        <!-- 150 Mbps -->
 
         <div class="plan-card">
 
@@ -598,15 +647,13 @@
                 Fast internet for home & work
             </p>
 
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20150%20Mbps%20plan%20for%20Rs%20599."
+            <a href="#connection"
                class="button green">
                 Get Connection
             </a>
 
         </div>
 
-
-        <!-- 200 Mbps -->
 
         <div class="plan-card popular">
 
@@ -628,15 +675,13 @@
                 Great choice for multiple devices
             </p>
 
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20200%20Mbps%20plan%20for%20Rs%20699."
+            <a href="#connection"
                class="button green">
                 Get Connection
             </a>
 
         </div>
 
-
-        <!-- 300 Mbps -->
 
         <div class="plan-card">
 
@@ -654,7 +699,7 @@
                 Powerful connection for heavy usage
             </p>
 
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20300%20Mbps%20plan%20for%20Rs%20799."
+            <a href="#connection"
                class="button green">
                 Get Connection
             </a>
@@ -685,9 +730,7 @@
 
         <div class="why-card">
 
-            <div class="why-icon">
-                ⚡
-            </div>
+            <div class="why-icon">⚡</div>
 
             <h3>High Speed</h3>
 
@@ -701,9 +744,7 @@
 
         <div class="why-card">
 
-            <div class="why-icon">
-                📶
-            </div>
+            <div class="why-icon">📶</div>
 
             <h3>Reliable Connection</h3>
 
@@ -717,9 +758,7 @@
 
         <div class="why-card">
 
-            <div class="why-icon">
-                💰
-            </div>
+            <div class="why-icon">💰</div>
 
             <h3>Affordable Plans</h3>
 
@@ -733,9 +772,7 @@
 
         <div class="why-card">
 
-            <div class="why-icon">
-                🛠️
-            </div>
+            <div class="why-icon">🛠️</div>
 
             <h3>Customer Support</h3>
 
@@ -802,68 +839,44 @@
 
         <div class="area-card">
 
-            <div class="area-icon">
-                📍
-            </div>
+            <div class="area-icon">📍</div>
 
-            <h3>
-                Malviya Nagar
-            </h3>
+            <h3>Malviya Nagar</h3>
 
-            <p>
-                Delhi
-            </p>
+            <p>Delhi</p>
 
         </div>
 
 
         <div class="area-card">
 
-            <div class="area-icon">
-                📍
-            </div>
+            <div class="area-icon">📍</div>
 
-            <h3>
-                Hauz Rani
-            </h3>
+            <h3>Hauz Rani</h3>
 
-            <p>
-                Delhi
-            </p>
+            <p>Delhi</p>
 
         </div>
 
 
         <div class="area-card">
 
-            <div class="area-icon">
-                📍
-            </div>
+            <div class="area-icon">📍</div>
 
-            <h3>
-                Khirki Extension
-            </h3>
+            <h3>Khirki Extension</h3>
 
-            <p>
-                Delhi
-            </p>
+            <p>Delhi</p>
 
         </div>
 
 
         <div class="area-card">
 
-            <div class="area-icon">
-                📍
-            </div>
+            <div class="area-icon">📍</div>
 
-            <h3>
-                Khirki Village
-            </h3>
+            <h3>Khirki Village</h3>
 
-            <p>
-                Delhi
-            </p>
+            <p>Delhi</p>
 
         </div>
 
@@ -881,12 +894,179 @@
             Contact us to check availability.
         </p>
 
-        <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20please%20check%20internet%20availability%20in%20my%20area."
+        <a href="#connection"
            class="button green">
 
             💬 Check Availability
 
         </a>
+
+    </div>
+
+</section>
+
+
+<!-- NEW CONNECTION -->
+
+<section class="connection" id="connection">
+
+    <h2 class="section-title">
+        Get a New Connection
+    </h2>
+
+    <p class="section-subtitle">
+        Fill in your details and send your enquiry on WhatsApp
+    </p>
+
+
+    <div class="connection-box">
+
+        <form id="connectionForm">
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name *
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your full name"
+                    required>
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <div class="form-group">
+
+                <label for="mobile">
+                    Mobile Number *
+                </label>
+
+                <input
+                    type="tel"
+                    id="mobile"
+                    placeholder="Enter 10 digit mobile number"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    required>
+
+            </div>
+
+
+            <!-- AREA -->
+
+            <div class="form-group">
+
+                <label for="area">
+                    Select Area *
+                </label>
+
+                <select id="area" required>
+
+                    <option value="">
+                        Select your area
+                    </option>
+
+                    <option value="Malviya Nagar">
+                        Malviya Nagar
+                    </option>
+
+                    <option value="Hauz Rani">
+                        Hauz Rani
+                    </option>
+
+                    <option value="Khirki Extension">
+                        Khirki Extension
+                    </option>
+
+                    <option value="Khirki Village">
+                        Khirki Village
+                    </option>
+
+                    <option value="Other Area">
+                        Other Area
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PLAN -->
+
+            <div class="form-group">
+
+                <label for="plan">
+                    Select Internet Plan *
+                </label>
+
+                <select id="plan" required>
+
+                    <option value="">
+                        Select your plan
+                    </option>
+
+                    <option value="100 Mbps - ₹499/month">
+                        100 Mbps - ₹499/month
+                    </option>
+
+                    <option value="150 Mbps - ₹599/month">
+                        150 Mbps - ₹599/month
+                    </option>
+
+                    <option value="200 Mbps - ₹699/month">
+                        200 Mbps - ₹699/month
+                    </option>
+
+                    <option value="300 Mbps - ₹799/month">
+                        300 Mbps - ₹799/month
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="form-group">
+
+                <label for="address">
+                    Full Address *
+                </label>
+
+                <textarea
+                    id="address"
+                    placeholder="Enter your complete address"
+                    required></textarea>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="submit-button">
+
+                💬 Send Enquiry on WhatsApp
+
+            </button>
+
+
+            <p class="form-note">
+                Your details will open in WhatsApp for confirmation.
+            </p>
+
+
+        </form>
 
     </div>
 
@@ -966,7 +1146,7 @@
         <br>
 
 
-        <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20information%20about%20your%20internet%20connection."
+        <a href="https://wa.me/918800969880"
            class="button green">
 
             💬 WhatsApp Us
@@ -1003,13 +1183,61 @@
 
 <!-- FLOATING WHATSAPP -->
 
-<a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20need%20help."
+<a href="https://wa.me/918800969880"
    class="whatsapp-float"
    title="WhatsApp">
 
     💬
 
 </a>
+
+
+<!-- FORM WHATSAPP SCRIPT -->
+
+<script>
+
+    document.getElementById("connectionForm").addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        var name = document.getElementById("name").value.trim();
+
+        var mobile = document.getElementById("mobile").value.trim();
+
+        var area = document.getElementById("area").value;
+
+        var plan = document.getElementById("plan").value;
+
+        var address = document.getElementById("address").value.trim();
+
+
+        var message =
+            "Hello JS Internet,%0A%0A" +
+
+            "I want a New Internet Connection.%0A%0A" +
+
+            "👤 Name: " + encodeURIComponent(name) + "%0A" +
+
+            "📱 Mobile: " + encodeURIComponent(mobile) + "%0A" +
+
+            "📍 Area: " + encodeURIComponent(area) + "%0A" +
+
+            "📦 Plan: " + encodeURIComponent(plan) + "%0A" +
+
+            "🏠 Address: " + encodeURIComponent(address) + "%0A%0A" +
+
+            "Please contact me regarding the connection.";
+
+
+        var whatsappURL =
+            "https://wa.me/918800969880?text=" + message;
+
+
+        window.open(whatsappURL, "_blank");
+
+    });
+
+</script>
 
 
 </body>
