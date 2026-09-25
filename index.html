@@ -3,525 +3,619 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>JS Internet | Fast & Reliable Internet</title>
-
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #f5f8fc;
-            color: #222;
-        }
-
-        /* HEADER */
-
-        header {
-            background: white;
-            padding: 15px 6%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-
-        .logo img {
-            width: 150px;
-            height: auto;
-        }
-
-        nav {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #222;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        nav a:hover {
-            color: #07549a;
-        }
-
-        /* HERO */
-
-        .hero {
-            min-height: 560px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 80px 6%;
-            background: linear-gradient(135deg, #07549a, #0b8edb);
-            color: white;
-        }
-
-        .hero-content {
-            max-width: 850px;
-        }
-
-        .hero h1 {
-            font-size: 52px;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 21px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 14px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 6px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .button:hover {
-            transform: translateY(-2px);
-        }
-
-        .button.white {
-            background: white;
-            color: #07549a;
-        }
-
-        .button.green {
-            background: #25D366;
-            color: white;
-        }
-
-        .button.blue {
-            background: #07549a;
-            color: white;
-        }
-
-        /* COMMON */
-
-        section {
-            padding: 80px 6%;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 36px;
-            color: #07549a;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 45px;
-            font-size: 17px;
-        }
-
-        /* PLANS */
-
-        .plans {
-            background: white;
-        }
-
-        .plans-container {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-
-        .plan-card {
-            width: 270px;
-            background: #f5f8fc;
-            padding: 30px 22px;
-            border-radius: 18px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .popular {
-            border: 3px solid #07549a;
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #07549a;
-            color: white;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .plan-card h3 {
-            font-size: 25px;
-            color: #07549a;
-            margin-bottom: 12px;
-        }
-
-        .speed {
-            font-size: 38px;
-            font-weight: bold;
-        }
-
-        .speed span {
-            font-size: 18px;
-        }
-
-        .price {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        .plan-card p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        /* WHY US */
-
-        .why-us {
-            background: #f5f8fc;
-        }
-
-        .why-container {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-
-        .why-card {
-            width: 230px;
-            background: white;
-            padding: 30px 20px;
-            text-align: center;
-            border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
-        }
-
-        .why-icon {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-
-        .why-card h3 {
-            color: #07549a;
-            margin-bottom: 10px;
-        }
-
-        .why-card p {
-            color: #666;
-            line-height: 1.5;
-        }
-
-        /* ABOUT */
-
-        .about {
-            background: white;
-            text-align: center;
-        }
-
-        .about-content {
-            max-width: 850px;
-            margin: auto;
-        }
-
-        .about-content p {
-            color: #555;
-            line-height: 1.8;
-            font-size: 17px;
-        }
-
-        /* SERVICE AREA */
-
-        .service-area {
-            background: #f5f8fc;
-            text-align: center;
-        }
-
-        .area-container {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-
-        .area-card {
-            width: 240px;
-            padding: 30px 20px;
-            background: white;
-            border-radius: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .area-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
-        }
-
-        .area-card h3 {
-            color: #07549a;
-            font-size: 21px;
-            margin-bottom: 8px;
-        }
-
-        .area-card p {
-            color: #666;
-        }
-
-        .area-contact {
-            margin-top: 45px;
-        }
-
-        .area-contact p {
-            color: #555;
-            margin: 6px;
-        }
-
-        /* NEW CONNECTION */
-
-        .connection {
-            background: white;
-        }
-
-        .connection-box {
-            max-width: 700px;
-            margin: auto;
-            background: #f5f8fc;
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            background: white;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #07549a;
-        }
-
-        .form-group textarea {
-            min-height: 110px;
-            resize: vertical;
-        }
-
-        .submit-button {
-            width: 100%;
-            background: #25D366;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .submit-button:hover {
-            background: #1ebe5d;
-        }
-
-        .form-note {
-            text-align: center;
-            color: #666;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        /* SUPPORT */
-
-        .support {
-            background: #07549a;
-            color: white;
-            text-align: center;
-        }
-
-        .support .section-title {
-            color: white;
-        }
-
-        .support .section-subtitle {
-            color: #e5e5e5;
-        }
-
-        /* CONTACT */
-
-        .contact {
-            background: white;
-            text-align: center;
-        }
-
-        .contact-box {
-            max-width: 650px;
-            margin: auto;
-            background: #f5f8fc;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .contact-box p {
-            font-size: 18px;
-            margin: 12px 0;
-        }
-
-        .contact-box a {
-            color: #07549a;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* FOOTER */
-
-        footer {
-            background: #111;
-            color: white;
-            text-align: center;
-            padding: 25px;
-        }
-
-        footer p {
-            margin: 5px;
-        }
-
-        /* WHATSAPP FLOAT */
-
-        .whatsapp-float {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 58px;
-            height: 58px;
-            background: #25D366;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-            z-index: 999;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 768px) {
-
-            header {
-                padding: 12px 4%;
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .logo img {
-                width: 130px;
-            }
-
-            nav {
-                gap: 10px;
-            }
-
-            nav a {
-                font-size: 12px;
-            }
-
-            .hero {
-                min-height: 500px;
-                padding: 60px 5%;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero p {
-                font-size: 17px;
-            }
-
-            section {
-                padding: 60px 5%;
-            }
-
-            .section-title {
-                font-size: 30px;
-            }
-
-            .plan-card,
-            .why-card,
-            .area-card {
-                width: 100%;
-                max-width: 350px;
-            }
-
-            .connection-box {
-                padding: 25px 18px;
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+content="JS Internet - Fast and reliable broadband internet service.">
+
+<title>JS Internet | Fast & Reliable Internet</title>
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f5f8fc;
+    color:#222;
+}
+
+
+/* HEADER */
+
+header{
+    background:white;
+    padding:15px 5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.logo img{
+    width:150px;
+    height:auto;
+    display:block;
+}
+
+nav{
+    display:flex;
+    gap:17px;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+nav a{
+    text-decoration:none;
+    color:#222;
+    font-weight:600;
+    font-size:14px;
+}
+
+nav a:hover{
+    color:#07549a;
+}
+
+
+/* BUTTON */
+
+.button{
+    display:inline-block;
+    padding:14px 28px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    margin:6px;
+    border:none;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.button:hover{
+    transform:translateY(-2px);
+}
+
+.button.white{
+    background:white;
+    color:#07549a;
+}
+
+.button.green{
+    background:#25D366;
+    color:white;
+}
+
+.button.blue{
+    background:#07549a;
+    color:white;
+}
+
+
+/* COMMON */
+
+section{
+    padding:75px 5%;
+}
+
+.section-title{
+    text-align:center;
+    font-size:36px;
+    color:#07549a;
+    margin-bottom:12px;
+}
+
+.section-subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:40px;
+    font-size:17px;
+}
+
+
+/* HERO */
+
+.hero{
+    min-height:550px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:80px 6%;
+    background:linear-gradient(135deg,#07549a,#0b8edb);
+    color:white;
+}
+
+.hero-content{
+    max-width:850px;
+}
+
+.hero h1{
+    font-size:52px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:21px;
+    line-height:1.6;
+    margin-bottom:30px;
+}
+
+
+/* PLANS */
+
+.plans{
+    background:white;
+}
+
+.plan-table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    border-radius:15px;
+    box-shadow:0 5px 25px rgba(0,0,0,.10);
+}
+
+.plan-table{
+    width:100%;
+    min-width:850px;
+    border-collapse:collapse;
+    background:white;
+}
+
+.plan-table th{
+    background:#07549a;
+    color:white;
+    padding:17px 12px;
+    font-size:17px;
+    text-align:center;
+}
+
+.plan-table td{
+    padding:15px 12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+    font-size:17px;
+    font-weight:600;
+}
+
+.plan-table tr:hover{
+    background:#f3f8ff;
+}
+
+.speed-cell{
+    color:#07549a;
+    font-size:20px !important;
+}
+
+.router-cell{
+    color:#07549a;
+}
+
+.month-cell{
+    color:#333;
+}
+
+.price-cell{
+    color:#087f32;
+    font-size:22px !important;
+}
+
+.plan-button{
+    display:inline-block;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    padding:9px 15px;
+    border-radius:7px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.plan-button:hover{
+    background:#1ebe5d;
+}
+
+
+/* WHY US */
+
+.why-us{
+    background:#f5f8fc;
+}
+
+.why-container{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.why-card{
+    width:230px;
+    background:white;
+    padding:30px 20px;
+    text-align:center;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.07);
+}
+
+.why-icon{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.why-card h3{
+    color:#07549a;
+    margin-bottom:10px;
+}
+
+.why-card p{
+    color:#666;
+    line-height:1.5;
+}
+
+
+/* SERVICES */
+
+.services{
+    background:#f5f8fc;
+}
+
+.services-container{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.service-card{
+    width:280px;
+    background:white;
+    padding:32px 25px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.service-card:hover{
+    transform:translateY(-7px);
+}
+
+.service-icon{
+    font-size:45px;
+    margin-bottom:15px;
+}
+
+.service-card h3{
+    color:#07549a;
+    font-size:23px;
+    margin-bottom:12px;
+}
+
+.service-card p{
+    color:#666;
+    line-height:1.5;
+    margin-bottom:18px;
+}
+
+
+/* ABOUT */
+
+.about{
+    background:white;
+    text-align:center;
+}
+
+.about-content{
+    max-width:850px;
+    margin:auto;
+}
+
+.about-content p{
+    color:#555;
+    line-height:1.8;
+    font-size:17px;
+}
+
+
+/* SERVICE AREA */
+
+.service-area{
+    background:#f5f8fc;
+    text-align:center;
+}
+
+.area-container{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.area-card{
+    width:240px;
+    padding:30px 20px;
+    background:white;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.area-card:hover{
+    transform:translateY(-7px);
+}
+
+.area-icon{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.area-card h3{
+    color:#07549a;
+    font-size:21px;
+    margin-bottom:8px;
+}
+
+.area-card p{
+    color:#666;
+}
+
+.area-contact{
+    margin-top:40px;
+}
+
+.area-contact p{
+    color:#555;
+    margin:6px;
+}
+
+
+/* FORM BOX */
+
+.form-box{
+    max-width:700px;
+    margin:auto;
+    background:#f5f8fc;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 5px 25px rgba(0,0,0,.08);
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+    color:#333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    outline:none;
+    background:white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#07549a;
+}
+
+.form-group textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.submit-button{
+    width:100%;
+    background:#25D366;
+    color:white;
+    padding:15px;
+    border:none;
+    border-radius:8px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.submit-button:hover{
+    background:#1ebe5d;
+}
+
+.form-note{
+    text-align:center;
+    color:#666;
+    margin-top:15px;
+    font-size:14px;
+}
+
+
+/* NEW CONNECTION */
+
+.connection{
+    background:white;
+}
+
+
+/* RENEWAL */
+
+.renewal{
+    background:#f5f8fc;
+}
+
+
+/* COMPLAINT */
+
+.complaint{
+    background:white;
+}
+
+
+/* SUPPORT */
+
+.support{
+    background:#07549a;
+    color:white;
+    text-align:center;
+}
+
+.support .section-title{
+    color:white;
+}
+
+.support .section-subtitle{
+    color:#e5e5e5;
+}
+
+
+/* CONTACT */
+
+.contact{
+    background:white;
+    text-align:center;
+}
+
+.contact-box{
+    max-width:650px;
+    margin:auto;
+    background:#f5f8fc;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.contact-box p{
+    font-size:18px;
+    margin:12px 0;
+}
+
+.contact-box a{
+    color:#07549a;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+
+/* FOOTER */
+
+footer{
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+footer p{
+    margin:5px;
+}
+
+
+/* WHATSAPP */
+
+.whatsapp-float{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:58px;
+    height:58px;
+    background:#25D366;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+    z-index:999;
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    header{
+        padding:12px 4%;
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .logo img{
+        width:130px;
+    }
+
+    nav{
+        gap:9px;
+    }
+
+    nav a{
+        font-size:11px;
+    }
+
+    .hero{
+        min-height:500px;
+        padding:60px 5%;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .hero p{
+        font-size:17px;
+    }
+
+    section{
+        padding:60px 5%;
+    }
+
+    .section-title{
+        font-size:30px;
+    }
+
+    .why-card,
+    .area-card,
+    .service-card{
+        width:100%;
+        max-width:350px;
+    }
+
+    .form-box{
+        padding:25px 18px;
+    }
+
+    .plan-table th,
+    .plan-table td{
+        padding:12px 10px;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -535,9 +629,11 @@
 
     <div class="logo">
 
-        <img src="logo.jpg" alt="JS Internet Logo">
+        <img src="logo.jpg"
+             alt="JS Internet Logo">
 
     </div>
+
 
     <nav>
 
@@ -545,15 +641,15 @@
 
         <a href="#plans">Plans</a>
 
-        <a href="#why-us">Why Us</a>
+        <a href="#services">Services</a>
 
-        <a href="#service-area">Service Area</a>
+        <a href="#service-area">Area</a>
 
         <a href="#connection">New Connection</a>
 
-        <a href="#about">About</a>
+        <a href="#renewal">Renewal</a>
 
-        <a href="#support">Support</a>
+        <a href="#complaint">Complaint</a>
 
         <a href="#contact">Contact</a>
 
@@ -578,11 +674,13 @@
             for your home and business.
         </p>
 
-        <a href="#plans" class="button white">
+        <a href="#plans"
+           class="button white">
             View Plans
         </a>
 
-        <a href="#connection" class="button green">
+        <a href="#connection"
+           class="button green">
             💬 Get New Connection
         </a>
 
@@ -591,7 +689,9 @@
 </section>
 
 
-<!-- PLANS -->
+<!-- =========================
+     NEW PLANS
+========================= -->
 
 <section class="plans" id="plans">
 
@@ -600,112 +700,414 @@
     </h2>
 
     <p class="section-subtitle">
-        Choose the plan that suits your needs
+        Choose your speed, router security and plan duration
     </p>
 
 
-    <div class="plans-container">
+    <div class="plan-table-wrapper">
+
+        <table class="plan-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        SPEED
+                    </th>
+
+                    <th>
+                        ROUTER SECURITY
+                    </th>
+
+                    <th>
+                        PLAN
+                    </th>
+
+                    <th>
+                        PRICE
+                    </th>
+
+                    <th>
+                        ACTION
+                    </th>
+
+                </tr>
+
+            </thead>
 
 
-        <div class="plan-card">
-
-            <h3>100 Mbps</h3>
-
-            <div class="speed">
-                100 <span>Mbps</span>
-            </div>
-
-            <div class="price">
-                ₹499 / Month
-            </div>
-
-            <p>
-                High-speed internet connection
-            </p>
-
-            <a href="#connection"
-               class="button green">
-                Get Connection
-            </a>
-
-        </div>
+            <tbody>
 
 
-        <div class="plan-card">
+                <!-- 100 Mbps -->
 
-            <h3>150 Mbps</h3>
+                <tr>
 
-            <div class="speed">
-                150 <span>Mbps</span>
-            </div>
+                    <td class="speed-cell">
+                        100 Mbps
+                    </td>
 
-            <div class="price">
-                ₹599 / Month
-            </div>
+                    <td class="router-cell">
+                        📡 1000
+                    </td>
 
-            <p>
-                Fast internet for home & work
-            </p>
+                    <td class="month-cell">
+                        1 Month
+                    </td>
 
-            <a href="#connection"
-               class="button green">
-                Get Connection
-            </a>
+                    <td class="price-cell">
+                        ₹1500
+                    </td>
 
-        </div>
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('100 Mbps - 1000 Router Security - 1 Month - ₹1500')">
+                            Select
+                        </a>
+                    </td>
 
-
-        <div class="plan-card popular">
-
-            <div class="popular-badge">
-                POPULAR
-            </div>
-
-            <h3>200 Mbps</h3>
-
-            <div class="speed">
-                200 <span>Mbps</span>
-            </div>
-
-            <div class="price">
-                ₹699 / Month
-            </div>
-
-            <p>
-                Great choice for multiple devices
-            </p>
-
-            <a href="#connection"
-               class="button green">
-                Get Connection
-            </a>
-
-        </div>
+                </tr>
 
 
-        <div class="plan-card">
+                <tr>
 
-            <h3>300 Mbps</h3>
+                    <td class="speed-cell">
+                        100 Mbps
+                    </td>
 
-            <div class="speed">
-                300 <span>Mbps</span>
-            </div>
+                    <td class="router-cell">
+                        📡 500
+                    </td>
 
-            <div class="price">
-                ₹799 / Month
-            </div>
+                    <td class="month-cell">
+                        3 + 1 Month
+                    </td>
 
-            <p>
-                Powerful connection for heavy usage
-            </p>
+                    <td class="price-cell">
+                        ₹2000
+                    </td>
 
-            <a href="#connection"
-               class="button green">
-                Get Connection
-            </a>
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('100 Mbps - 500 Router Security - 3+1 Month - ₹2000')">
+                            Select
+                        </a>
+                    </td>
 
-        </div>
+                </tr>
 
+
+                <tr>
+
+                    <td class="speed-cell">
+                        100 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        🚫 0
+                    </td>
+
+                    <td class="month-cell">
+                        6 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹3000
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('100 Mbps - No Router Security - 6 Month - ₹3000')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <!-- 150 Mbps -->
+
+                <tr>
+
+                    <td class="speed-cell">
+                        150 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        📡 1000
+                    </td>
+
+                    <td class="month-cell">
+                        1 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹1600
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('150 Mbps - 1000 Router Security - 1 Month - ₹1600')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="speed-cell">
+                        150 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        📡 500
+                    </td>
+
+                    <td class="month-cell">
+                        3 + 1 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹2300
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('150 Mbps - 500 Router Security - 3+1 Month - ₹2300')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="speed-cell">
+                        150 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        🚫 0
+                    </td>
+
+                    <td class="month-cell">
+                        6 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹3200
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('150 Mbps - No Router Security - 6 Month - ₹3200')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <!-- 200 Mbps -->
+
+                <tr>
+
+                    <td class="speed-cell">
+                        200 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        📡 1000
+                    </td>
+
+                    <td class="month-cell">
+                        1 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹1700
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('200 Mbps - 1000 Router Security - 1 Month - ₹1700')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="speed-cell">
+                        200 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        📡 500
+                    </td>
+
+                    <td class="month-cell">
+                        3 + 1 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹2600
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('200 Mbps - 500 Router Security - 3+1 Month - ₹2600')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="speed-cell">
+                        200 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        🚫 0
+                    </td>
+
+                    <td class="month-cell">
+                        6 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹3400
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('200 Mbps - No Router Security - 6 Month - ₹3400')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <!-- 300 Mbps -->
+
+                <tr>
+
+                    <td class="speed-cell">
+                        300 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        📡 1000
+                    </td>
+
+                    <td class="month-cell">
+                        1 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹1800
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('300 Mbps - 1000 Router Security - 1 Month - ₹1800')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="speed-cell">
+                        300 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        📡 500
+                    </td>
+
+                    <td class="month-cell">
+                        3 + 1 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹2900
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('300 Mbps - 500 Router Security - 3+1 Month - ₹2900')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="speed-cell">
+                        300 Mbps
+                    </td>
+
+                    <td class="router-cell">
+                        🚫 0
+                    </td>
+
+                    <td class="month-cell">
+                        6 Month
+                    </td>
+
+                    <td class="price-cell">
+                        ₹4200
+                    </td>
+
+                    <td>
+                        <a href="#connection"
+                           class="plan-button"
+                           onclick="selectPlan('300 Mbps - No Router Security - 6 Month - ₹4200')">
+                            Select
+                        </a>
+                    </td>
+
+                </tr>
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div style="text-align:center;margin-top:25px;">
+
+        <p style="color:#666;">
+            📡 Router Security options as per selected plan.
+        </p>
 
     </div>
 
@@ -730,9 +1132,13 @@
 
         <div class="why-card">
 
-            <div class="why-icon">⚡</div>
+            <div class="why-icon">
+                ⚡
+            </div>
 
-            <h3>High Speed</h3>
+            <h3>
+                High Speed
+            </h3>
 
             <p>
                 Fast broadband connection for
@@ -744,9 +1150,13 @@
 
         <div class="why-card">
 
-            <div class="why-icon">📶</div>
+            <div class="why-icon">
+                📶
+            </div>
 
-            <h3>Reliable Connection</h3>
+            <h3>
+                Reliable Connection
+            </h3>
 
             <p>
                 Stable internet connection for
@@ -758,13 +1168,17 @@
 
         <div class="why-card">
 
-            <div class="why-icon">💰</div>
+            <div class="why-icon">
+                💰
+            </div>
 
-            <h3>Affordable Plans</h3>
+            <h3>
+                Affordable Plans
+            </h3>
 
             <p>
-                Simple broadband plans at
-                affordable monthly prices.
+                Multiple plans designed for
+                different customer requirements.
             </p>
 
         </div>
@@ -772,14 +1186,114 @@
 
         <div class="why-card">
 
-            <div class="why-icon">🛠️</div>
+            <div class="why-icon">
+                🛠️
+            </div>
 
-            <h3>Customer Support</h3>
+            <h3>
+                Customer Support
+            </h3>
 
             <p>
                 Contact our support team whenever
                 you need assistance.
             </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- CUSTOMER SERVICES -->
+
+<section class="services" id="services">
+
+    <h2 class="section-title">
+        Customer Services
+    </h2>
+
+    <p class="section-subtitle">
+        Manage your JS Internet connection easily
+    </p>
+
+
+    <div class="services-container">
+
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🆕
+            </div>
+
+            <h3>
+                New Connection
+            </h3>
+
+            <p>
+                Apply for a new JS Internet
+                broadband connection.
+            </p>
+
+            <a href="#connection"
+               class="button blue">
+
+                Apply Now
+
+            </a>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🔄
+            </div>
+
+            <h3>
+                Plan Renewal
+            </h3>
+
+            <p>
+                Renew or change your current
+                internet plan.
+            </p>
+
+            <a href="#renewal"
+               class="button blue">
+
+                Renew Plan
+
+            </a>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🛠️
+            </div>
+
+            <h3>
+                Complaint
+            </h3>
+
+            <p>
+                Report internet problems
+                to our support team.
+            </p>
+
+            <a href="#complaint"
+               class="button blue">
+
+                Register Complaint
+
+            </a>
 
         </div>
 
@@ -805,14 +1319,12 @@
     <div class="about-content">
 
         <p>
-
             JS Internet provides broadband internet
             connectivity for homes and businesses.
 
             We focus on providing affordable plans,
             reliable connectivity and customer support
             to our customers.
-
         </p>
 
     </div>
@@ -839,44 +1351,68 @@
 
         <div class="area-card">
 
-            <div class="area-icon">📍</div>
+            <div class="area-icon">
+                📍
+            </div>
 
-            <h3>Malviya Nagar</h3>
+            <h3>
+                Malviya Nagar
+            </h3>
 
-            <p>Delhi</p>
-
-        </div>
-
-
-        <div class="area-card">
-
-            <div class="area-icon">📍</div>
-
-            <h3>Hauz Rani</h3>
-
-            <p>Delhi</p>
+            <p>
+                Delhi
+            </p>
 
         </div>
 
 
         <div class="area-card">
 
-            <div class="area-icon">📍</div>
+            <div class="area-icon">
+                📍
+            </div>
 
-            <h3>Khirki Extension</h3>
+            <h3>
+                Hauz Rani
+            </h3>
 
-            <p>Delhi</p>
+            <p>
+                Delhi
+            </p>
 
         </div>
 
 
         <div class="area-card">
 
-            <div class="area-icon">📍</div>
+            <div class="area-icon">
+                📍
+            </div>
 
-            <h3>Khirki Village</h3>
+            <h3>
+                Khirki Extension
+            </h3>
 
-            <p>Delhi</p>
+            <p>
+                Delhi
+            </p>
+
+        </div>
+
+
+        <div class="area-card">
+
+            <div class="area-icon">
+                📍
+            </div>
+
+            <h3>
+                Khirki Village
+            </h3>
+
+            <p>
+                Delhi
+            </p>
 
         </div>
 
@@ -915,20 +1451,18 @@
     </h2>
 
     <p class="section-subtitle">
-        Fill in your details and send your enquiry on WhatsApp
+        Select your plan and send your enquiry on WhatsApp
     </p>
 
 
-    <div class="connection-box">
+    <div class="form-box">
 
         <form id="connectionForm">
 
 
-            <!-- NAME -->
-
             <div class="form-group">
 
-                <label for="name">
+                <label>
                     Full Name *
                 </label>
 
@@ -941,11 +1475,9 @@
             </div>
 
 
-            <!-- MOBILE -->
-
             <div class="form-group">
 
-                <label for="mobile">
+                <label>
                     Mobile Number *
                 </label>
 
@@ -960,37 +1492,36 @@
             </div>
 
 
-            <!-- AREA -->
-
             <div class="form-group">
 
-                <label for="area">
+                <label>
                     Select Area *
                 </label>
 
-                <select id="area" required>
+                <select id="area"
+                        required>
 
                     <option value="">
                         Select your area
                     </option>
 
-                    <option value="Malviya Nagar">
+                    <option>
                         Malviya Nagar
                     </option>
 
-                    <option value="Hauz Rani">
+                    <option>
                         Hauz Rani
                     </option>
 
-                    <option value="Khirki Extension">
+                    <option>
                         Khirki Extension
                     </option>
 
-                    <option value="Khirki Village">
+                    <option>
                         Khirki Village
                     </option>
 
-                    <option value="Other Area">
+                    <option>
                         Other Area
                     </option>
 
@@ -999,34 +1530,65 @@
             </div>
 
 
-            <!-- PLAN -->
-
             <div class="form-group">
 
-                <label for="plan">
-                    Select Internet Plan *
+                <label>
+                    Select Plan *
                 </label>
 
-                <select id="plan" required>
+                <select id="plan"
+                        required>
 
                     <option value="">
                         Select your plan
                     </option>
 
-                    <option value="100 Mbps - ₹499/month">
-                        100 Mbps - ₹499/month
+                    <option>
+                        100 Mbps - Router Security 1000 - 1 Month - ₹1500
                     </option>
 
-                    <option value="150 Mbps - ₹599/month">
-                        150 Mbps - ₹599/month
+                    <option>
+                        100 Mbps - Router Security 500 - 3+1 Month - ₹2000
                     </option>
 
-                    <option value="200 Mbps - ₹699/month">
-                        200 Mbps - ₹699/month
+                    <option>
+                        100 Mbps - No Router - 6 Month - ₹3000
                     </option>
 
-                    <option value="300 Mbps - ₹799/month">
-                        300 Mbps - ₹799/month
+                    <option>
+                        150 Mbps - Router Security 1000 - 1 Month - ₹1600
+                    </option>
+
+                    <option>
+                        150 Mbps - Router Security 500 - 3+1 Month - ₹2300
+                    </option>
+
+                    <option>
+                        150 Mbps - No Router - 6 Month - ₹3200
+                    </option>
+
+                    <option>
+                        200 Mbps - Router Security 1000 - 1 Month - ₹1700
+                    </option>
+
+                    <option>
+                        200 Mbps - Router Security 500 - 3+1 Month - ₹2600
+                    </option>
+
+                    <option>
+                        200 Mbps - No Router - 6 Month - ₹3400
+                    </option>
+
+                    <option>
+                        300 Mbps - Router Security 1000 - 1 Month - ₹1800
+                    </option>
+
+                    <option>
+                        300 Mbps - Router Security 500 - 3+1 Month - ₹2900
+                    </option>
+
+                    <option>
+                        300 Mbps - No Router - 6 Month - ₹4200
                     </option>
 
                 </select>
@@ -1034,11 +1596,9 @@
             </div>
 
 
-            <!-- ADDRESS -->
-
             <div class="form-group">
 
-                <label for="address">
+                <label>
                     Full Address *
                 </label>
 
@@ -1050,8 +1610,6 @@
             </div>
 
 
-            <!-- SUBMIT -->
-
             <button
                 type="submit"
                 class="submit-button">
@@ -1062,7 +1620,305 @@
 
 
             <p class="form-note">
-                Your details will open in WhatsApp for confirmation.
+                Your enquiry details will open in WhatsApp.
+            </p>
+
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- PLAN RENEWAL -->
+
+<section class="renewal" id="renewal">
+
+    <h2 class="section-title">
+        Plan Renewal
+    </h2>
+
+    <p class="section-subtitle">
+        Renew or change your JS Internet plan
+    </p>
+
+
+    <div class="form-box">
+
+        <form id="renewalForm">
+
+
+            <div class="form-group">
+
+                <label>
+                    Customer Name *
+                </label>
+
+                <input
+                    type="text"
+                    id="renewalName"
+                    placeholder="Enter your name"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Registered Mobile Number *
+                </label>
+
+                <input
+                    type="tel"
+                    id="renewalMobile"
+                    placeholder="Enter 10 digit mobile number"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Current Plan *
+                </label>
+
+                <select id="currentPlan"
+                        required>
+
+                    <option value="">
+                        Select current plan
+                    </option>
+
+                    <option>
+                        100 Mbps
+                    </option>
+
+                    <option>
+                        150 Mbps
+                    </option>
+
+                    <option>
+                        200 Mbps
+                    </option>
+
+                    <option>
+                        300 Mbps
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Renewal Plan *
+                </label>
+
+                <select id="renewalPlan"
+                        required>
+
+                    <option value="">
+                        Select renewal plan
+                    </option>
+
+                    <option>
+                        100 Mbps - Router Security 1000 - 1 Month - ₹1500
+                    </option>
+
+                    <option>
+                        100 Mbps - Router Security 500 - 3+1 Month - ₹2000
+                    </option>
+
+                    <option>
+                        100 Mbps - No Router - 6 Month - ₹3000
+                    </option>
+
+                    <option>
+                        150 Mbps - Router Security 1000 - 1 Month - ₹1600
+                    </option>
+
+                    <option>
+                        150 Mbps - Router Security 500 - 3+1 Month - ₹2300
+                    </option>
+
+                    <option>
+                        150 Mbps - No Router - 6 Month - ₹3200
+                    </option>
+
+                    <option>
+                        200 Mbps - Router Security 1000 - 1 Month - ₹1700
+                    </option>
+
+                    <option>
+                        200 Mbps - Router Security 500 - 3+1 Month - ₹2600
+                    </option>
+
+                    <option>
+                        200 Mbps - No Router - 6 Month - ₹3400
+                    </option>
+
+                    <option>
+                        300 Mbps - Router Security 1000 - 1 Month - ₹1800
+                    </option>
+
+                    <option>
+                        300 Mbps - Router Security 500 - 3+1 Month - ₹2900
+                    </option>
+
+                    <option>
+                        300 Mbps - No Router - 6 Month - ₹4200
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-button">
+
+                🔄 Send Renewal Request
+
+            </button>
+
+
+            <p class="form-note">
+                Our team will contact you regarding renewal.
+            </p>
+
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- COMPLAINT -->
+
+<section class="complaint" id="complaint">
+
+    <h2 class="section-title">
+        Internet Complaint
+    </h2>
+
+    <p class="section-subtitle">
+        Tell us about your internet problem
+    </p>
+
+
+    <div class="form-box">
+
+        <form id="complaintForm">
+
+
+            <div class="form-group">
+
+                <label>
+                    Customer Name *
+                </label>
+
+                <input
+                    type="text"
+                    id="complaintName"
+                    placeholder="Enter your name"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Registered Mobile Number *
+                </label>
+
+                <input
+                    type="tel"
+                    id="complaintMobile"
+                    placeholder="Enter 10 digit mobile number"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Complaint Type *
+                </label>
+
+                <select id="complaintType"
+                        required>
+
+                    <option value="">
+                        Select problem
+                    </option>
+
+                    <option>
+                        Internet Not Working
+                    </option>
+
+                    <option>
+                        Slow Internet
+                    </option>
+
+                    <option>
+                        Router Problem
+                    </option>
+
+                    <option>
+                        Wi-Fi Problem
+                    </option>
+
+                    <option>
+                        Frequent Disconnection
+                    </option>
+
+                    <option>
+                        Other Problem
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Problem Details *
+                </label>
+
+                <textarea
+                    id="complaintMessage"
+                    placeholder="Explain your problem"
+                    required></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-button">
+
+                🛠️ Send Complaint on WhatsApp
+
+            </button>
+
+
+            <p class="form-note">
+                Your complaint details will open in WhatsApp.
             </p>
 
 
@@ -1086,10 +1942,10 @@
     </p>
 
 
-    <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20have%20a%20complaint%20regarding%20my%20internet%20connection."
+    <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20need%20customer%20support."
        class="button green">
 
-        💬 Register Complaint
+        💬 WhatsApp Support
 
     </a>
 
@@ -1192,50 +2048,179 @@
 </a>
 
 
-<!-- FORM WHATSAPP SCRIPT -->
+<!-- JAVASCRIPT -->
 
 <script>
 
-    document.getElementById("connectionForm").addEventListener("submit", function(event) {
 
-        event.preventDefault();
+/* PLAN SELECT */
 
-        var name = document.getElementById("name").value.trim();
+function selectPlan(planName){
 
-        var mobile = document.getElementById("mobile").value.trim();
+    document.getElementById("plan").value = planName;
 
-        var area = document.getElementById("area").value;
-
-        var plan = document.getElementById("plan").value;
-
-        var address = document.getElementById("address").value.trim();
+}
 
 
-        var message =
-            "Hello JS Internet,%0A%0A" +
+/* NEW CONNECTION */
 
-            "I want a New Internet Connection.%0A%0A" +
+document.getElementById("connectionForm").addEventListener("submit",function(event){
 
-            "👤 Name: " + encodeURIComponent(name) + "%0A" +
+    event.preventDefault();
 
-            "📱 Mobile: " + encodeURIComponent(mobile) + "%0A" +
+    var name =
+        document.getElementById("name").value.trim();
 
-            "📍 Area: " + encodeURIComponent(area) + "%0A" +
+    var mobile =
+        document.getElementById("mobile").value.trim();
 
-            "📦 Plan: " + encodeURIComponent(plan) + "%0A" +
+    var area =
+        document.getElementById("area").value;
 
-            "🏠 Address: " + encodeURIComponent(address) + "%0A%0A" +
+    var plan =
+        document.getElementById("plan").value;
 
-            "Please contact me regarding the connection.";
-
-
-        var whatsappURL =
-            "https://wa.me/918800969880?text=" + message;
+    var address =
+        document.getElementById("address").value.trim();
 
 
-        window.open(whatsappURL, "_blank");
+    var message =
+        "Hello JS Internet,%0A%0A" +
 
-    });
+        "I want a New Internet Connection.%0A%0A" +
+
+        "👤 Name: " +
+        encodeURIComponent(name) +
+        "%0A" +
+
+        "📱 Mobile: " +
+        encodeURIComponent(mobile) +
+        "%0A" +
+
+        "📍 Area: " +
+        encodeURIComponent(area) +
+        "%0A" +
+
+        "📦 Plan: " +
+        encodeURIComponent(plan) +
+        "%0A" +
+
+        "🏠 Address: " +
+        encodeURIComponent(address) +
+        "%0A%0A" +
+
+        "Please contact me regarding the connection.";
+
+
+    window.open(
+        "https://wa.me/918800969880?text=" + message,
+        "_blank"
+    );
+
+});
+
+
+/* RENEWAL */
+
+document.getElementById("renewalForm").addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    var name =
+        document.getElementById("renewalName").value.trim();
+
+    var mobile =
+        document.getElementById("renewalMobile").value.trim();
+
+    var currentPlan =
+        document.getElementById("currentPlan").value;
+
+    var renewalPlan =
+        document.getElementById("renewalPlan").value;
+
+
+    var message =
+        "Hello JS Internet,%0A%0A" +
+
+        "I want to renew my internet plan.%0A%0A" +
+
+        "👤 Customer Name: " +
+        encodeURIComponent(name) +
+        "%0A" +
+
+        "📱 Mobile: " +
+        encodeURIComponent(mobile) +
+        "%0A" +
+
+        "📦 Current Plan: " +
+        encodeURIComponent(currentPlan) +
+        "%0A" +
+
+        "🔄 Renewal Plan: " +
+        encodeURIComponent(renewalPlan) +
+        "%0A%0A" +
+
+        "Please contact me regarding plan renewal.";
+
+
+    window.open(
+        "https://wa.me/918800969880?text=" + message,
+        "_blank"
+    );
+
+});
+
+
+/* COMPLAINT */
+
+document.getElementById("complaintForm").addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    var name =
+        document.getElementById("complaintName").value.trim();
+
+    var mobile =
+        document.getElementById("complaintMobile").value.trim();
+
+    var type =
+        document.getElementById("complaintType").value;
+
+    var problem =
+        document.getElementById("complaintMessage").value.trim();
+
+
+    var message =
+        "Hello JS Internet,%0A%0A" +
+
+        "I want to register an internet complaint.%0A%0A" +
+
+        "👤 Customer Name: " +
+        encodeURIComponent(name) +
+        "%0A" +
+
+        "📱 Mobile: " +
+        encodeURIComponent(mobile) +
+        "%0A" +
+
+        "🛠️ Complaint Type: " +
+        encodeURIComponent(type) +
+        "%0A" +
+
+        "📝 Problem Details: " +
+        encodeURIComponent(problem) +
+        "%0A%0A" +
+
+        "Please help resolve my complaint.";
+
+
+    window.open(
+        "https://wa.me/918800969880?text=" + message,
+        "_blank"
+    );
+
+});
+
 
 </script>
 
