@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>JS Internet | Fast & Reliable Broadband</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="JS Internet - Fast, reliable and affordable broadband internet for home and business.">
+    <title>JS Internet | Fast & Reliable Internet</title>
 
     <style>
 
@@ -30,458 +31,446 @@
         /* HEADER */
 
         header {
-            background: white;
-            padding: 10px 6%;
+            background: #ffffff;
+            padding: 15px 6%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.10);
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
 
-        .logo-area {
+        .logo {
             display: flex;
             align-items: center;
         }
 
-        .logo-area img {
-            width: 65px;
-            height: 65px;
+        .logo img {
+            width: 150px;
+            height: auto;
             object-fit: contain;
         }
 
-        .brand-name {
-            font-size: 25px;
-            font-weight: bold;
-            color: #07549a;
-            margin-left: 10px;
+        nav {
+            display: flex;
+            gap: 22px;
+            align-items: center;
         }
 
         nav a {
-            color: #07549a;
             text-decoration: none;
-            margin-left: 24px;
-            font-weight: bold;
-            transition: 0.3s;
+            color: #222;
+            font-weight: 600;
+            font-size: 15px;
         }
 
         nav a:hover {
-            color: #14b8e8;
+            color: #07549a;
         }
-
 
         /* HERO */
 
         .hero {
             min-height: 560px;
-            background:
-                radial-gradient(circle at top right, rgba(255,255,255,0.20), transparent 35%),
-                linear-gradient(135deg, #063b70, #0878bd, #12b5e5);
-
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 80px 20px;
+            padding: 80px 6%;
+            background: linear-gradient(135deg, #07549a, #0b8edb);
+            color: white;
         }
 
         .hero-content {
-            max-width: 900px;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.35);
-            padding: 10px 20px;
-            border-radius: 30px;
-            margin-bottom: 22px;
-            font-weight: bold;
+            max-width: 850px;
         }
 
         .hero h1 {
-            font-size: 58px;
-            line-height: 1.1;
+            font-size: 52px;
             margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            color: #bff5ff;
         }
 
         .hero p {
             font-size: 21px;
+            margin-bottom: 30px;
             line-height: 1.6;
-            max-width: 750px;
-            margin: auto;
         }
-
-        .hero-buttons {
-            margin-top: 32px;
-        }
-
-
-        /* BUTTON */
 
         .button {
             display: inline-block;
             padding: 14px 28px;
-            border-radius: 30px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
             margin: 6px;
             transition: 0.3s;
-            cursor: pointer;
         }
 
         .button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
-        .primary {
+        .button.white {
             background: white;
             color: #07549a;
         }
 
-        .secondary {
-            background: transparent;
+        .button.green {
+            background: #25D366;
             color: white;
-            border: 2px solid white;
         }
 
-        .blue {
+        .button.blue {
             background: #07549a;
             color: white;
         }
 
-        .green {
-            background: #18a849;
-            color: white;
-        }
-
-
-        /* SECTION */
+        /* COMMON SECTION */
 
         section {
-            scroll-margin-top: 90px;
+            padding: 80px 6%;
         }
 
         .section-title {
             text-align: center;
+            font-size: 36px;
             color: #07549a;
-            font-size: 38px;
             margin-bottom: 12px;
         }
 
         .section-subtitle {
             text-align: center;
             color: #666;
-            font-size: 17px;
             margin-bottom: 45px;
+            font-size: 17px;
         }
-
 
         /* PLANS */
 
         .plans {
-            padding: 80px 6%;
-            background: #f5f8fc;
+            background: #ffffff;
         }
 
-        .plan-container {
+        .plans-container {
             display: flex;
             justify-content: center;
             gap: 25px;
             flex-wrap: wrap;
         }
 
-        .plan {
-            background: white;
-            width: 260px;
-            padding: 32px 25px;
-            border-radius: 20px;
+        .plan-card {
+            width: 270px;
+            background: #f5f8fc;
+            padding: 30px 22px;
+            border-radius: 18px;
             text-align: center;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
             transition: 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
-        .plan:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
         }
 
-        .plan.popular {
-            border: 3px solid #12a9df;
+        .popular {
+            border: 3px solid #07549a;
         }
 
-        .popular-label {
-            background: #12a9df;
+        .popular-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #07549a;
             color: white;
-            padding: 7px;
+            padding: 6px 18px;
+            border-radius: 20px;
             font-size: 13px;
             font-weight: bold;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
         }
 
-        .popular h3 {
-            margin-top: 25px;
-        }
-
-        .plan h3 {
+        .plan-card h3 {
+            font-size: 25px;
             color: #07549a;
-            font-size: 27px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
-        .speed-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+        .speed {
+            font-size: 38px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .speed span {
+            font-size: 18px;
         }
 
         .price {
-            color: #12a9df;
-            font-size: 36px;
+            font-size: 28px;
             font-weight: bold;
+            margin: 15px 0;
         }
 
-        .month {
-            color: #777;
+        .plan-card p {
+            color: #666;
             margin-bottom: 20px;
         }
-
-        .plan ul {
-            list-style: none;
-            line-height: 2;
-            color: #555;
-            margin-bottom: 15px;
-        }
-
-        .plan ul li::before {
-            content: "✓ ";
-            color: #18a849;
-            font-weight: bold;
-        }
-
 
         /* WHY US */
 
         .why-us {
-            background: white;
-            padding: 80px 6%;
+            background: #f5f8fc;
         }
 
-        .features {
+        .why-container {
             display: flex;
             justify-content: center;
             gap: 25px;
             flex-wrap: wrap;
         }
 
-        .feature {
-            width: 250px;
-            background: #f5f8fc;
+        .why-card {
+            width: 230px;
+            background: white;
             padding: 30px 20px;
-            border-radius: 18px;
             text-align: center;
-            transition: 0.3s;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
         }
 
-        .feature:hover {
-            transform: translateY(-6px);
-        }
-
-        .feature-icon {
+        .why-icon {
             font-size: 42px;
             margin-bottom: 15px;
         }
 
-        .feature h3 {
+        .why-card h3 {
             color: #07549a;
             margin-bottom: 10px;
         }
 
-        .feature p {
+        .why-card p {
             color: #666;
-            line-height: 1.6;
+            line-height: 1.5;
         }
-
 
         /* ABOUT */
 
         .about {
-            padding: 80px 10%;
+            background: white;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .about-content p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        /* SERVICE AREA */
+
+        .service-area {
             background: #f5f8fc;
             text-align: center;
         }
 
-        .about p {
-            max-width: 850px;
-            margin: auto;
-            font-size: 18px;
-            line-height: 1.8;
-            color: #555;
+        .area-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
         }
 
+        .area-card {
+            width: 240px;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .area-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+        }
+
+        .area-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .area-card h3 {
+            color: #07549a;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .area-card p {
+            color: #666;
+        }
+
+        .area-contact {
+            margin-top: 45px;
+        }
+
+        .area-contact p {
+            color: #555;
+            margin: 6px;
+        }
 
         /* SUPPORT */
 
         .support {
-            padding: 80px 20px;
-            background: linear-gradient(135deg, #063b70, #0878bd);
+            background: #07549a;
             color: white;
             text-align: center;
         }
 
-        .support h2 {
-            font-size: 38px;
-            margin-bottom: 15px;
+        .support .section-title {
+            color: white;
         }
 
-        .support p {
-            font-size: 18px;
-            margin-bottom: 25px;
+        .support .section-subtitle {
+            color: #e5e5e5;
         }
-
 
         /* CONTACT */
 
         .contact {
-            padding: 80px 20px;
-            text-align: center;
             background: white;
+            text-align: center;
         }
 
-        .contact-info {
-            margin: 25px auto;
+        .contact-box {
             max-width: 650px;
+            margin: auto;
+            background: #f5f8fc;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
-        .contact-number {
-            font-size: 21px;
+        .contact-box p {
+            font-size: 18px;
+            margin: 12px 0;
+        }
+
+        .contact-box a {
             color: #07549a;
-            font-weight: bold;
-            margin: 10px;
-        }
-
-
-        /* FLOATING WHATSAPP */
-
-        .floating-whatsapp {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 62px;
-            height: 62px;
-            border-radius: 50%;
-            background: #18a849;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
             text-decoration: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-            z-index: 9999;
+            font-weight: bold;
         }
-
 
         /* FOOTER */
 
         footer {
-            background: #062f59;
+            background: #111;
             color: white;
             text-align: center;
-            padding: 30px 20px;
+            padding: 25px;
         }
 
         footer p {
-            margin: 7px;
+            margin: 5px;
         }
 
-        .footer-brand {
-            font-size: 24px;
-            font-weight: bold;
-        }
+        /* FLOATING WHATSAPP */
 
+        .whatsapp-float {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            z-index: 999;
+        }
 
         /* MOBILE */
 
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
 
             header {
-                padding: 8px 15px;
+                padding: 12px 4%;
                 flex-direction: column;
-                gap: 5px;
+                gap: 12px;
             }
 
-            .logo-area img {
-                width: 55px;
-                height: 55px;
-            }
-
-            .brand-name {
-                font-size: 22px;
+            .logo img {
+                width: 130px;
             }
 
             nav {
-                display: flex;
+                gap: 10px;
                 flex-wrap: wrap;
                 justify-content: center;
             }
 
             nav a {
-                margin: 5px 8px;
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .hero {
-                min-height: 520px;
-                padding: 65px 18px;
+                min-height: 500px;
+                padding: 60px 5%;
             }
 
             .hero h1 {
-                font-size: 39px;
+                font-size: 36px;
             }
 
             .hero p {
                 font-size: 17px;
             }
 
+            section {
+                padding: 60px 5%;
+            }
+
             .section-title {
                 font-size: 30px;
             }
 
-            .plan {
-                width: 92%;
-                max-width: 330px;
+            .plan-card {
+                width: 100%;
+                max-width: 350px;
             }
 
-            .feature {
-                width: 92%;
-                max-width: 330px;
+            .why-card {
+                width: 100%;
+                max-width: 350px;
             }
 
-            .support h2 {
-                font-size: 30px;
+            .area-card {
+                width: 100%;
+                max-width: 350px;
             }
 
-            .floating-whatsapp {
-                width: 58px;
-                height: 58px;
-                right: 15px;
-                bottom: 15px;
+            .contact-box {
+                padding: 25px 15px;
             }
+
         }
 
     </style>
+
 </head>
 
 
@@ -492,16 +481,11 @@
 
 <header>
 
-    <div class="logo-area">
+    <div class="logo">
 
         <img src="logo.jpg" alt="JS Internet Logo">
 
-        <div class="brand-name">
-            JS INTERNET
-        </div>
-
     </div>
-
 
     <nav>
 
@@ -510,6 +494,8 @@
         <a href="#plans">Plans</a>
 
         <a href="#why-us">Why Us</a>
+
+        <a href="#service-area">Service Area</a>
 
         <a href="#about">About</a>
 
@@ -522,20 +508,15 @@
 </header>
 
 
-
 <!-- HERO -->
 
 <section class="hero" id="home">
 
     <div class="hero-content">
 
-        <div class="hero-badge">
-            🚀 High-Speed Broadband Internet
-        </div>
-
         <h1>
             Fast Internet.<br>
-            <span>Better Connectivity.</span>
+            Better Connectivity.
         </h1>
 
         <p>
@@ -543,24 +524,18 @@
             for your home and business.
         </p>
 
+        <a href="#plans" class="button white">
+            View Plans
+        </a>
 
-        <div class="hero-buttons">
-
-            <a href="#plans" class="button primary">
-                📶 View Plans
-            </a>
-
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20a%20new%20internet%20connection."
-               class="button secondary">
-                💬 Get New Connection
-            </a>
-
-        </div>
+        <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20a%20new%20internet%20connection."
+           class="button green">
+            💬 Get Connection
+        </a>
 
     </div>
 
 </section>
-
 
 
 <!-- PLANS -->
@@ -572,154 +547,127 @@
     </h2>
 
     <p class="section-subtitle">
-        Choose the plan that fits your needs
+        Choose the plan that suits your needs
     </p>
 
 
-    <div class="plan-container">
+    <div class="plans-container">
 
 
-        <!-- PLAN 1 -->
+        <!-- 100 Mbps -->
 
-        <div class="plan">
-
-            <div class="speed-icon">
-                ⚡
-            </div>
+        <div class="plan-card">
 
             <h3>100 Mbps</h3>
 
+            <div class="speed">
+                100 <span>Mbps</span>
+            </div>
+
             <div class="price">
-                ₹499
+                ₹499 / Month
             </div>
 
-            <div class="month">
-                per month
-            </div>
+            <p>
+                High-speed internet connection
+            </p>
 
-            <ul>
-                <li>High Speed Internet</li>
-                <li>Unlimited Data</li>
-                <li>24×7 Support</li>
-            </ul>
-
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20100%20Mbps%20plan%20for%20%E2%82%B9499."
-               class="button blue">
+            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20100%20Mbps%20plan%20for%20Rs%20499."
+               class="button green">
                 Get Connection
             </a>
 
         </div>
 
 
+        <!-- 150 Mbps -->
 
-        <!-- PLAN 2 -->
-
-        <div class="plan">
-
-            <div class="speed-icon">
-                ⚡
-            </div>
+        <div class="plan-card">
 
             <h3>150 Mbps</h3>
 
+            <div class="speed">
+                150 <span>Mbps</span>
+            </div>
+
             <div class="price">
-                ₹599
+                ₹599 / Month
             </div>
 
-            <div class="month">
-                per month
-            </div>
+            <p>
+                Fast internet for home & work
+            </p>
 
-            <ul>
-                <li>High Speed Internet</li>
-                <li>Unlimited Data</li>
-                <li>24×7 Support</li>
-            </ul>
-
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20150%20Mbps%20plan%20for%20%E2%82%B9599."
-               class="button blue">
+            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20150%20Mbps%20plan%20for%20Rs%20599."
+               class="button green">
                 Get Connection
             </a>
 
         </div>
 
 
+        <!-- 200 Mbps -->
 
-        <!-- PLAN 3 -->
+        <div class="plan-card popular">
 
-        <div class="plan popular">
-
-            <div class="popular-label">
-                ⭐ POPULAR PLAN
-            </div>
-
-            <div class="speed-icon">
-                ⚡
+            <div class="popular-badge">
+                POPULAR
             </div>
 
             <h3>200 Mbps</h3>
 
+            <div class="speed">
+                200 <span>Mbps</span>
+            </div>
+
             <div class="price">
-                ₹699
+                ₹699 / Month
             </div>
 
-            <div class="month">
-                per month
-            </div>
+            <p>
+                Great choice for multiple devices
+            </p>
 
-            <ul>
-                <li>High Speed Internet</li>
-                <li>Unlimited Data</li>
-                <li>24×7 Support</li>
-            </ul>
-
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20200%20Mbps%20plan%20for%20%E2%82%B9699."
-               class="button blue">
+            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20200%20Mbps%20plan%20for%20Rs%20699."
+               class="button green">
                 Get Connection
             </a>
 
         </div>
 
 
+        <!-- 300 Mbps -->
 
-        <!-- PLAN 4 -->
-
-        <div class="plan">
-
-            <div class="speed-icon">
-                ⚡
-            </div>
+        <div class="plan-card">
 
             <h3>300 Mbps</h3>
 
+            <div class="speed">
+                300 <span>Mbps</span>
+            </div>
+
             <div class="price">
-                ₹799
+                ₹799 / Month
             </div>
 
-            <div class="month">
-                per month
-            </div>
+            <p>
+                Powerful connection for heavy usage
+            </p>
 
-            <ul>
-                <li>High Speed Internet</li>
-                <li>Unlimited Data</li>
-                <li>24×7 Support</li>
-            </ul>
-
-            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20300%20Mbps%20plan%20for%20%E2%82%B9799."
-               class="button blue">
+            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20the%20300%20Mbps%20plan%20for%20Rs%20799."
+               class="button green">
                 Get Connection
             </a>
 
         </div>
+
 
     </div>
 
 </section>
 
 
-
-<!-- WHY JS INTERNET -->
+<!-- WHY US -->
 
 <section class="why-us" id="why-us">
 
@@ -732,63 +680,60 @@
     </p>
 
 
-    <div class="features">
+    <div class="why-container">
 
 
-        <div class="feature">
+        <div class="why-card">
 
-            <div class="feature-icon">
+            <div class="why-icon">
                 ⚡
             </div>
 
             <h3>High Speed</h3>
 
             <p>
-                Enjoy fast and reliable broadband
-                connectivity for everyday use.
+                Fast broadband connection for
+                streaming, work and everyday use.
             </p>
 
         </div>
 
 
+        <div class="why-card">
 
-        <div class="feature">
-
-            <div class="feature-icon">
-                📡
+            <div class="why-icon">
+                📶
             </div>
 
             <h3>Reliable Connection</h3>
 
             <p>
                 Stable internet connection for
-                home and business requirements.
+                home and business users.
             </p>
 
         </div>
 
 
+        <div class="why-card">
 
-        <div class="feature">
-
-            <div class="feature-icon">
+            <div class="why-icon">
                 💰
             </div>
 
             <h3>Affordable Plans</h3>
 
             <p>
-                Choose from multiple speed plans
-                according to your requirements.
+                Simple broadband plans at
+                affordable monthly prices.
             </p>
 
         </div>
 
 
+        <div class="why-card">
 
-        <div class="feature">
-
-            <div class="feature-icon">
+            <div class="why-icon">
                 🛠️
             </div>
 
@@ -801,10 +746,10 @@
 
         </div>
 
+
     </div>
 
 </section>
-
 
 
 <!-- ABOUT -->
@@ -815,17 +760,28 @@
         About JS Internet
     </h2>
 
-    <p>
-
-        JS Internet provides broadband internet
-        services for homes and businesses.
-
-        Our goal is to provide reliable connectivity,
-        affordable plans and responsive customer support.
-
+    <p class="section-subtitle">
+        Your local internet service provider
     </p>
 
+
+    <div class="about-content">
+
+        <p>
+
+            JS Internet provides broadband internet
+            connectivity for homes and businesses.
+
+            We focus on providing affordable plans,
+            reliable connectivity and customer support
+            to our customers.
+
+        </p>
+
+    </div>
+
 </section>
+
 
 <!-- SERVICE AREA -->
 
@@ -836,36 +792,84 @@
     </h2>
 
     <p class="section-subtitle">
-        JS Internet broadband service is currently available in these areas
+        JS Internet broadband service is currently
+        available in these areas
     </p>
+
 
     <div class="area-container">
 
-        <div class="area-card">
-            <div class="area-icon">📍</div>
-            <h3>Malviya Nagar</h3>
-            <p>Delhi</p>
-        </div>
 
         <div class="area-card">
-            <div class="area-icon">📍</div>
-            <h3>Hauz Rani</h3>
-            <p>Delhi</p>
+
+            <div class="area-icon">
+                📍
+            </div>
+
+            <h3>
+                Malviya Nagar
+            </h3>
+
+            <p>
+                Delhi
+            </p>
+
         </div>
 
-        <div class="area-card">
-            <div class="area-icon">📍</div>
-            <h3>Khirki Extension</h3>
-            <p>Delhi</p>
-        </div>
 
         <div class="area-card">
-            <div class="area-icon">📍</div>
-            <h3>Khirki Village</h3>
-            <p>Delhi</p>
+
+            <div class="area-icon">
+                📍
+            </div>
+
+            <h3>
+                Hauz Rani
+            </h3>
+
+            <p>
+                Delhi
+            </p>
+
         </div>
+
+
+        <div class="area-card">
+
+            <div class="area-icon">
+                📍
+            </div>
+
+            <h3>
+                Khirki Extension
+            </h3>
+
+            <p>
+                Delhi
+            </p>
+
+        </div>
+
+
+        <div class="area-card">
+
+            <div class="area-icon">
+                📍
+            </div>
+
+            <h3>
+                Khirki Village
+            </h3>
+
+            <p>
+                Delhi
+            </p>
+
+        </div>
+
 
     </div>
+
 
     <div class="area-contact">
 
@@ -888,35 +892,36 @@
 
 </section>
 
+
 <!-- SUPPORT -->
 
 <section class="support" id="support">
 
-    <h2>
-        Need Help?
+    <h2 class="section-title">
+        Customer Support
     </h2>
 
-    <p>
-        Internet problem or want to register a complaint?
+    <p class="section-subtitle">
+        Need help with your internet connection?
     </p>
 
-    <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20to%20register%20a%20complaint."
-       class="button primary">
 
-        🛠️ Register Complaint
+    <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20have%20a%20complaint%20regarding%20my%20internet%20connection."
+       class="button green">
+
+        💬 Register Complaint
 
     </a>
 
 
     <a href="tel:+918800969880"
-       class="button secondary">
+       class="button white">
 
         📞 Call Support
 
     </a>
 
 </section>
-
 
 
 <!-- CONTACT -->
@@ -927,79 +932,80 @@
         Contact JS Internet
     </h2>
 
-    <p>
-        New connection, recharge or customer support?
+    <p class="section-subtitle">
+        Get in touch with us
     </p>
 
 
-    <div class="contact-info">
+    <div class="contact-box">
 
-        <div class="contact-number">
-            📞 8800969880
-        </div>
+        <p>
+            📞 Phone:
+            <a href="tel:+918800969880">
+                8800969880
+            </a>
+        </p>
 
-        <div class="contact-number">
-            📞 8700067673
-        </div>
+
+        <p>
+            📞 Phone:
+            <a href="tel:+918700067673">
+                8700067673
+            </a>
+        </p>
+
+
+        <p>
+            💬 WhatsApp:
+            <a href="https://wa.me/918800969880">
+                Chat with us
+            </a>
+        </p>
+
+
+        <br>
+
+
+        <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20information%20about%20your%20internet%20connection."
+           class="button green">
+
+            💬 WhatsApp Us
+
+        </a>
+
+
+        <a href="tel:+918800969880"
+           class="button blue">
+
+            📞 Call Now
+
+        </a>
 
     </div>
 
-
-    <a href="tel:+918800969880"
-       class="button blue">
-
-        📞 Call 8800969880
-
-    </a>
-
-
-    <a href="tel:+918700067673"
-       class="button blue">
-
-        📞 Call 8700067673
-
-    </a>
-
-
-    <br>
-
-
-    <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20need%20information%20about%20your%20internet%20service."
-       class="button green">
-
-        💬 WhatsApp Us
-
-    </a>
-
 </section>
-
 
 
 <!-- FOOTER -->
 
 <footer>
 
-    <p class="footer-brand">
-        JS INTERNET
-    </p>
-
-    <p>
-        Fast • Reliable • Affordable Internet
-    </p>
-
     <p>
         © 2026 JS Internet. All Rights Reserved.
+    </p>
+
+    <p>
+        Fast Internet. Better Connectivity.
     </p>
 
 </footer>
 
 
-
 <!-- FLOATING WHATSAPP -->
 
 <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20need%20help."
-   class="floating-whatsapp"
-   title="Chat with JS Internet">
+   class="whatsapp-float"
+   title="WhatsApp">
 
     💬
 
@@ -1007,4 +1013,5 @@
 
 
 </body>
+
 </html>
