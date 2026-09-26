@@ -886,6 +886,139 @@ footer p{
 }
 
 
+
+/* =========================
+   STAFF PANEL
+========================= */
+
+.staff-link{
+    margin-top:16px;
+    color:#07549a;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.staff-panel{
+    display:none;
+    min-height:100vh;
+    background:#f5f8fc;
+    padding:30px 5%;
+}
+
+.staff-login-box{
+    max-width:430px;
+    margin:30px auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 35px rgba(0,0,0,.12);
+}
+
+.staff-login-box h2{
+    color:#07549a;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.staff-dashboard{
+    max-width:1200px;
+    margin:auto;
+}
+
+.staff-header{
+    background:#07549a;
+    color:white;
+    padding:22px 25px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.staff-header h2{margin:0;}
+
+.staff-card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.staff-card h3{
+    color:#07549a;
+    margin-bottom:18px;
+}
+
+.staff-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.staff-form-group label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.staff-form-group input,
+.staff-form-group select{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+
+.staff-form-full{grid-column:1/-1;}
+
+.staff-table-wrap{
+    overflow-x:auto;
+}
+
+.staff-table{
+    width:100%;
+    min-width:900px;
+    border-collapse:collapse;
+}
+
+.staff-table th{
+    background:#07549a;
+    color:white;
+    padding:12px;
+    text-align:left;
+}
+
+.staff-table td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+.staff-message{
+    margin:12px 0;
+    font-weight:bold;
+}
+
+.staff-back{
+    background:white;
+    color:#07549a;
+    border:0;
+    padding:10px 16px;
+    border-radius:7px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+@media(max-width:768px){
+    .staff-form-grid{grid-template-columns:1fr;}
+    .staff-form-full{grid-column:auto;}
+}
+
 /* =========================
    MOBILE LOGIN
 ========================= */
@@ -994,11 +1127,184 @@ footer p{
             Secure Customer Portal
         </p>
 
+        <p class="staff-link" onclick="openStaffLogin()">
+            👨‍💼 Staff Login
+        </p>
+
     </div>
 
 </div>
 
 
+
+<!-- =====================================================
+     STAFF LOGIN + STAFF PANEL
+===================================================== -->
+
+<div class="staff-panel" id="staffPanel">
+
+    <div class="staff-login-box" id="staffLoginBox">
+
+        <h2>👨‍💼 Staff Login</h2>
+
+        <form id="staffLoginForm">
+
+            <div class="form-group">
+                <label>Staff ID</label>
+                <input type="text" id="staffId" placeholder="Example: STAFF01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="staffPassword" placeholder="Enter staff password" required>
+            </div>
+
+            <button type="submit" class="submit-button" id="staffLoginButton">
+                🔐 Staff Login
+            </button>
+
+            <p id="staffLoginMessage" class="staff-message"></p>
+
+            <button type="button" class="staff-back" onclick="closeStaffLogin()">
+                ← Customer Login
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="staff-dashboard" id="staffDashboard" style="display:none;">
+
+        <div class="staff-header">
+            <div>
+                <h2>👨‍💼 Staff Dashboard</h2>
+                <p>Welcome, <span id="staffName">Staff</span></p>
+            </div>
+            <button class="logout-button" onclick="staffLogout()">Logout</button>
+        </div>
+
+        <div class="staff-card">
+            <h3>➕ Add New Customer</h3>
+
+            <form id="addCustomerForm">
+                <div class="staff-form-grid">
+
+                    <div class="staff-form-group">
+                        <label>Customer ID *</label>
+                        <input type="text" id="newCustomerId" placeholder="Example: JS1002" required>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Customer Password *</label>
+                        <input type="password" id="newCustomerPassword" minlength="6" placeholder="Minimum 6 characters" required>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Customer Name *</label>
+                        <input type="text" id="newCustomerName" required>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Mobile Number *</label>
+                        <input type="tel" id="newCustomerMobile" maxlength="10" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="staff-form-group staff-form-full">
+                        <label>Address *</label>
+                        <input type="text" id="newCustomerAddress" required>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Service Location *</label>
+                        <select id="newCustomerArea" required>
+                            <option value="">Select area</option>
+                            <option>Malviya Nagar</option>
+                            <option>Hauz Rani</option>
+                            <option>Khirki Extension</option>
+                            <option>Khirki Village</option>
+                            <option>Other Area</option>
+                        </select>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Plan *</label>
+                        <select id="newCustomerPlan" required>
+                            <option value="">Select plan</option>
+                            <option>100 Mbps - Router Security 1000 - 1 Month - ₹1500</option>
+                            <option>100 Mbps - Router Security 500 - 3+1 Month - ₹2000</option>
+                            <option>100 Mbps - No Router - 6 Month - ₹3000</option>
+                            <option>150 Mbps - Router Security 1000 - 1 Month - ₹1600</option>
+                            <option>150 Mbps - Router Security 500 - 3+1 Month - ₹2300</option>
+                            <option>150 Mbps - No Router - 6 Month - ₹3200</option>
+                            <option>200 Mbps - Router Security 1000 - 1 Month - ₹1700</option>
+                            <option>200 Mbps - Router Security 500 - 3+1 Month - ₹2600</option>
+                            <option>200 Mbps - No Router - 6 Month - ₹3400</option>
+                            <option>300 Mbps - Router Security 1000 - 1 Month - ₹1800</option>
+                            <option>300 Mbps - Router Security 500 - 3+1 Month - ₹2900</option>
+                            <option>300 Mbps - No Router - 6 Month - ₹4200</option>
+                        </select>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Start Date *</label>
+                        <input type="date" id="newCustomerStartDate" required>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Expiry Date *</label>
+                        <input type="date" id="newCustomerExpiryDate" required>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Status *</label>
+                        <select id="newCustomerStatus" required>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                            <option>Expired</option>
+                        </select>
+                    </div>
+
+                    <div class="staff-form-group">
+                        <label>Router Security</label>
+                        <input type="text" id="newCustomerRouter" placeholder="Example: 500 / 1000 / 0">
+                    </div>
+
+                </div>
+
+                <p id="addCustomerMessage" class="staff-message"></p>
+
+                <button type="submit" class="submit-button" id="addCustomerButton">
+                    💾 Save Customer
+                </button>
+            </form>
+        </div>
+
+        <div class="staff-card">
+            <h3>👥 Customers Added By Me</h3>
+            <button type="button" class="button blue" onclick="loadStaffCustomers()">🔄 Refresh List</button>
+
+            <div class="staff-table-wrap">
+                <table class="staff-table">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Plan</th>
+                            <th>Area</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffCustomerTableBody">
+                        <tr><td colspan="7">No customers loaded.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <!-- =====================================================
      MAIN WEBSITE
@@ -2688,6 +2994,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/fireba
 import {
     getAuth,
     signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
@@ -2695,7 +3002,12 @@ import {
 import {
     getFirestore,
     doc,
-    getDoc
+    getDoc,
+    setDoc,
+    collection,
+    query,
+    where,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
@@ -2712,6 +3024,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Secondary Firebase Auth app is used only when staff creates a customer.
+// This keeps the staff account logged in while the new customer account is created.
+const customerApp = initializeApp(firebaseConfig, "customerCreatorApp");
+const customerAuth = getAuth(customerApp);
 
 
 /* =====================================================
@@ -2804,6 +3121,267 @@ async function loadCustomerData(user) {
 }
 
 
+
+/* =====================================================
+   STAFF LOGIN + STAFF PANEL
+===================================================== */
+
+function setStaffMessage(message, success = false) {
+    const el = document.getElementById("staffLoginMessage");
+    if (el) {
+        el.innerText = message;
+        el.style.color = success ? "#087f32" : "#dc3545";
+    }
+}
+
+function setAddCustomerMessage(message, success = false) {
+    const el = document.getElementById("addCustomerMessage");
+    if (el) {
+        el.innerText = message;
+        el.style.color = success ? "#087f32" : "#dc3545";
+    }
+}
+
+function showStaffPanel() {
+    document.getElementById("firstLogin").style.display = "none";
+    document.getElementById("mainWebsite").style.display = "none";
+    document.getElementById("staffPanel").style.display = "block";
+}
+
+function showStaffLoginBox() {
+    document.getElementById("staffPanel").style.display = "block";
+    document.getElementById("staffLoginBox").style.display = "block";
+    document.getElementById("staffDashboard").style.display = "none";
+}
+
+window.openStaffLogin = function() {
+    showStaffLoginBox();
+    window.scrollTo(0, 0);
+};
+
+window.closeStaffLogin = async function() {
+    try { await signOut(auth); } catch (e) {}
+    document.getElementById("staffPanel").style.display = "none";
+    showLoginScreen();
+};
+
+async function loadStaffProfile(user) {
+    const snap = await getDoc(doc(db, "users", user.uid));
+
+    if (!snap.exists()) {
+        setStaffMessage("Staff profile database mein nahi mila.");
+        await signOut(auth);
+        return false;
+    }
+
+    const data = snap.data();
+    if (data.role !== "staff" && data.role !== "admin") {
+        setStaffMessage("Ye account staff account nahi hai.");
+        await signOut(auth);
+        return false;
+    }
+
+    document.getElementById("staffName").innerText = data.name || data.staffId || "Staff";
+    showStaffPanel();
+    document.getElementById("staffLoginBox").style.display = "none";
+    document.getElementById("staffDashboard").style.display = "block";
+    await loadStaffCustomers();
+    return true;
+}
+
+document.getElementById("staffLoginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const staffId = document.getElementById("staffId").value.trim();
+    const password = document.getElementById("staffPassword").value;
+    const button = document.getElementById("staffLoginButton");
+
+    if (!staffId || !password) {
+        setStaffMessage("Staff ID aur password dono enter karein.");
+        return;
+    }
+
+    button.disabled = true;
+    button.innerText = "Logging in...";
+    setStaffMessage("");
+
+    const loginEmail = staffId.toLowerCase() + "@jsinternet.local";
+
+    try {
+        await signInWithEmailAndPassword(auth, loginEmail, password);
+        const ok = await loadStaffProfile(auth.currentUser);
+        if (!ok) {
+            button.disabled = false;
+            button.innerText = "🔐 Staff Login";
+        }
+    } catch (error) {
+        console.error(error);
+        setStaffMessage("Staff ID ya password galat hai.");
+        button.disabled = false;
+        button.innerText = "🔐 Staff Login";
+    }
+});
+
+window.staffLogout = async function() {
+    try {
+        await signOut(auth);
+        document.getElementById("staffLoginForm").reset();
+        document.getElementById("addCustomerForm").reset();
+        document.getElementById("staffPanel").style.display = "none";
+        document.getElementById("staffLoginBox").style.display = "block";
+        document.getElementById("staffDashboard").style.display = "none";
+        showLoginScreen();
+        window.scrollTo(0, 0);
+    } catch (error) {
+        alert("Logout failed. Please try again.");
+    }
+};
+
+function formatDateForDisplay(value) {
+    if (!value) return "-";
+    const parts = value.split("-");
+    if (parts.length === 3) return parts[2] + "/" + parts[1] + "/" + parts[0];
+    return value;
+}
+
+window.loadStaffCustomers = async function() {
+    const tbody = document.getElementById("staffCustomerTableBody");
+    if (!tbody || !auth.currentUser) return;
+
+    tbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+
+    try {
+        const q = query(
+            collection(db, "users"),
+            where("role", "==", "customer"),
+            where("createdBy", "==", auth.currentUser.uid)
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+            tbody.innerHTML = '<tr><td colspan="7">Abhi koi customer add nahi kiya gaya.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = "";
+        snapshot.forEach(function(item) {
+            const data = item.data();
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${data.customerId || "-"}</td>
+                <td>${data.name || "-"}</td>
+                <td>${data.mobile || "-"}</td>
+                <td>${data.plan || "-"}</td>
+                <td>${data.serviceArea || "-"}</td>
+                <td>${formatDateForDisplay(data.expiryDate) || "-"}</td>
+                <td>${data.status || "-"}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error(error);
+        tbody.innerHTML = '<tr><td colspan="7">Customer list load nahi ho pa rahi. Firestore rules check karein.</td></tr>';
+    }
+};
+
+document.getElementById("addCustomerForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    if (!auth.currentUser) {
+        setAddCustomerMessage("Pehle staff login karein.");
+        return;
+    }
+
+    const staffProfile = await getDoc(doc(db, "users", auth.currentUser.uid));
+    if (!staffProfile.exists() || (staffProfile.data().role !== "staff" && staffProfile.data().role !== "admin")) {
+        setAddCustomerMessage("Staff permission verify nahi ho pa rahi.");
+        return;
+    }
+
+    const customerId = document.getElementById("newCustomerId").value.trim().toUpperCase();
+    const password = document.getElementById("newCustomerPassword").value;
+    const name = document.getElementById("newCustomerName").value.trim();
+    const mobile = document.getElementById("newCustomerMobile").value.trim();
+    const address = document.getElementById("newCustomerAddress").value.trim();
+    const serviceArea = document.getElementById("newCustomerArea").value;
+    const plan = document.getElementById("newCustomerPlan").value;
+    const startDate = document.getElementById("newCustomerStartDate").value;
+    const expiryDate = document.getElementById("newCustomerExpiryDate").value;
+    const status = document.getElementById("newCustomerStatus").value;
+    const routerSecurity = document.getElementById("newCustomerRouter").value.trim();
+
+    if (!/^JS[0-9]+$/.test(customerId)) {
+        setAddCustomerMessage("Customer ID format JS1002 jaisa rakhein.");
+        return;
+    }
+
+    if (!/^[0-9]{10}$/.test(mobile)) {
+        setAddCustomerMessage("Valid 10 digit mobile number enter karein.");
+        return;
+    }
+
+    if (password.length < 6) {
+        setAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");
+        return;
+    }
+
+    const button = document.getElementById("addCustomerButton");
+    button.disabled = true;
+    button.innerText = "Saving...";
+    setAddCustomerMessage("");
+
+    const loginEmail = customerId.toLowerCase() + "@jsinternet.local";
+
+    try {
+        // Create the Firebase Auth account without logging the staff out.
+        const credential = await createUserWithEmailAndPassword(
+            customerAuth,
+            loginEmail,
+            password
+        );
+
+        await setDoc(doc(db, "users", credential.user.uid), {
+            customerId: customerId,
+            username: customerId,
+            role: "customer",
+            name: name,
+            mobile: mobile,
+            address: address,
+            serviceArea: serviceArea,
+            plan: plan,
+            speed: plan.split(" - ")[0],
+            routerSecurity: routerSecurity,
+            startDate: startDate,
+            expiryDate: expiryDate,
+            status: status,
+            createdBy: auth.currentUser.uid,
+            createdAt: new Date().toISOString()
+        });
+
+        await signOut(customerAuth);
+
+        setAddCustomerMessage("Customer successfully add ho gaya.", true);
+        document.getElementById("addCustomerForm").reset();
+        await loadStaffCustomers();
+
+    } catch (error) {
+        console.error(error);
+        let message = "Customer save nahi ho paya.";
+        if (error.code === "auth/email-already-in-use") {
+            message = "Ye Customer ID already registered hai.";
+        } else if (error.code === "permission-denied") {
+            message = "Firestore permission denied. Rules update karni hongi.";
+        } else if (error.code === "auth/weak-password") {
+            message = "Password weak hai. Minimum 6 characters rakhein.";
+        }
+        setAddCustomerMessage(message);
+    } finally {
+        button.disabled = false;
+        button.innerText = "💾 Save Customer";
+    }
+});
+
 /* =====================================================
    CUSTOMER LOGIN
 ===================================================== */
@@ -2890,7 +3468,19 @@ onAuthStateChanged(auth, async function(user) {
 
     if (user) {
 
-        await loadCustomerData(user);
+        try {
+            const profileSnap = await getDoc(doc(db, "users", user.uid));
+            const role = profileSnap.exists() ? profileSnap.data().role : null;
+
+            if (role === "staff" || role === "admin") {
+                await loadStaffProfile(user);
+            } else {
+                await loadCustomerData(user);
+            }
+        } catch (error) {
+            console.error(error);
+            await loadCustomerData(user);
+        }
 
     } else {
 
