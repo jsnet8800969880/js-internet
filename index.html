@@ -3205,7 +3205,10 @@ document.getElementById("staffLoginForm").addEventListener("submit", async funct
     button.innerText = "Logging in...";
     setStaffMessage("");
 
-    const loginEmail = staffId.toLowerCase() + "@jsinternet.local";
+    const staffEmailMap = {
+        "staff01": "dilshan@jsinternet.local"
+    };
+    const loginEmail = staffEmailMap[staffId.toLowerCase()] || (staffId.toLowerCase() + "@jsinternet.local");
 
     try {
         await signInWithEmailAndPassword(auth, loginEmail, password);
