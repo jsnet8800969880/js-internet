@@ -10,7 +10,7 @@
 <meta name="description"
 content="JS Internet - Fast and reliable broadband internet service.">
 
-<title>JS Internet | Fast & Reliable Internet</title>
+<title>JS Internet | Fast & Reliable Internet | Phase 5</title>
 
 
 <style>
@@ -1107,6 +1107,18 @@ footer p{
 
 
 .payment-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:14px}.payment-summary-box{background:#f7fbff;border:1px solid #dbeafe;border-radius:12px;padding:14px}.payment-summary-box span{display:block;color:#666;font-size:13px;margin-bottom:5px}.payment-summary-box strong{font-size:22px;color:#07549a}.payment-pending{color:#c2410c!important}.payment-settled{color:#087f32!important}.payment-table-wrap{overflow:auto}.payment-table{width:100%;min-width:1000px;border-collapse:collapse;background:#fff}.payment-table th{background:#07549a;color:#fff;padding:11px;text-align:left}.payment-table td{padding:10px;border-bottom:1px solid #ddd}.payment-status-pending{color:#b45309;font-weight:bold}.payment-status-settled{color:#087f32;font-weight:bold}.payment-action{padding:7px 10px;border:0;border-radius:7px;background:#087f32;color:#fff;cursor:pointer;font-weight:bold}.payment-note{font-size:13px;color:#666;margin-top:7px}.money-readonly{background:#f5f8fc;font-weight:bold}.collection-stat{border-left:5px solid #f59e0b}.renewal-form-note{background:#fff8e7;border:1px solid #f5d58a;padding:10px 12px;border-radius:10px;color:#7c5a00;margin-bottom:12px}
+
+/* =========================
+   PHASE 5 - PAYMENT HISTORY
+========================= */
+.payment-history-card{margin-top:18px;}
+.payment-history-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:12px 0;}
+.payment-history-summary .payment-summary-box{background:#f7fbff;border:1px solid #dbeafe;border-radius:12px;padding:12px;}
+.payment-history-table-wrap{overflow:auto;}
+.payment-history-table{width:100%;min-width:820px;border-collapse:collapse;background:#fff;}
+.payment-history-table th{background:#07549a;color:#fff;padding:10px;text-align:left;}
+.payment-history-table td{padding:9px;border-bottom:1px solid #e5e7eb;}
+.payment-history-note{font-size:13px;color:#666;margin:6px 0 12px;}
 </style>
 
 </head>
@@ -1338,6 +1350,21 @@ footer p{
             </form>
         </div>
 
+        <div class="staff-card payment-history-card" id="staffSelectedCustomerHistoryCard">
+            <div class="admin-section-head">
+                <div><h3>🧾 Selected Customer Cash History</h3><p class="payment-history-note">Staff ko apne customer ki CASH collection history yahan dikhegi.</p></div>
+                <button type="button" class="button blue" onclick="loadStaffSelectedCustomerHistory()">🔄 Refresh</button>
+            </div>
+            <div class="payment-history-summary">
+                <div class="payment-summary-box"><span>Total Cash Collected</span><strong id="staffSelectedHistoryTotal">₹0</strong></div>
+                <div class="payment-summary-box"><span>Transactions</span><strong id="staffSelectedHistoryCount">0</strong></div>
+            </div>
+            <div class="payment-history-table-wrap">
+                <table class="payment-history-table"><thead><tr><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Settlement</th></tr></thead>
+                <tbody id="staffSelectedCustomerHistoryBody"><tr><td colspan="6">Customer select karne par cash history load hogi.</td></tr></tbody></table>
+            </div>
+        </div>
+
         <div class="staff-card">
             <h3>⚠️ Upcoming Renewal (Next 5 Days)</h3>
             <p style="color:#666;margin-bottom:14px;">Aaj se lekar agle 5 din tak ke renewals yahan dikhenge.</p>
@@ -1530,7 +1557,7 @@ footer p{
       <div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>Staff ID</th><th>Name</th><th>Mobile</th><th>Role</th><th>UID</th></tr></thead><tbody id="adminStaffFilterBody"><tr><td colspan="5">No data loaded.</td></tr></tbody></table></div>
     </div>
      <div class="staff-card" id="adminCollectionCard" style="display:none;">
-       <div class="admin-section-head"><div><h3>💰 Staff Collections</h3><p class="admin-help">Staff ne customers se jo paise collect kiye hain, unmein se jo Admin ko abhi lena hai woh yahan dikhega.</p></div><button type="button" class="button blue" onclick="loadAdminData()">🔄 Refresh</button></div>
+       <div class="admin-section-head"><div><h3>💰 Staff Collections</h3><p class="admin-help">Cash collections yahan dikhenge. <strong>Settled sirf Admin karega.</strong></p><p class="admin-help">Staff ne customers se jo paise collect kiye hain, unmein se jo Admin ko abhi lena hai woh yahan dikhega.</p></div><button type="button" class="button blue" onclick="loadAdminData()">🔄 Refresh</button></div>
        <div class="payment-summary-grid">
          <div class="payment-summary-box"><span>Staff Se Lena Hai</span><strong class="payment-pending" id="adminPendingCollectionTotal">₹0</strong></div>
          <div class="payment-summary-box"><span>Already Settled</span><strong class="payment-settled" id="adminSettledCollectionTotal">₹0</strong></div>
@@ -1613,6 +1640,22 @@ footer p{
           <div class="staff-form-group"><label>Recorded Payments</label><input id="adminEditRecordedPayments" class="money-readonly" readonly></div>
           <div class="staff-form-group"><label>Customer Due</label><input id="adminEditCustomerDue" class="money-readonly" readonly></div>
         </div><p id="adminEditMessage" class="staff-message"></p><button class="submit-button" type="submit" id="adminEditButton">💾 Update Customer</button></form>
+      </div>
+      <div class="staff-card payment-history-card" id="adminCustomerPaymentHistoryCard">
+        <div class="admin-section-head">
+          <div><h3>🧾 Customer Payment & Renewal History</h3><p class="payment-history-note">Admin ko is customer ki complete payment/renewal history dikhegi.</p></div>
+          <button type="button" class="button blue" onclick="loadAdminCustomerPaymentHistory(document.getElementById('adminEditUid')?.value)">🔄 Refresh</button>
+        </div>
+        <div class="payment-history-summary">
+          <div class="payment-summary-box"><span>Total Paid</span><strong id="adminCustomerHistoryTotalPaid">₹0</strong></div>
+          <div class="payment-summary-box"><span>Cash</span><strong id="adminCustomerHistoryCash">₹0</strong></div>
+          <div class="payment-summary-box"><span>Online</span><strong id="adminCustomerHistoryOnline">₹0</strong></div>
+          <div class="payment-summary-box"><span>Transactions</span><strong id="adminCustomerHistoryCount">0</strong></div>
+        </div>
+        <div class="payment-history-table-wrap">
+          <table class="payment-history-table"><thead><tr><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Collected By</th><th>Settlement</th></tr></thead>
+          <tbody id="adminCustomerPaymentHistoryBody"><tr><td colspan="7">Customer select karne par history load hogi.</td></tr></tbody></table>
+        </div>
       </div>
     </div>
     <div class="staff-card">
@@ -2701,6 +2744,28 @@ footer p{
         </div>
 
 
+        <div class="staff-card payment-history-card" id="customerPaymentHistoryCard">
+            <div class="admin-section-head">
+                <div>
+                    <h3>🧾 Payment & Renewal History</h3>
+                    <p class="payment-history-note">Aapke customer account par record hui payments aur renewals.</p>
+                </div>
+                <button type="button" class="button blue" onclick="loadCustomerPaymentHistory()">🔄 Refresh</button>
+            </div>
+            <div class="payment-history-summary">
+                <div class="payment-summary-box"><span>Total Paid</span><strong id="customerHistoryTotalPaid">₹0</strong></div>
+                <div class="payment-summary-box"><span>Cash</span><strong id="customerHistoryCash">₹0</strong></div>
+                <div class="payment-summary-box"><span>Online</span><strong id="customerHistoryOnline">₹0</strong></div>
+                <div class="payment-summary-box"><span>Transactions</span><strong id="customerHistoryCount">0</strong></div>
+            </div>
+            <div class="payment-history-table-wrap">
+                <table class="payment-history-table">
+                    <thead><tr><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Collected By</th><th>Status</th></tr></thead>
+                    <tbody id="customerPaymentHistoryBody"><tr><td colspan="7">No payment history loaded.</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="referral">
 
             <h3>
@@ -3432,6 +3497,78 @@ function setCustomerText(id, value) {
 }
 
 
+function formatPaymentDate(value){
+    if(!value)return "-";
+    return formatDateForDisplay(String(value).slice(0,10)) || String(value).slice(0,10);
+}
+
+function renderCustomerPaymentHistoryRows(rows, bodyId, includeSettlement){
+    const body=document.getElementById(bodyId);
+    if(!body)return;
+    body.innerHTML="";
+    if(!rows.length){body.innerHTML=`<tr><td colspan="${includeSettlement?7:7}">Abhi koi payment/renewal record nahi hai.</td></tr>`;return;}
+    rows.sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+    rows.forEach(p=>{
+        const tr=document.createElement("tr");
+        const collectedBy=p.collectedByName||p.collectedByStaffId||"JS Internet";
+        const finalCell=includeSettlement
+            ? `<td>${collectedBy}</td><td>${p.settlementStatus||"Not Applicable"}</td>`
+            : `<td>${collectedBy}</td>`;
+        tr.innerHTML=`<td>${formatPaymentDate(p.createdAt)}</td><td>${p.collectionType||"-"}</td><td>${p.plan||"-"}</td><td>${moneyText(p.amountReceived)}</td><td>${p.paymentMode||"-"}</td>${finalCell}`;
+        body.appendChild(tr);
+    });
+}
+
+window.loadCustomerPaymentHistory=async function(){
+    const user=auth.currentUser;
+    if(!user)return;
+    const body=document.getElementById("customerPaymentHistoryBody");
+    try{
+        const q=query(collection(db,"payments"),where("customerUid","==",user.uid));
+        const snap=await getDocs(q);
+        const rows=[];let total=0,cash=0,online=0;
+        snap.forEach(d=>{const p={id:d.id,...d.data()};rows.push(p);const amt=Number(p.amountReceived||0);total+=amt;if(String(p.paymentMode||"").toLowerCase()==="cash")cash+=amt;else online+=amt;});
+        document.getElementById("customerHistoryTotalPaid").innerText=moneyText(total);
+        document.getElementById("customerHistoryCash").innerText=moneyText(cash);
+        document.getElementById("customerHistoryOnline").innerText=moneyText(online);
+        document.getElementById("customerHistoryCount").innerText=rows.length;
+        renderCustomerPaymentHistoryRows(rows, "customerPaymentHistoryBody", false);
+    }catch(e){console.error(e);if(body)body.innerHTML='<tr><td colspan="7">Payment history load nahi ho pa rahi. Firestore Rules check karein.</td></tr>';}
+};
+
+window.loadAdminCustomerPaymentHistory=async function(uid){
+    const body=document.getElementById("adminCustomerPaymentHistoryBody");
+    if(!uid||!auth.currentUser)return;
+    try{
+        const q=query(collection(db,"payments"),where("customerUid","==",uid));
+        const snap=await getDocs(q);
+        const rows=[];let total=0,cash=0,online=0;
+        snap.forEach(d=>{const p={id:d.id,...d.data()};rows.push(p);const amt=Number(p.amountReceived||0);total+=amt;if(String(p.paymentMode||"").toLowerCase()==="cash")cash+=amt;else online+=amt;});
+        document.getElementById("adminCustomerHistoryTotalPaid").innerText=moneyText(total);
+        document.getElementById("adminCustomerHistoryCash").innerText=moneyText(cash);
+        document.getElementById("adminCustomerHistoryOnline").innerText=moneyText(online);
+        document.getElementById("adminCustomerHistoryCount").innerText=rows.length;
+        renderCustomerPaymentHistoryRows(rows, "adminCustomerPaymentHistoryBody", true);
+    }catch(e){console.error(e);if(body)body.innerHTML='<tr><td colspan="7">Customer payment history load nahi ho pa rahi.</td></tr>';}
+};
+
+window.loadStaffSelectedCustomerHistory=async function(){
+    const uid=document.getElementById("staffRenewalCustomerId")?.value;
+    const body=document.getElementById("staffSelectedCustomerHistoryBody");
+    if(!uid||!auth.currentUser){if(body)body.innerHTML='<tr><td colspan="6">Pehle customer select karein.</td></tr>';return;}
+    try{
+        const q=query(collection(db,"payments"),where("customerUid","==",uid),where("collectedByUid","==",auth.currentUser.uid),where("paymentMode","==","Cash"));
+        const snap=await getDocs(q);const rows=[];let total=0;
+        snap.forEach(d=>{const p={id:d.id,...d.data()};rows.push(p);total+=Number(p.amountReceived||0);});
+        document.getElementById("staffSelectedHistoryTotal").innerText=moneyText(total);
+        document.getElementById("staffSelectedHistoryCount").innerText=rows.length;
+        body.innerHTML="";
+        if(!rows.length){body.innerHTML='<tr><td colspan="6">Is customer ki CASH history abhi nahi hai.</td></tr>';return;}
+        rows.sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+        rows.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${formatPaymentDate(p.createdAt)}</td><td>${p.collectionType||"-"}</td><td>${p.plan||"-"}</td><td>${moneyText(p.amountReceived)}</td><td>${p.paymentMode||"-"}</td><td>${p.settlementStatus||"-"}</td>`;body.appendChild(tr);});
+    }catch(e){console.error(e);if(body)body.innerHTML='<tr><td colspan="6">Cash history load nahi ho pa rahi.</td></tr>';}
+};
+
 /* =====================================================
    CUSTOMER FIRESTORE DATA
 ===================================================== */
@@ -3477,6 +3614,7 @@ async function loadCustomerData(user) {
         document.getElementById("dashboard").style.display = "block";
 
         setLoginMessage("Login successful.", true);
+        loadCustomerPaymentHistory();
 
         setTimeout(() => {
             setLoginMessage("");
@@ -3781,6 +3919,7 @@ function populateSelectedRenewalCustomer(){
     const plan=document.getElementById("staffRenewalPlan"); if(plan)plan.value=c.plan||"";
     const start=document.getElementById("staffRenewalStartDate"); if(start)start.value=new Date().toISOString().slice(0,10);
     syncStaffRenewalFields();
+    loadStaffSelectedCustomerHistory();
 }
 window.showStaffCollectionList=function(){
     const card=document.getElementById("staffCollectionCard");
@@ -3820,7 +3959,9 @@ async function saveStaffRenewalPayment(){
     try{
       await updateDoc(doc(db,"users",customerUid),{plan,speed:plan.split(" - ")[0],startDate,expiryDate,status:"Active",routerSecurity:plan.includes("Router Security 1000")?"1000":plan.includes("Router Security 500")?"500":"0",planAmount,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),lastRenewalAt:new Date().toISOString(),updatedAt:new Date().toISOString(),updatedBy:auth.currentUser.uid});
       if(amountReceived>0){await addDoc(collection(db,"payments"),{customerUid,customerId:customer.customerId||"",customerName:customer.name||"",collectionType:"Renewal",plan,planAmount,amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),paymentMode,collectedByUid:auth.currentUser.uid,collectedByName:profile.data().name||profile.data().staffId||"Staff",collectedByStaffId:profile.data().staffId||"",collectedByRole:"staff",settlementStatus:(paymentMode==="Cash"?"Pending":"Not Applicable"),adminOnlyOnline:(paymentMode!=="Cash"),createdAt:new Date().toISOString()});}
+      const renewedUid=customerUid;
       setStaffRenewalMessage("Renewal aur payment successfully save ho gaya.",true);document.getElementById("staffRenewalPaymentForm").reset();await loadStaffCustomers();await loadStaffCollections();syncStaffRenewalFields();
+      const sel=document.getElementById("staffRenewalCustomerId"); if(sel) sel.value=renewedUid; loadStaffSelectedCustomerHistory();
     }catch(e){console.error(e);setStaffRenewalMessage(e.code==="permission-denied"?"Firestore payments permission denied. Rules update karein.":"Renewal save nahi ho paya.");}
     finally{btn.disabled=false;btn.innerText="💾 Save Renewal & Payment";}
 }
@@ -3979,7 +4120,7 @@ function addedByLabel(customer, profilesByUid) {
     return customer.createdBy ? customer.createdBy.slice(0,10) + "..." : "-";
 }
 
-window.showAdminCollectionList=function(){const card=document.getElementById("adminCollectionCard");if(card){card.style.display="block";card.scrollIntoView({behavior:"smooth",block:"start"});}};
+window.showAdminCollectionList=async function(){const card=document.getElementById("adminCollectionCard");if(card){card.style.display="block";card.scrollIntoView({behavior:"smooth",block:"start"});}await loadAdminCollections();};
 function isCashPayment(payment){
   return String(payment && payment.paymentMode || "").toLowerCase() === "cash";
 }
@@ -4034,7 +4175,24 @@ window.loadAdminCollections=async function(){
 };
 
 window.markPaymentSettled=async function(paymentId){
-  if(!auth.currentUser)return; try{await updateDoc(doc(db,"payments",paymentId),{settlementStatus:"Settled",settledAt:new Date().toISOString(),settledBy:auth.currentUser.uid});await loadAdminCollections();}catch(e){console.error(e);alert("Payment settlement update nahi ho paya.");}
+  if(!auth.currentUser){alert("Pehle Admin login karein.");return;}
+  try{
+    const profile=await getDoc(doc(db,"users",auth.currentUser.uid));
+    if(!profile.exists() || profile.data().role!=="admin"){
+      alert("Sirf Admin settlement kar sakta hai.");
+      return;
+    }
+    await updateDoc(doc(db,"payments",paymentId),{
+      settlementStatus:"Settled",
+      settledAt:new Date().toISOString(),
+      settledBy:auth.currentUser.uid,
+      settledByRole:"admin"
+    });
+    await loadAdminCollections();
+  }catch(e){
+    console.error(e);
+    alert("Payment settlement update nahi ho paya. Firebase error: "+(e.code||"unknown"));
+  }
 };
 async function loadPaymentTotalsForCustomer(uid){
   let total=0;try{const q=query(collection(db,"payments"),where("customerUid","==",uid));const snap=await getDocs(q);snap.forEach(d=>{total+=Number(d.data().amountReceived||0);});}catch(e){console.warn("payment total",e);}return total;
@@ -4283,6 +4441,7 @@ window.selectAdminCustomer=function(uid){
     document.getElementById("adminEditRecordedPayments").value="Loading...";
     document.getElementById("adminEditCustomerDue").value=c.customerDue||0;
     loadPaymentTotalsForCustomer(uid).then(total=>{const el=document.getElementById("adminEditRecordedPayments");if(el)el.value=total;});
+    loadAdminCustomerPaymentHistory(uid);
     setAdminEditMessage("Customer selected. Ab details update kar sakte hain.",true);
     openAdminCustomerFormPage("✏️ Edit Customer - " + (c.customerId||"Customer"), "adminEditCustomerCard");
 };
@@ -4299,7 +4458,7 @@ function syncAdminAddPaymentFields(){const plan=document.getElementById("adminNe
 document.getElementById("adminAddCustomerForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminAddCustomerMessage("Pehle admin login karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAddCustomerMessage("Admin permission verify nahi ho pa rahi.");return;}const customerId=document.getElementById("adminNewCustomerId").value.trim().toUpperCase();const password=document.getElementById("adminNewCustomerPassword").value;const name=document.getElementById("adminNewCustomerName").value.trim();const mobile=document.getElementById("adminNewCustomerMobile").value.trim();const address=document.getElementById("adminNewCustomerAddress").value.trim();const serviceArea=document.getElementById("adminNewCustomerArea").value;const plan=document.getElementById("adminNewCustomerPlan").value;const startDate=document.getElementById("adminNewCustomerStartDate").value;const expiryDate=document.getElementById("adminNewCustomerExpiryDate").value;const status=document.getElementById("adminNewCustomerStatus").value;const routerSecurity=document.getElementById("adminNewCustomerRouter").value;const planAmount=planAmountFromText(plan);const amountReceived=Math.max(Number(document.getElementById("adminNewCustomerAmountReceived").value||0),0);const customerDue=paymentDue(planAmount,amountReceived);const paymentMode=document.getElementById("adminNewCustomerPaymentMode").value;if(!/^JS[0-9]+$/.test(customerId)){setAdminAddCustomerMessage("Customer ID format JS1003 jaisa rakhein.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminAddCustomerMessage("Valid 10 digit mobile number enter karein.");return;}if(password.length<6){setAdminAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");return;}if(!serviceArea||!plan||!startDate||!expiryDate){setAdminAddCustomerMessage("Saare required fields fill karein.");return;}if(amountReceived>planAmount){setAdminAddCustomerMessage("Amount received plan amount se zyada nahi ho sakta.");return;}const button=document.getElementById("adminAddCustomerButton");button.disabled=true;button.innerText="Saving...";setAdminAddCustomerMessage("");const loginEmail=customerId.toLowerCase()+"@jsinternet.local";try{const credential=await createUserWithEmailAndPassword(customerAuth,loginEmail,password);await setDoc(doc(db,"users",credential.user.uid),{customerId,username:customerId,role:"customer",name,mobile,address,serviceArea,plan,speed:plan.split(" - ")[0],routerSecurity,startDate,expiryDate,status,planAmount,initialAmountReceived:amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),createdBy:auth.currentUser.uid,createdByName:profile.data().name||"Admin",createdByLabel:"Admin",createdByRole:"admin",createdAt:new Date().toISOString()});if(amountReceived>0){await addDoc(collection(db,"payments"),{customerUid:credential.user.uid,customerId,customerName:name,collectionType:"New Connection",plan,planAmount,amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),paymentMode,collectedByUid:auth.currentUser.uid,collectedByName:profile.data().name||"Admin",collectedByStaffId:"",collectedByRole:"admin",settlementStatus:"Not Applicable",createdAt:new Date().toISOString()});}await signOut(customerAuth);setAdminAddCustomerMessage("Customer successfully add ho gaya.",true);document.getElementById("adminAddCustomerForm").reset();syncAdminAddPaymentFields();await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);let message="Customer save nahi ho paya.";if(error.code==="auth/email-already-in-use")message="Ye Customer ID already registered hai.";else if(error.code==="permission-denied")message="Firestore permission denied. Payments rules publish karein.";else if(error.code==="auth/weak-password")message="Password weak hai. Minimum 6 characters rakhein.";setAdminAddCustomerMessage(message);}finally{button.disabled=false;button.innerText="💾 Save Customer";}});
 
 document.getElementById("adminEditCustomerForm").addEventListener("submit",async function(event){event.preventDefault();const uid=document.getElementById("adminEditUid").value;if(!uid||!auth.currentUser){setAdminEditMessage("Pehle customer select karein.");return;}const mobile=document.getElementById("adminEditMobile").value.trim();if(!/^[0-9]{10}$/.test(mobile)){setAdminEditMessage("Valid 10 digit mobile number enter karein.");return;}const button=document.getElementById("adminEditButton");button.disabled=true;button.innerText="Updating...";setAdminEditMessage("");try{const plan=document.getElementById("adminEditPlan").value;await updateDoc(doc(db,"users",uid),{name:document.getElementById("adminEditName").value.trim(),mobile,address:document.getElementById("adminEditAddress").value.trim(),serviceArea:document.getElementById("adminEditArea").value,plan,speed:plan.split(" - ")[0],startDate:document.getElementById("adminEditStartDate").value,expiryDate:document.getElementById("adminEditExpiryDate").value,status:document.getElementById("adminEditStatus").value,routerSecurity:document.getElementById("adminEditRouter").value.trim(),updatedAt:new Date().toISOString(),updatedBy:auth.currentUser.uid});setAdminEditMessage("Customer successfully update ho gaya.",true);await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);setAdminEditMessage("Customer update nahi ho paya. Rules check karein.");}finally{button.disabled=false;button.innerText="💾 Update Customer";}});
-document.getElementById("adminLoginForm").addEventListener("submit",async function(event){event.preventDefault();const adminId=document.getElementById("adminId").value.trim().toLowerCase(),password=document.getElementById("adminPassword").value,button=document.getElementById("adminLoginButton");if(!adminId||!password){setAdminMessage("Admin ID aur password dono enter karein.");return;}button.disabled=true;button.innerText="Logging in...";setAdminMessage("");const email=(adminId==="admin01"?"admin@jsinternet.local":adminId+"@jsinternet.local");try{await signInWithEmailAndPassword(auth,email,password);const snap=await getDoc(doc(db,"users",auth.currentUser.uid));if(!snap.exists()||snap.data().role!=="admin")throw new Error("NOT_ADMIN");document.getElementById("adminName").innerText=snap.data().name||adminId;document.getElementById("adminLoginBox").style.display="none";document.getElementById("adminDashboard").style.display="block";await loadAdminData();}catch(error){console.error(error);if(error.message==="NOT_ADMIN"){setAdminMessage("Ye account admin account nahi hai.");try{await signOut(auth);}catch(e){}}else { const code = error && error.code ? error.code : "unknown"; if(code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found"){ setAdminMessage("Admin ID ya password galat hai. Firebase error: " + code); } else if(code === "auth/operation-not-allowed"){ setAdminMessage("Firebase Email/Password login disabled hai."); } else { setAdminMessage("Admin login error: " + code); } }button.disabled=false;button.innerText="🔐 Admin Login";}});
+document.getElementById("adminLoginForm").addEventListener("submit",async function(event){event.preventDefault();const adminId=document.getElementById("adminId").value.trim().toLowerCase(),password=document.getElementById("adminPassword").value,button=document.getElementById("adminLoginButton");if(!adminId||!password){setAdminMessage("Admin ID aur password dono enter karein.");return;}button.disabled=true;button.innerText="Logging in...";setAdminMessage("");const email=(adminId==="admin01"?"admin@jsinternet.local":adminId+"@jsinternet.local");try{await signInWithEmailAndPassword(auth,email,password);const snap=await getDoc(doc(db,"users",auth.currentUser.uid));if(!snap.exists()||snap.data().role!=="admin")throw new Error("NOT_ADMIN");document.getElementById("adminName").innerText=snap.data().name||adminId;document.getElementById("adminLoginBox").style.display="none";document.getElementById("adminDashboard").style.display="block";await loadAdminData();await loadAdminCollections();}catch(error){console.error(error);if(error.message==="NOT_ADMIN"){setAdminMessage("Ye account admin account nahi hai.");try{await signOut(auth);}catch(e){}}else { const code = error && error.code ? error.code : "unknown"; if(code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found"){ setAdminMessage("Admin ID ya password galat hai. Firebase error: " + code); } else if(code === "auth/operation-not-allowed"){ setAdminMessage("Firebase Email/Password login disabled hai."); } else { setAdminMessage("Admin login error: " + code); } }button.disabled=false;button.innerText="🔐 Admin Login";}});
 window.adminLogout=async function(){try{await signOut(auth);}catch(e){}window.closeAdminCustomerFormPage(true);document.getElementById("adminPanel").style.display="none";document.getElementById("adminLoginBox").style.display="block";document.getElementById("adminDashboard").style.display="none";document.getElementById("adminLoginForm").reset();showLoginScreen();window.scrollTo(0,0);};
 document.getElementById("adminAddStaffForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminStaffMessage("Pehle admin login karein.");return;}const staffId=document.getElementById("newStaffId").value.trim().toUpperCase(),password=document.getElementById("newStaffPassword").value,name=document.getElementById("newStaffName").value.trim(),mobile=document.getElementById("newStaffMobile").value.trim();if(!/^STAFF[0-9]+$/.test(staffId)){setAdminStaffMessage("Staff ID STAFF02 jaisa rakhein.");return;}if(password.length<6){setAdminStaffMessage("Password minimum 6 characters hona chahiye.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminStaffMessage("Valid 10 digit mobile number enter karein.");return;}const btn=document.getElementById("adminAddStaffButton");btn.disabled=true;btn.innerText="Adding...";setAdminStaffMessage("");try{const email=staffId.toLowerCase()+"@jsinternet.local";const credential=await createUserWithEmailAndPassword(customerAuth,email,password);await setDoc(doc(db,"users",credential.user.uid),{staffId,name,mobile,role:"staff",createdAt:new Date().toISOString(),createdBy:auth.currentUser.uid});await signOut(customerAuth);setAdminStaffMessage("Staff successfully add ho gaya.",true);document.getElementById("adminAddStaffForm").reset();await loadAdminData();}catch(error){console.error(error);setAdminStaffMessage(error.code==="auth/email-already-in-use"?"Ye Staff ID already registered hai.":"Staff create nahi ho paya.");}finally{btn.disabled=false;btn.innerText="➕ Add Staff";}});
 
@@ -4410,6 +4569,7 @@ onAuthStateChanged(auth, async function(user) {
                 const adminSnap = await getDoc(doc(db,"users",user.uid));
                 document.getElementById("adminName").innerText = adminSnap.exists() ? (adminSnap.data().name || "Admin") : "Admin";
                 await loadAdminData();
+                await loadAdminCollections();
             } else if (role === "staff") {
                 await loadStaffProfile(user);
             } else {
