@@ -799,7 +799,47 @@ footer p{
    MOBILE
 ========================= */
 
-.admin-panel{min-height:100vh;background:#f5f8fc;padding:30px 5%;}.admin-dashboard{max-width:1400px;margin:auto;}.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0;}.admin-stat{background:white;border-radius:16px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:5px}.admin-stat span{font-size:26px}.admin-stat strong{font-size:30px;color:#07549a}.admin-stat small{color:#666;font-size:14px}.admin-section-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.admin-help{margin:0;color:#666}.admin-search{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #ccc;border-radius:10px;margin:16px 0;font-size:16px}.admin-table-action{padding:7px 11px;border:0;border-radius:7px;background:#07549a;color:white;cursor:pointer;font-weight:bold}@media(max-width:900px){.admin-stats{grid-template-columns:repeat(2,1fr)}.admin-section-head{align-items:flex-start;flex-direction:column}}@media(max-width:600px){.admin-stats{grid-template-columns:1fr}.admin-panel{padding:15px}}
+.admin-customer-form-page{
+    position:fixed;
+    inset:0;
+    z-index:100000;
+    background:#f5f8fc;
+    overflow:auto;
+    padding:24px 5% 40px;
+}
+.admin-customer-form-shell{
+    max-width:1000px;
+    margin:0 auto;
+}
+.admin-customer-form-header{
+    background:#07549a;
+    color:white;
+    border-radius:18px;
+    padding:18px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+.admin-customer-form-header h2{margin:0;font-size:24px;}
+.admin-form-back{
+    border:0;
+    background:white;
+    color:#07549a;
+    padding:10px 16px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.admin-customer-form-content .staff-card{margin-bottom:0;}
+@media(max-width:700px){
+    .admin-customer-form-page{padding:15px 12px 30px;}
+    .admin-customer-form-header{padding:15px;}
+    .admin-customer-form-header h2{font-size:20px;}
+}
+.admin-panel{min-height:100vh;background:#f5f8fc;padding:30px 5%;}.admin-dashboard{max-width:1400px;margin:auto;}.admin-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:20px 0;}.admin-stat{background:white;border-radius:16px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:5px}.admin-stat span{font-size:26px}.admin-stat strong{font-size:30px;color:#07549a}.admin-stat small{color:#666;font-size:14px}.admin-section-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.admin-help{margin:0;color:#666}.admin-search{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #ccc;border-radius:10px;margin:16px 0;font-size:16px}.admin-table-action{padding:7px 11px;border:0;border-radius:7px;background:#07549a;color:white;cursor:pointer;font-weight:bold}@media(max-width:900px){.admin-stats{grid-template-columns:repeat(2,1fr)}.admin-section-head{align-items:flex-start;flex-direction:column}}@media(max-width:600px){.admin-stats{grid-template-columns:1fr}.admin-panel{padding:15px}}
 
 @media(max-width:768px){
 
@@ -1022,6 +1062,37 @@ footer p{
 }
 
 /* =========================
+   STAFF EXPIRY TRACKING
+========================= */
+.staff-expiry-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+.staff-expiry-stat{
+    background:white;
+    padding:18px 20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    border-left:5px solid #07549a;
+}
+.staff-expiry-stat.warning{border-left-color:#f39c12;}
+.staff-expiry-stat.danger{border-left-color:#dc3545;}
+.staff-expiry-stat strong{display:block;font-size:30px;color:#07549a;margin:4px 0;}
+.staff-expiry-stat.warning strong{color:#d88900;}
+.staff-expiry-stat.danger strong{color:#dc3545;}
+.staff-expiry-stat small{color:#555;font-size:14px;}
+.staff-expiry-table-wrap{overflow-x:auto;}
+.staff-expiry-table{width:100%;min-width:700px;border-collapse:collapse;}
+.staff-expiry-table th{background:#07549a;color:white;padding:11px;text-align:left;}
+.staff-expiry-table td{padding:11px;border-bottom:1px solid #ddd;}
+.staff-expiry-empty{padding:14px;background:#f7f9fc;border-radius:10px;color:#555;margin-top:10px;}
+@media(max-width:768px){
+    .staff-expiry-stats{grid-template-columns:1fr;}
+}
+
+/* =========================
    MOBILE LOGIN
 ========================= */
 
@@ -1189,6 +1260,41 @@ footer p{
             <button class="logout-button" onclick="staffLogout()">Logout</button>
         </div>
 
+        <div class="staff-expiry-stats">
+            <div class="staff-expiry-stat warning">
+                <span>⚠️</span>
+                <strong id="staffExpiringSoon">0</strong>
+                <small>Customers Expiring in 5 Days</small>
+            </div>
+            <div class="staff-expiry-stat danger">
+                <span>🔴</span>
+                <strong id="staffExpiredCount">0</strong>
+                <small>Expired Customers</small>
+            </div>
+        </div>
+
+        <div class="staff-card">
+            <h3>⚠️ My Customers Expiring Within 5 Days</h3>
+            <p style="color:#666;margin-bottom:14px;">Aaj se agle 5 din ke andar expire hone wale aapke customers yahan dikhenge.</p>
+            <div class="staff-expiry-table-wrap">
+                <table class="staff-expiry-table">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Expiry</th>
+                            <th>Days Left</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffExpiringSoonBody">
+                        <tr><td colspan="6">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="staff-card">
             <h3>➕ Add New Customer</h3>
 
@@ -1332,56 +1438,68 @@ footer p{
       <div class="admin-stat"><span>👥</span><strong id="adminTotalCustomers">0</strong><small>Total Customers</small></div>
       <div class="admin-stat"><span>✅</span><strong id="adminActiveCustomers">0</strong><small>Active</small></div>
       <div class="admin-stat"><span>⏰</span><strong id="adminExpiredCustomers">0</strong><small>Expired / Inactive</small></div>
+      <div class="admin-stat"><span>⚠️</span><strong id="adminExpiringSoon">0</strong><small>Expiring in 5 Days</small></div>
       <div class="admin-stat"><span>👨‍💼</span><strong id="adminTotalStaff">0</strong><small>Staff</small></div>
     </div>
+    <div class="staff-card" id="adminExpiringSoonCard">
+      <div class="admin-section-head">
+        <div><h3>⚠️ Customers Expiring Within 5 Days</h3><p class="admin-help">Aaj se agle 5 din ke andar jin customers ka plan expire hoga, woh yahan dikhenge.</p></div>
+        <button type="button" class="button blue" onclick="loadAdminData()">🔄 Refresh</button>
+      </div>
+      <div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>Customer ID</th><th>Name</th><th>Mobile</th><th>Expiry</th><th>Days Left</th><th>Added By</th><th>Action</th></tr></thead><tbody id="adminExpiringSoonBody"><tr><td colspan="7">No data loaded.</td></tr></tbody></table></div>
+    </div>
     <div class="staff-card">
-      <div class="admin-section-head"><div><h3>👥 All Customers</h3><p class="admin-help">Staff aur Admin dono se add hue customers yahan dikhenge.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap;"><button type="button" class="button blue" onclick="document.getElementById('adminAddCustomerCard').scrollIntoView({behavior:'smooth',block:'start'})">➕ Add Customer</button><button type="button" class="button blue" onclick="loadAdminData()">🔄 Refresh</button></div></div>
+      <div class="admin-section-head"><div><h3>👥 All Customers</h3><p class="admin-help">Staff aur Admin dono se add hue customers yahan dikhenge.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap;"><button type="button" class="button blue" onclick="openAdminAddCustomerPage()">➕ Add Customer</button><button type="button" class="button blue" onclick="loadAdminData()">🔄 Refresh</button></div></div>
       <input class="admin-search" id="adminCustomerSearch" type="text" placeholder="Search Customer ID, name, mobile, area..." oninput="filterAdminCustomers()">
       <div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>Customer ID</th><th>Name</th><th>Mobile</th><th>Plan</th><th>Area</th><th>Expiry</th><th>Status</th><th>Added By</th><th>Action</th></tr></thead><tbody id="adminCustomerTableBody"><tr><td colspan="9">No data loaded.</td></tr></tbody></table></div>
     </div>
-    <div class="staff-card" id="adminAddCustomerCard">
-      <h3>➕ Add New Customer</h3>
-      <p class="admin-help">Admin yahan se naya customer account + Firebase login bana sakta hai.</p>
-      <form id="adminAddCustomerForm">
-        <div class="staff-form-grid">
-          <div class="staff-form-group"><label>Customer ID *</label><input id="adminNewCustomerId" placeholder="Example: JS1003" required></div>
-          <div class="staff-form-group"><label>Customer Password *</label><input type="password" id="adminNewCustomerPassword" minlength="6" placeholder="Minimum 6 characters" required></div>
-          <div class="staff-form-group"><label>Customer Name *</label><input id="adminNewCustomerName" required></div>
-          <div class="staff-form-group"><label>Mobile Number *</label><input type="tel" id="adminNewCustomerMobile" maxlength="10" pattern="[0-9]{10}" required></div>
-          <div class="staff-form-group staff-form-full"><label>Address *</label><input id="adminNewCustomerAddress" required></div>
-          <div class="staff-form-group"><label>Service Location *</label><select id="adminNewCustomerArea" required><option value="">Select area</option><option>Malviya Nagar</option><option>Hauz Rani</option><option>Khirki Extension</option><option>Khirki Village</option><option>Other Area</option></select></div>
-          <div class="staff-form-group"><label>Plan *</label><select id="adminNewCustomerPlan" required>
-            <option value="">Select plan</option>
-            <option>100 Mbps - Router Security 1000 - 1 Month - ₹1500</option><option>100 Mbps - Router Security 500 - 3+1 Month - ₹2000</option><option>100 Mbps - No Router - 6 Month - ₹3000</option>
-            <option>150 Mbps - Router Security 1000 - 1 Month - ₹1600</option><option>150 Mbps - Router Security 500 - 3+1 Month - ₹2300</option><option>150 Mbps - No Router - 6 Month - ₹3200</option>
-            <option>200 Mbps - Router Security 1000 - 1 Month - ₹1700</option><option>200 Mbps - Router Security 500 - 3+1 Month - ₹2600</option><option>200 Mbps - No Router - 6 Month - ₹3400</option>
-            <option>300 Mbps - Router Security 1000 - 1 Month - ₹1800</option><option>300 Mbps - Router Security 500 - 3+1 Month - ₹2900</option><option>300 Mbps - No Router - 6 Month - ₹4200</option>
+    <div id="adminCustomerFormTemplates" style="display:none;">
+      <div class="staff-card" id="adminAddCustomerCard">
+        <h3>➕ Add New Customer</h3>
+        <p class="admin-help">Admin yahan se naya customer account + Firebase login bana sakta hai.</p>
+        <form id="adminAddCustomerForm">
+          <div class="staff-form-grid">
+            <div class="staff-form-group"><label>Customer ID *</label><input id="adminNewCustomerId" placeholder="Example: JS1003" required></div>
+            <div class="staff-form-group"><label>Customer Password *</label><input type="password" id="adminNewCustomerPassword" minlength="6" placeholder="Minimum 6 characters" required></div>
+            <div class="staff-form-group"><label>Customer Name *</label><input id="adminNewCustomerName" required></div>
+            <div class="staff-form-group"><label>Mobile Number *</label><input type="tel" id="adminNewCustomerMobile" maxlength="10" pattern="[0-9]{10}" required></div>
+            <div class="staff-form-group staff-form-full"><label>Address *</label><input id="adminNewCustomerAddress" required></div>
+            <div class="staff-form-group"><label>Service Location *</label><select id="adminNewCustomerArea" required><option value="">Select area</option><option>Malviya Nagar</option><option>Hauz Rani</option><option>Khirki Extension</option><option>Khirki Village</option><option>Other Area</option></select></div>
+            <div class="staff-form-group"><label>Plan *</label><select id="adminNewCustomerPlan" required>
+              <option value="">Select plan</option>
+              <option>100 Mbps - Router Security 1000 - 1 Month - ₹1500</option><option>100 Mbps - Router Security 500 - 3+1 Month - ₹2000</option><option>100 Mbps - No Router - 6 Month - ₹3000</option>
+              <option>150 Mbps - Router Security 1000 - 1 Month - ₹1600</option><option>150 Mbps - Router Security 500 - 3+1 Month - ₹2300</option><option>150 Mbps - No Router - 6 Month - ₹3200</option>
+              <option>200 Mbps - Router Security 1000 - 1 Month - ₹1700</option><option>200 Mbps - Router Security 500 - 3+1 Month - ₹2600</option><option>200 Mbps - No Router - 6 Month - ₹3400</option>
+              <option>300 Mbps - Router Security 1000 - 1 Month - ₹1800</option><option>300 Mbps - Router Security 500 - 3+1 Month - ₹2900</option><option>300 Mbps - No Router - 6 Month - ₹4200</option>
+            </select></div>
+            <div class="staff-form-group"><label>Start Date *</label><input type="date" id="adminNewCustomerStartDate" required></div>
+            <div class="staff-form-group"><label>Expiry Date *</label><input type="date" id="adminNewCustomerExpiryDate" required></div>
+            <div class="staff-form-group"><label>Status *</label><select id="adminNewCustomerStatus" required><option>Active</option><option>Inactive</option><option>Expired</option></select></div>
+            <div class="staff-form-group"><label>Router Security</label><select id="adminNewCustomerRouter"><option value="1000">1000</option><option value="500">500</option><option value="0">0</option></select></div>
+          </div>
+          <p id="adminAddCustomerMessage" class="staff-message"></p>
+          <button class="submit-button" type="submit" id="adminAddCustomerButton">💾 Save Customer</button>
+        </form>
+      </div>
+
+      <div class="staff-card" id="adminEditCustomerCard">
+        <h3>✏️ Edit Customer</h3>
+        <form id="adminEditCustomerForm"><input type="hidden" id="adminEditUid"><div class="staff-form-grid">
+          <div class="staff-form-group"><label>Customer ID</label><input id="adminEditCustomerId" readonly></div>
+          <div class="staff-form-group"><label>Name *</label><input id="adminEditName" required></div>
+          <div class="staff-form-group"><label>Mobile *</label><input id="adminEditMobile" maxlength="10" pattern="[0-9]{10}" required></div>
+          <div class="staff-form-group"><label>Service Location *</label><select id="adminEditArea" required><option>Malviya Nagar</option><option>Hauz Rani</option><option>Khirki Extension</option><option>Khirki Village</option><option>Other Area</option></select></div>
+          <div class="staff-form-group staff-form-full"><label>Address *</label><input id="adminEditAddress" required></div>
+          <div class="staff-form-group"><label>Plan *</label><select id="adminEditPlan" required>
+            <option>100 Mbps - Router Security 1000 - 1 Month - ₹1500</option><option>100 Mbps - Router Security 500 - 3+1 Month - ₹2000</option><option>100 Mbps - No Router - 6 Month - ₹3000</option><option>150 Mbps - Router Security 1000 - 1 Month - ₹1600</option><option>150 Mbps - Router Security 500 - 3+1 Month - ₹2300</option><option>150 Mbps - No Router - 6 Month - ₹3200</option><option>200 Mbps - Router Security 1000 - 1 Month - ₹1700</option><option>200 Mbps - Router Security 500 - 3+1 Month - ₹2600</option><option>200 Mbps - No Router - 6 Month - ₹3400</option><option>300 Mbps - Router Security 1000 - 1 Month - ₹1800</option><option>300 Mbps - Router Security 500 - 3+1 Month - ₹2900</option><option>300 Mbps - No Router - 6 Month - ₹4200</option>
           </select></div>
-          <div class="staff-form-group"><label>Start Date *</label><input type="date" id="adminNewCustomerStartDate" required></div>
-          <div class="staff-form-group"><label>Expiry Date *</label><input type="date" id="adminNewCustomerExpiryDate" required></div>
-          <div class="staff-form-group"><label>Status *</label><select id="adminNewCustomerStatus" required><option>Active</option><option>Inactive</option><option>Expired</option></select></div>
-          <div class="staff-form-group"><label>Router Security</label><select id="adminNewCustomerRouter"><option value="1000">1000</option><option value="500">500</option><option value="0">0</option></select></div>
-        </div>
-        <p id="adminAddCustomerMessage" class="staff-message"></p>
-        <button class="submit-button" type="submit" id="adminAddCustomerButton">💾 Save Customer</button>
-      </form>
-    </div>
-    <div class="staff-card">
-      <h3>✏️ Edit Customer</h3>
-      <form id="adminEditCustomerForm"><input type="hidden" id="adminEditUid"><div class="staff-form-grid">
-        <div class="staff-form-group"><label>Customer ID</label><input id="adminEditCustomerId" readonly></div>
-        <div class="staff-form-group"><label>Name *</label><input id="adminEditName" required></div>
-        <div class="staff-form-group"><label>Mobile *</label><input id="adminEditMobile" maxlength="10" pattern="[0-9]{10}" required></div>
-        <div class="staff-form-group"><label>Service Location *</label><select id="adminEditArea" required><option>Malviya Nagar</option><option>Hauz Rani</option><option>Khirki Extension</option><option>Khirki Village</option><option>Other Area</option></select></div>
-        <div class="staff-form-group staff-form-full"><label>Address *</label><input id="adminEditAddress" required></div>
-        <div class="staff-form-group"><label>Plan *</label><select id="adminEditPlan" required>
-          <option>100 Mbps - Router Security 1000 - 1 Month - ₹1500</option><option>100 Mbps - Router Security 500 - 3+1 Month - ₹2000</option><option>100 Mbps - No Router - 6 Month - ₹3000</option><option>150 Mbps - Router Security 1000 - 1 Month - ₹1600</option><option>150 Mbps - Router Security 500 - 3+1 Month - ₹2300</option><option>150 Mbps - No Router - 6 Month - ₹3200</option><option>200 Mbps - Router Security 1000 - 1 Month - ₹1700</option><option>200 Mbps - Router Security 500 - 3+1 Month - ₹2600</option><option>200 Mbps - No Router - 6 Month - ₹3400</option><option>300 Mbps - Router Security 1000 - 1 Month - ₹1800</option><option>300 Mbps - Router Security 500 - 3+1 Month - ₹2900</option><option>300 Mbps - No Router - 6 Month - ₹4200</option>
-        </select></div>
-        <div class="staff-form-group"><label>Start Date *</label><input type="date" id="adminEditStartDate" required></div>
-        <div class="staff-form-group"><label>Expiry Date *</label><input type="date" id="adminEditExpiryDate" required></div>
-        <div class="staff-form-group"><label>Status *</label><select id="adminEditStatus" required><option>Active</option><option>Inactive</option><option>Expired</option></select></div>
-        <div class="staff-form-group"><label>Router Security</label><input id="adminEditRouter" placeholder="500 / 1000 / 0"></div>
-      </div><p id="adminEditMessage" class="staff-message"></p><button class="submit-button" type="submit" id="adminEditButton">💾 Update Customer</button></form>
+          <div class="staff-form-group"><label>Start Date *</label><input type="date" id="adminEditStartDate" required></div>
+          <div class="staff-form-group"><label>Expiry Date *</label><input type="date" id="adminEditExpiryDate" required></div>
+          <div class="staff-form-group"><label>Status *</label><select id="adminEditStatus" required><option>Active</option><option>Inactive</option><option>Expired</option></select></div>
+          <div class="staff-form-group"><label>Router Security</label><input id="adminEditRouter" placeholder="500 / 1000 / 0"></div>
+          <div class="staff-form-group"><label>Added By</label><input id="adminEditAddedBy" readonly></div>
+        </div><p id="adminEditMessage" class="staff-message"></p><button class="submit-button" type="submit" id="adminEditButton">💾 Update Customer</button></form>
+      </div>
     </div>
     <div class="staff-card">
       <h3>👨‍💼 Staff Management</h3>
@@ -1392,6 +1510,16 @@ footer p{
         <div class="staff-form-group"><label>Mobile *</label><input id="newStaffMobile" maxlength="10" pattern="[0-9]{10}" required></div>
       </div><p id="adminStaffMessage" class="staff-message"></p><button class="submit-button" type="submit" id="adminAddStaffButton">➕ Add Staff</button></form>
       <div class="staff-table-wrap" style="margin-top:18px;"><table class="staff-table"><thead><tr><th>Staff ID</th><th>Name</th><th>Mobile</th><th>Role</th><th>UID</th></tr></thead><tbody id="adminStaffTableBody"><tr><td colspan="5">No data loaded.</td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="admin-customer-form-page" id="adminCustomerFormPage" style="display:none;">
+    <div class="admin-customer-form-shell">
+      <div class="admin-customer-form-header">
+        <h2 id="adminCustomerFormTitle">Customer Form</h2>
+        <button type="button" class="admin-form-back" onclick="closeAdminCustomerFormPage()">← Back to Admin Dashboard</button>
+      </div>
+      <div class="admin-customer-form-content" id="adminCustomerFormContent"></div>
     </div>
   </div>
 </div>
@@ -1427,7 +1555,7 @@ footer p{
 
         <a href="#service-area">Area</a>
 
-        <a href="#" onclick="showLoginScreen(); return false;">
+        <a href="#" onclick="openCustomerLoginOrDashboard(); return false;">
             🔐 Customer Login
         </a>
 
@@ -3132,12 +3260,49 @@ function showMainWebsite() {
 }
 
 function showLoginScreen() {
+    if (typeof window.closeAdminCustomerFormPage === "function") {
+        window.closeAdminCustomerFormPage(true);
+    }
     document.getElementById("mainWebsite").style.display = "none";
     document.getElementById("staffPanel").style.display = "none";
     document.getElementById("adminPanel").style.display = "none";
     document.getElementById("firstLogin").style.display = "flex";
+    const dashboard = document.getElementById("dashboard");
+    if (dashboard) dashboard.style.display = "none";
     window.scrollTo(0, 0);
 }
+
+// Customer Login button behavior:
+// - If a customer is already signed in, show their dashboard/details.
+// - If nobody is signed in, show the Customer Login screen.
+// - If an Admin/Staff account is signed in, sign it out before showing Customer Login.
+window.openCustomerLoginOrDashboard = async function() {
+    try {
+        const user = auth.currentUser;
+
+        if (!user) {
+            showLoginScreen();
+            return;
+        }
+
+        const profileSnap = await getDoc(doc(db, "users", user.uid));
+        const role = profileSnap.exists() ? profileSnap.data().role : null;
+
+        if (role === "customer") {
+            await loadCustomerData(user);
+            window.scrollTo(0, 0);
+            return;
+        }
+
+        // Admin/Staff should not be shown the customer dashboard.
+        await signOut(auth);
+        showLoginScreen();
+    } catch (error) {
+        console.error(error);
+        try { await signOut(auth); } catch (e) {}
+        showLoginScreen();
+    }
+};
 
 function setLoginMessage(message, success = false) {
     const el = document.getElementById("loginMessage");
@@ -3243,6 +3408,9 @@ function showStaffPanel() {
 }
 
 function showStaffLoginBox() {
+    document.getElementById("firstLogin").style.display = "none";
+    document.getElementById("mainWebsite").style.display = "none";
+    document.getElementById("adminPanel").style.display = "none";
     document.getElementById("staffPanel").style.display = "block";
     document.getElementById("staffLoginBox").style.display = "block";
     document.getElementById("staffDashboard").style.display = "none";
@@ -3250,6 +3418,9 @@ function showStaffLoginBox() {
 
 window.openStaffLogin = function() {
     showStaffLoginBox();
+    const form = document.getElementById("staffLoginForm");
+    if (form) form.reset();
+    setStaffMessage("");
     window.scrollTo(0, 0);
 };
 
@@ -3343,9 +3514,13 @@ function formatDateForDisplay(value) {
 
 window.loadStaffCustomers = async function() {
     const tbody = document.getElementById("staffCustomerTableBody");
+    const expiringBody = document.getElementById("staffExpiringSoonBody");
+    const expiringCountEl = document.getElementById("staffExpiringSoon");
+    const expiredCountEl = document.getElementById("staffExpiredCount");
     if (!tbody || !auth.currentUser) return;
 
     tbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+    if (expiringBody) expiringBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
 
     try {
         const q = query(
@@ -3355,15 +3530,32 @@ window.loadStaffCustomers = async function() {
         );
 
         const snapshot = await getDocs(q);
+        const customers = [];
+
+        snapshot.forEach(function(item) {
+            customers.push({ uid: item.id, ...item.data() });
+        });
 
         if (snapshot.empty) {
             tbody.innerHTML = '<tr><td colspan="7">Abhi koi customer add nahi kiya gaya.</td></tr>';
+            if (expiringBody) expiringBody.innerHTML = '<tr><td colspan="6">Abhi koi customer 5 din ke andar expire nahi ho raha.</td></tr>';
+            if (expiringCountEl) expiringCountEl.innerText = "0";
+            if (expiredCountEl) expiredCountEl.innerText = "0";
             return;
         }
 
+        let expiringSoon = [];
+        let expiredCount = 0;
+
         tbody.innerHTML = "";
-        snapshot.forEach(function(item) {
-            const data = item.data();
+        customers.forEach(function(data) {
+            const days = daysUntilExpiry(data.expiryDate);
+            const effectiveStatus = effectiveCustomerStatus(data);
+            if (days !== null && days < 0) expiredCount++;
+            if (days !== null && days >= 0 && days <= 5 && effectiveStatus !== "Inactive") {
+                expiringSoon.push({ ...data, daysLeft: days });
+            }
+
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${data.customerId || "-"}</td>
@@ -3372,13 +3564,39 @@ window.loadStaffCustomers = async function() {
                 <td>${data.plan || "-"}</td>
                 <td>${data.serviceArea || "-"}</td>
                 <td>${formatDateForDisplay(data.expiryDate) || "-"}</td>
-                <td>${data.status || "-"}</td>
+                <td>${effectiveStatus}</td>
             `;
             tbody.appendChild(row);
         });
+
+        if (expiringCountEl) expiringCountEl.innerText = String(expiringSoon.length);
+        if (expiredCountEl) expiredCountEl.innerText = String(expiredCount);
+
+        if (expiringBody) {
+            if (!expiringSoon.length) {
+                expiringBody.innerHTML = '<tr><td colspan="6">Abhi koi customer 5 din ke andar expire nahi ho raha.</td></tr>';
+            } else {
+                expiringSoon.sort((a,b) => a.daysLeft - b.daysLeft);
+                expiringBody.innerHTML = "";
+                expiringSoon.forEach(function(data) {
+                    const row = document.createElement("tr");
+                    const daysText = data.daysLeft === 0 ? "Aaj" : (data.daysLeft === 1 ? "1 Day" : `${data.daysLeft} Days`);
+                    row.innerHTML = `
+                        <td>${data.customerId || "-"}</td>
+                        <td>${data.name || "-"}</td>
+                        <td>${data.mobile || "-"}</td>
+                        <td>${formatDateForDisplay(data.expiryDate) || "-"}</td>
+                        <td>${daysText}</td>
+                        <td>${effectiveCustomerStatus(data)}</td>
+                    `;
+                    expiringBody.appendChild(row);
+                });
+            }
+        }
     } catch (error) {
         console.error(error);
         tbody.innerHTML = '<tr><td colspan="7">Customer list load nahi ho pa rahi. Firestore rules check karein.</td></tr>';
+        if (expiringBody) expiringBody.innerHTML = '<tr><td colspan="6">Expiry list load nahi ho pa rahi.</td></tr>';
     }
 };
 
@@ -3453,6 +3671,9 @@ document.getElementById("addCustomerForm").addEventListener("submit", async func
             expiryDate: expiryDate,
             status: status,
             createdBy: auth.currentUser.uid,
+            createdByName: staffProfile.data().name || staffProfile.data().staffId || "Staff",
+            createdByStaffId: staffProfile.data().staffId || "",
+            createdByRole: "staff",
             createdAt: new Date().toISOString()
         });
 
@@ -3487,19 +3708,199 @@ function setAdminEditMessage(message, success=false){const el=document.getElemen
 function setAdminStaffMessage(message, success=false){const el=document.getElementById("adminStaffMessage");if(el){el.innerText=message;el.style.color=success?"#087f32":"#dc3545";}}
 window.openAdminLogin=function(){document.getElementById("firstLogin").style.display="none";document.getElementById("mainWebsite").style.display="none";document.getElementById("staffPanel").style.display="none";document.getElementById("adminPanel").style.display="block";document.getElementById("adminLoginBox").style.display="block";document.getElementById("adminDashboard").style.display="none";window.scrollTo(0,0);};
 window.closeAdminLogin=async function(){try{await signOut(auth);}catch(e){}document.getElementById("adminPanel").style.display="none";showLoginScreen();};
-async function loadAdminData(){const customerBody=document.getElementById("adminCustomerTableBody"),staffBody=document.getElementById("adminStaffTableBody");if(!customerBody||!staffBody||!auth.currentUser)return;customerBody.innerHTML='<tr><td colspan="9">Loading...</td></tr>';staffBody.innerHTML='<tr><td colspan="5">Loading...</td></tr>';try{const snap=await getDocs(collection(db,"users"));const customers=[],staff=[];snap.forEach(d=>{const data=d.data();if(data.role==="customer")customers.push({uid:d.id,...data});if(data.role==="staff")staff.push({uid:d.id,...data});});window.adminCustomersCache=customers;document.getElementById("adminTotalCustomers").innerText=customers.length;document.getElementById("adminActiveCustomers").innerText=customers.filter(c=>c.status==="Active").length;document.getElementById("adminExpiredCustomers").innerText=customers.filter(c=>c.status!=="Active").length;document.getElementById("adminTotalStaff").innerText=staff.length;renderAdminCustomers(customers);if(!staff.length)staffBody.innerHTML='<tr><td colspan="5">No staff found.</td></tr>';else{staffBody.innerHTML="";staff.forEach(s=>{const row=document.createElement("tr");row.innerHTML=`<td>${s.staffId||"-"}</td><td>${s.name||"-"}</td><td>${s.mobile||"-"}</td><td>${s.role||"-"}</td><td style="font-size:11px">${s.uid}</td>`;staffBody.appendChild(row);});}}catch(error){console.error(error);customerBody.innerHTML='<tr><td colspan="9">Admin data load nahi ho raha. Firestore Rules check karein.</td></tr>';staffBody.innerHTML='<tr><td colspan="5">Staff data load nahi ho raha.</td></tr>';}}
-function renderAdminCustomers(list){const tbody=document.getElementById("adminCustomerTableBody");tbody.innerHTML="";if(!list.length){tbody.innerHTML='<tr><td colspan="9">No customers found.</td></tr>';return;}list.forEach(c=>{const row=document.createElement("tr"),addedBy=c.createdBy?c.createdBy.slice(0,10)+"...":"-";row.innerHTML=`<td>${c.customerId||"-"}</td><td>${c.name||"-"}</td><td>${c.mobile||"-"}</td><td>${c.plan||"-"}</td><td>${c.serviceArea||"-"}</td><td>${formatDateForDisplay(c.expiryDate)||"-"}</td><td>${c.status||"-"}</td><td style="font-size:11px">${addedBy}</td><td><button class="admin-table-action" type="button" onclick="selectAdminCustomer('${c.uid}')">Edit</button></td>`;tbody.appendChild(row);});}
-window.filterAdminCustomers=function(){const q=(document.getElementById("adminCustomerSearch").value||"").toLowerCase().trim();renderAdminCustomers((window.adminCustomersCache||[]).filter(c=>[c.customerId,c.name,c.mobile,c.serviceArea,c.plan,c.status].some(v=>String(v||"").toLowerCase().includes(q))));};
-window.selectAdminCustomer=function(uid){const c=(window.adminCustomersCache||[]).find(x=>x.uid===uid);if(!c)return;document.getElementById("adminEditUid").value=uid;document.getElementById("adminEditCustomerId").value=c.customerId||"";document.getElementById("adminEditName").value=c.name||"";document.getElementById("adminEditMobile").value=c.mobile||"";document.getElementById("adminEditAddress").value=c.address||"";document.getElementById("adminEditArea").value=c.serviceArea||"Other Area";document.getElementById("adminEditPlan").value=c.plan||"";document.getElementById("adminEditStartDate").value=c.startDate||"";document.getElementById("adminEditExpiryDate").value=c.expiryDate||"";document.getElementById("adminEditStatus").value=c.status||"Active";document.getElementById("adminEditRouter").value=c.routerSecurity||"";setAdminEditMessage("Customer selected. Ab details update kar sakte hain.",true);document.getElementById("adminEditCustomerForm").scrollIntoView({behavior:"smooth",block:"start"});};
+function toLocalDateOnly(isoDate) {
+    if (!isoDate) return null;
+    const parts = String(isoDate).split("-").map(Number);
+    if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+}
+
+function todayLocalDateOnly() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function daysUntilExpiry(expiryDate) {
+    const d = toLocalDateOnly(expiryDate);
+    if (!d) return null;
+    const today = todayLocalDateOnly();
+    return Math.round((d - today) / 86400000);
+}
+
+function effectiveCustomerStatus(customer) {
+    const days = daysUntilExpiry(customer.expiryDate);
+    if (days !== null && days < 0) return "Expired";
+    return customer.status || "-";
+}
+
+function addedByLabel(customer, profilesByUid) {
+    if (customer.createdByName) {
+        const id = customer.createdByStaffId || customer.createdByLabel || "";
+        return id ? `${customer.createdByName} (${id})` : customer.createdByName;
+    }
+    if (customer.createdBy && profilesByUid[customer.createdBy]) {
+        const p = profilesByUid[customer.createdBy];
+        const id = p.staffId || (p.role === "admin" ? "ADMIN" : "");
+        return id ? `${p.name || p.staffId || p.role} (${id})` : (p.name || p.role || "-");
+    }
+    return customer.createdBy ? customer.createdBy.slice(0,10) + "..." : "-";
+}
+
+async function loadAdminData(){
+    const customerBody=document.getElementById("adminCustomerTableBody"),
+          staffBody=document.getElementById("adminStaffTableBody");
+    if(!customerBody||!staffBody||!auth.currentUser)return;
+    customerBody.innerHTML='<tr><td colspan="9">Loading...</td></tr>';
+    staffBody.innerHTML='<tr><td colspan="5">Loading...</td></tr>';
+    try{
+        const snap=await getDocs(collection(db,"users"));
+        const customers=[],staff=[],profilesByUid={};
+        snap.forEach(d=>{
+            const data=d.data();
+            profilesByUid[d.id]=data;
+            if(data.role==="customer") customers.push({uid:d.id,...data});
+            if(data.role==="staff") staff.push({uid:d.id,...data});
+        });
+        window.adminProfilesByUid=profilesByUid;
+        window.adminCustomersCache=customers;
+
+        const activeCount=customers.filter(c=>effectiveCustomerStatus(c)==="Active").length;
+        const expiredInactiveCount=customers.length-activeCount;
+        const expiringSoon=customers.filter(c=>{
+            const d=daysUntilExpiry(c.expiryDate);
+            return d !== null && d >= 0 && d <= 5 && effectiveCustomerStatus(c)==="Active";
+        }).sort((a,b)=>(daysUntilExpiry(a.expiryDate)||0)-(daysUntilExpiry(b.expiryDate)||0));
+
+        document.getElementById("adminTotalCustomers").innerText=customers.length;
+        document.getElementById("adminActiveCustomers").innerText=activeCount;
+        document.getElementById("adminExpiredCustomers").innerText=expiredInactiveCount;
+        document.getElementById("adminExpiringSoon").innerText=expiringSoon.length;
+        document.getElementById("adminTotalStaff").innerText=staff.length;
+
+        renderAdminCustomers(customers);
+        renderAdminExpiringSoon(expiringSoon);
+
+        if(!staff.length) staffBody.innerHTML='<tr><td colspan="5">No staff found.</td></tr>';
+        else{
+            staffBody.innerHTML="";
+            staff.forEach(s=>{
+                const row=document.createElement("tr");
+                row.innerHTML=`<td>${s.staffId||"-"}</td><td>${s.name||"-"}</td><td>${s.mobile||"-"}</td><td>${s.role||"-"}</td><td style="font-size:11px">${s.uid}</td>`;
+                staffBody.appendChild(row);
+            });
+        }
+    }catch(error){
+        console.error(error);
+        customerBody.innerHTML='<tr><td colspan="9">Admin data load nahi ho raha. Firestore Rules check karein.</td></tr>';
+        staffBody.innerHTML='<tr><td colspan="5">Staff data load nahi ho raha.</td></tr>';
+        const warn=document.getElementById("adminExpiringSoonBody");
+        if(warn) warn.innerHTML='<tr><td colspan="7">Reminder list load nahi ho pa rahi.</td></tr>';
+    }
+}
+
+function renderAdminCustomers(list){
+    const tbody=document.getElementById("adminCustomerTableBody");
+    tbody.innerHTML="";
+    if(!list.length){tbody.innerHTML='<tr><td colspan="9">No customers found.</td></tr>';return;}
+    const profiles=window.adminProfilesByUid||{};
+    list.forEach(c=>{
+        const row=document.createElement("tr");
+        const status=effectiveCustomerStatus(c);
+        row.innerHTML=`<td>${c.customerId||"-"}</td><td>${c.name||"-"}</td><td>${c.mobile||"-"}</td><td>${c.plan||"-"}</td><td>${c.serviceArea||"-"}</td><td>${formatDateForDisplay(c.expiryDate)||"-"}</td><td>${status}</td><td>${addedByLabel(c,profiles)}</td><td><button class="admin-table-action" type="button" onclick="selectAdminCustomer('${c.uid}')">Edit</button></td>`;
+        tbody.appendChild(row);
+    });
+}
+
+function renderAdminExpiringSoon(list){
+    const tbody=document.getElementById("adminExpiringSoonBody");
+    if(!tbody)return;
+    if(!list.length){tbody.innerHTML='<tr><td colspan="7">✅ Agle 5 din mein koi customer expire nahi ho raha.</td></tr>';return;}
+    const profiles=window.adminProfilesByUid||{};
+    tbody.innerHTML="";
+    list.forEach(c=>{
+        const days=daysUntilExpiry(c.expiryDate);
+        const daysText=days===0?"Aaj":(days===1?"1 day":`${days} days`);
+        const row=document.createElement("tr");
+        row.innerHTML=`<td>${c.customerId||"-"}</td><td>${c.name||"-"}</td><td>${c.mobile||"-"}</td><td>${formatDateForDisplay(c.expiryDate)||"-"}</td><td><strong>${daysText}</strong></td><td>${addedByLabel(c,profiles)}</td><td><button class="admin-table-action" type="button" onclick="selectAdminCustomer('${c.uid}')">Edit</button></td>`;
+        tbody.appendChild(row);
+    });
+}
+
+window.filterAdminCustomers=function(){
+    const q=(document.getElementById("adminCustomerSearch").value||"").toLowerCase().trim();
+    const profiles=window.adminProfilesByUid||{};
+    renderAdminCustomers((window.adminCustomersCache||[]).filter(c=>[
+        c.customerId,c.name,c.mobile,c.serviceArea,c.plan,effectiveCustomerStatus(c),addedByLabel(c,profiles)
+    ].some(v=>String(v||"").toLowerCase().includes(q))));
+};
+window.openAdminCustomerFormPage = function(title, cardId) {
+    const page = document.getElementById("adminCustomerFormPage");
+    const content = document.getElementById("adminCustomerFormContent");
+    const card = document.getElementById(cardId);
+    const titleEl = document.getElementById("adminCustomerFormTitle");
+    if (!page || !content || !card) return;
+    titleEl.innerText = title;
+    content.innerHTML = "";
+    content.appendChild(card);
+    page.style.display = "block";
+    document.body.style.overflow = "hidden";
+    window.scrollTo(0,0);
+};
+
+window.closeAdminCustomerFormPage = function(silent=false) {
+    const page = document.getElementById("adminCustomerFormPage");
+    const content = document.getElementById("adminCustomerFormContent");
+    const addCard = document.getElementById("adminAddCustomerCard");
+    const editCard = document.getElementById("adminEditCustomerCard");
+    const templates = document.getElementById("adminCustomerFormTemplates");
+    if (templates) {
+        if (addCard && addCard.parentElement === content) templates.appendChild(addCard);
+        if (editCard && editCard.parentElement === content) templates.appendChild(editCard);
+    }
+    if (page) page.style.display = "none";
+    document.body.style.overflow = "";
+    if (!silent) {
+        const dash = document.getElementById("adminDashboard");
+        if (dash) dash.style.display = "block";
+        window.scrollTo(0,0);
+    }
+};
+
+window.openAdminAddCustomerPage = function() {
+    const form = document.getElementById("adminAddCustomerForm");
+    if (form) form.reset();
+    setAdminAddCustomerMessage("");
+    syncAdminAddRouterFromPlan();
+    openAdminCustomerFormPage("➕ Add New Customer", "adminAddCustomerCard");
+};
+
+window.selectAdminCustomer=function(uid){
+    const c=(window.adminCustomersCache||[]).find(x=>x.uid===uid);
+    if(!c) return;
+    document.getElementById("adminEditUid").value=uid;
+    document.getElementById("adminEditCustomerId").value=c.customerId||"";
+    document.getElementById("adminEditName").value=c.name||"";
+    document.getElementById("adminEditMobile").value=c.mobile||"";
+    document.getElementById("adminEditAddress").value=c.address||"";
+    document.getElementById("adminEditArea").value=c.serviceArea||"Other Area";
+    document.getElementById("adminEditPlan").value=c.plan||"";
+    document.getElementById("adminEditStartDate").value=c.startDate||"";
+    document.getElementById("adminEditExpiryDate").value=c.expiryDate||"";
+    document.getElementById("adminEditStatus").value=c.status||"Active";
+    document.getElementById("adminEditRouter").value=c.routerSecurity||"";
+    document.getElementById("adminEditAddedBy").value=addedByLabel(c, window.adminProfilesByUid||{});
+    setAdminEditMessage("Customer selected. Ab details update kar sakte hain.",true);
+    openAdminCustomerFormPage("✏️ Edit Customer - " + (c.customerId||"Customer"), "adminEditCustomerCard");
+};
 function setAdminAddCustomerMessage(message, success=false){const el=document.getElementById("adminAddCustomerMessage");if(el){el.innerText=message;el.style.color=success?"#087f32":"#dc3545";}}
 function syncAdminAddRouterFromPlan(){const plan=document.getElementById("adminNewCustomerPlan").value;const r=document.getElementById("adminNewCustomerRouter");if(!r)return;if(plan.includes("Router Security 1000"))r.value="1000";else if(plan.includes("Router Security 500"))r.value="500";else if(plan.includes("No Router"))r.value="0";}
 function setAdminAddExpiryFromPlan(){const start=document.getElementById("adminNewCustomerStartDate").value;const plan=document.getElementById("adminNewCustomerPlan").value;const expiry=document.getElementById("adminNewCustomerExpiryDate");if(!start||!plan||!expiry)return;let months=1;if(plan.includes("3+1 Month"))months=4;else if(plan.includes("6 Month"))months=6;const d=new Date(start+"T00:00:00");const originalDay=d.getDate();d.setMonth(d.getMonth()+months);if(d.getDate()!==originalDay)d.setDate(0);expiry.value=d.toISOString().slice(0,10);}
 document.getElementById("adminNewCustomerPlan").addEventListener("change",function(){syncAdminAddRouterFromPlan();setAdminAddExpiryFromPlan();});
 document.getElementById("adminNewCustomerStartDate").addEventListener("change",setAdminAddExpiryFromPlan);
-document.getElementById("adminAddCustomerForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminAddCustomerMessage("Pehle admin login karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAddCustomerMessage("Admin permission verify nahi ho pa rahi.");return;}const customerId=document.getElementById("adminNewCustomerId").value.trim().toUpperCase();const password=document.getElementById("adminNewCustomerPassword").value;const name=document.getElementById("adminNewCustomerName").value.trim();const mobile=document.getElementById("adminNewCustomerMobile").value.trim();const address=document.getElementById("adminNewCustomerAddress").value.trim();const serviceArea=document.getElementById("adminNewCustomerArea").value;const plan=document.getElementById("adminNewCustomerPlan").value;const startDate=document.getElementById("adminNewCustomerStartDate").value;const expiryDate=document.getElementById("adminNewCustomerExpiryDate").value;const status=document.getElementById("adminNewCustomerStatus").value;const routerSecurity=document.getElementById("adminNewCustomerRouter").value;if(!/^JS[0-9]+$/.test(customerId)){setAdminAddCustomerMessage("Customer ID format JS1003 jaisa rakhein.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminAddCustomerMessage("Valid 10 digit mobile number enter karein.");return;}if(password.length<6){setAdminAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");return;}if(!serviceArea||!plan||!startDate||!expiryDate){setAdminAddCustomerMessage("Saare required fields fill karein.");return;}const button=document.getElementById("adminAddCustomerButton");button.disabled=true;button.innerText="Saving...";setAdminAddCustomerMessage("");const loginEmail=customerId.toLowerCase()+"@jsinternet.local";try{const credential=await createUserWithEmailAndPassword(customerAuth,loginEmail,password);await setDoc(doc(db,"users",credential.user.uid),{customerId,username:customerId,role:"customer",name,mobile,address,serviceArea,plan,speed:plan.split(" - ")[0],routerSecurity,startDate,expiryDate,status,createdBy:auth.currentUser.uid,createdByRole:"admin",createdAt:new Date().toISOString()});await signOut(customerAuth);setAdminAddCustomerMessage("Customer successfully add ho gaya.",true);document.getElementById("adminAddCustomerForm").reset();await loadAdminData();}catch(error){console.error(error);let message="Customer save nahi ho paya.";if(error.code==="auth/email-already-in-use")message="Ye Customer ID already registered hai.";else if(error.code==="permission-denied")message="Firestore permission denied. Phase 4 rules publish karein.";else if(error.code==="auth/weak-password")message="Password weak hai. Minimum 6 characters rakhein.";setAdminAddCustomerMessage(message);}finally{button.disabled=false;button.innerText="💾 Save Customer";}});
-document.getElementById("adminEditCustomerForm").addEventListener("submit",async function(event){event.preventDefault();const uid=document.getElementById("adminEditUid").value;if(!uid||!auth.currentUser){setAdminEditMessage("Pehle customer select karein.");return;}const mobile=document.getElementById("adminEditMobile").value.trim();if(!/^[0-9]{10}$/.test(mobile)){setAdminEditMessage("Valid 10 digit mobile number enter karein.");return;}const button=document.getElementById("adminEditButton");button.disabled=true;button.innerText="Updating...";setAdminEditMessage("");try{const plan=document.getElementById("adminEditPlan").value;await updateDoc(doc(db,"users",uid),{name:document.getElementById("adminEditName").value.trim(),mobile,address:document.getElementById("adminEditAddress").value.trim(),serviceArea:document.getElementById("adminEditArea").value,plan,speed:plan.split(" - ")[0],startDate:document.getElementById("adminEditStartDate").value,expiryDate:document.getElementById("adminEditExpiryDate").value,status:document.getElementById("adminEditStatus").value,routerSecurity:document.getElementById("adminEditRouter").value.trim(),updatedAt:new Date().toISOString(),updatedBy:auth.currentUser.uid});setAdminEditMessage("Customer successfully update ho gaya.",true);await loadAdminData();}catch(error){console.error(error);setAdminEditMessage("Customer update nahi ho paya. Rules check karein.");}finally{button.disabled=false;button.innerText="💾 Update Customer";}});
+document.getElementById("adminAddCustomerForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminAddCustomerMessage("Pehle admin login karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAddCustomerMessage("Admin permission verify nahi ho pa rahi.");return;}const customerId=document.getElementById("adminNewCustomerId").value.trim().toUpperCase();const password=document.getElementById("adminNewCustomerPassword").value;const name=document.getElementById("adminNewCustomerName").value.trim();const mobile=document.getElementById("adminNewCustomerMobile").value.trim();const address=document.getElementById("adminNewCustomerAddress").value.trim();const serviceArea=document.getElementById("adminNewCustomerArea").value;const plan=document.getElementById("adminNewCustomerPlan").value;const startDate=document.getElementById("adminNewCustomerStartDate").value;const expiryDate=document.getElementById("adminNewCustomerExpiryDate").value;const status=document.getElementById("adminNewCustomerStatus").value;const routerSecurity=document.getElementById("adminNewCustomerRouter").value;if(!/^JS[0-9]+$/.test(customerId)){setAdminAddCustomerMessage("Customer ID format JS1003 jaisa rakhein.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminAddCustomerMessage("Valid 10 digit mobile number enter karein.");return;}if(password.length<6){setAdminAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");return;}if(!serviceArea||!plan||!startDate||!expiryDate){setAdminAddCustomerMessage("Saare required fields fill karein.");return;}const button=document.getElementById("adminAddCustomerButton");button.disabled=true;button.innerText="Saving...";setAdminAddCustomerMessage("");const loginEmail=customerId.toLowerCase()+"@jsinternet.local";try{const credential=await createUserWithEmailAndPassword(customerAuth,loginEmail,password);await setDoc(doc(db,"users",credential.user.uid),{customerId,username:customerId,role:"customer",name,mobile,address,serviceArea,plan,speed:plan.split(" - ")[0],routerSecurity,startDate,expiryDate,status,createdBy:auth.currentUser.uid,createdByName:profile.data().name||"Admin",createdByLabel:"Admin",createdByRole:"admin",createdAt:new Date().toISOString()});await signOut(customerAuth);setAdminAddCustomerMessage("Customer successfully add ho gaya.",true);document.getElementById("adminAddCustomerForm").reset();await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);let message="Customer save nahi ho paya.";if(error.code==="auth/email-already-in-use")message="Ye Customer ID already registered hai.";else if(error.code==="permission-denied")message="Firestore permission denied. Phase 4 rules publish karein.";else if(error.code==="auth/weak-password")message="Password weak hai. Minimum 6 characters rakhein.";setAdminAddCustomerMessage(message);}finally{button.disabled=false;button.innerText="💾 Save Customer";}});
+document.getElementById("adminEditCustomerForm").addEventListener("submit",async function(event){event.preventDefault();const uid=document.getElementById("adminEditUid").value;if(!uid||!auth.currentUser){setAdminEditMessage("Pehle customer select karein.");return;}const mobile=document.getElementById("adminEditMobile").value.trim();if(!/^[0-9]{10}$/.test(mobile)){setAdminEditMessage("Valid 10 digit mobile number enter karein.");return;}const button=document.getElementById("adminEditButton");button.disabled=true;button.innerText="Updating...";setAdminEditMessage("");try{const plan=document.getElementById("adminEditPlan").value;await updateDoc(doc(db,"users",uid),{name:document.getElementById("adminEditName").value.trim(),mobile,address:document.getElementById("adminEditAddress").value.trim(),serviceArea:document.getElementById("adminEditArea").value,plan,speed:plan.split(" - ")[0],startDate:document.getElementById("adminEditStartDate").value,expiryDate:document.getElementById("adminEditExpiryDate").value,status:document.getElementById("adminEditStatus").value,routerSecurity:document.getElementById("adminEditRouter").value.trim(),updatedAt:new Date().toISOString(),updatedBy:auth.currentUser.uid});setAdminEditMessage("Customer successfully update ho gaya.",true);await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);setAdminEditMessage("Customer update nahi ho paya. Rules check karein.");}finally{button.disabled=false;button.innerText="💾 Update Customer";}});
 document.getElementById("adminLoginForm").addEventListener("submit",async function(event){event.preventDefault();const adminId=document.getElementById("adminId").value.trim().toLowerCase(),password=document.getElementById("adminPassword").value,button=document.getElementById("adminLoginButton");if(!adminId||!password){setAdminMessage("Admin ID aur password dono enter karein.");return;}button.disabled=true;button.innerText="Logging in...";setAdminMessage("");const email=(adminId==="admin01"?"admin@jsinternet.local":adminId+"@jsinternet.local");try{await signInWithEmailAndPassword(auth,email,password);const snap=await getDoc(doc(db,"users",auth.currentUser.uid));if(!snap.exists()||snap.data().role!=="admin")throw new Error("NOT_ADMIN");document.getElementById("adminName").innerText=snap.data().name||adminId;document.getElementById("adminLoginBox").style.display="none";document.getElementById("adminDashboard").style.display="block";await loadAdminData();}catch(error){console.error(error);if(error.message==="NOT_ADMIN"){setAdminMessage("Ye account admin account nahi hai.");try{await signOut(auth);}catch(e){}}else setAdminMessage("Admin ID ya password galat hai.");button.disabled=false;button.innerText="🔐 Admin Login";}});
-window.adminLogout=async function(){try{await signOut(auth);}catch(e){}document.getElementById("adminPanel").style.display="none";document.getElementById("adminLoginBox").style.display="block";document.getElementById("adminDashboard").style.display="none";document.getElementById("adminLoginForm").reset();showLoginScreen();window.scrollTo(0,0);};
+window.adminLogout=async function(){try{await signOut(auth);}catch(e){}window.closeAdminCustomerFormPage(true);document.getElementById("adminPanel").style.display="none";document.getElementById("adminLoginBox").style.display="block";document.getElementById("adminDashboard").style.display="none";document.getElementById("adminLoginForm").reset();showLoginScreen();window.scrollTo(0,0);};
 document.getElementById("adminAddStaffForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminStaffMessage("Pehle admin login karein.");return;}const staffId=document.getElementById("newStaffId").value.trim().toUpperCase(),password=document.getElementById("newStaffPassword").value,name=document.getElementById("newStaffName").value.trim(),mobile=document.getElementById("newStaffMobile").value.trim();if(!/^STAFF[0-9]+$/.test(staffId)){setAdminStaffMessage("Staff ID STAFF02 jaisa rakhein.");return;}if(password.length<6){setAdminStaffMessage("Password minimum 6 characters hona chahiye.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminStaffMessage("Valid 10 digit mobile number enter karein.");return;}const btn=document.getElementById("adminAddStaffButton");btn.disabled=true;btn.innerText="Adding...";setAdminStaffMessage("");try{const email=staffId.toLowerCase()+"@jsinternet.local";const credential=await createUserWithEmailAndPassword(customerAuth,email,password);await setDoc(doc(db,"users",credential.user.uid),{staffId,name,mobile,role:"staff",createdAt:new Date().toISOString(),createdBy:auth.currentUser.uid});await signOut(customerAuth);setAdminStaffMessage("Staff successfully add ho gaya.",true);document.getElementById("adminAddStaffForm").reset();await loadAdminData();}catch(error){console.error(error);setAdminStaffMessage(error.code==="auth/email-already-in-use"?"Ye Staff ID already registered hai.":"Staff create nahi ho paya.");}finally{btn.disabled=false;btn.innerText="➕ Add Staff";}});
 
 /* =====================================================
