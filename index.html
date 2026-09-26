@@ -15,6 +15,10 @@ content="JS Internet - Fast and reliable broadband internet service.">
 
 <style>
 
+/* =========================
+   BASIC
+========================= */
+
 *{
     margin:0;
     padding:0;
@@ -32,11 +36,126 @@ body{
 }
 
 
-/* HEADER */
+/* =========================
+   FIRST LOGIN PAGE
+========================= */
+
+.first-login{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100vh;
+    background:linear-gradient(135deg,#07549a,#0b8edb);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+    padding:20px;
+    overflow:auto;
+}
+
+.first-login-box{
+    width:100%;
+    max-width:430px;
+    background:white;
+    padding:35px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+
+.login-logo{
+    width:230px;
+    max-width:85%;
+    margin-bottom:20px;
+}
+
+.first-login-box h1{
+    color:#07549a;
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.login-subtitle{
+    color:#666;
+    margin-bottom:28px;
+    font-size:15px;
+}
+
+.login-field{
+    text-align:left;
+    margin-bottom:18px;
+}
+
+.login-field label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+    color:#333;
+}
+
+.login-field input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    outline:none;
+}
+
+.login-field input:focus{
+    border-color:#07549a;
+}
+
+.first-login-button{
+    width:100%;
+    padding:15px;
+    border:0;
+    border-radius:9px;
+    background:#07549a;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.first-login-button:hover{
+    background:#063f74;
+}
+
+.login-help{
+    margin-top:20px;
+    color:#666;
+    font-size:14px;
+}
+
+.login-help a{
+    color:#07549a;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.demo-text{
+    margin-top:25px;
+    color:#999;
+    font-size:12px;
+}
+
+
+/* MAIN WEBSITE HIDDEN */
+
+#mainWebsite{
+    display:none;
+}
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
     background:white;
-    padding:15px 5%;
+    padding:14px 5%;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -54,9 +173,9 @@ header{
 
 nav{
     display:flex;
-    gap:17px;
     align-items:center;
     justify-content:center;
+    gap:16px;
     flex-wrap:wrap;
 }
 
@@ -72,15 +191,17 @@ nav a:hover{
 }
 
 
-/* BUTTON */
+/* =========================
+   BUTTONS
+========================= */
 
 .button{
     display:inline-block;
-    padding:14px 28px;
+    padding:13px 25px;
     border-radius:8px;
     text-decoration:none;
     font-weight:bold;
-    margin:6px;
+    margin:5px;
     border:none;
     cursor:pointer;
     transition:.3s;
@@ -90,9 +211,9 @@ nav a:hover{
     transform:translateY(-2px);
 }
 
-.button.white{
-    background:white;
-    color:#07549a;
+.button.blue{
+    background:#07549a;
+    color:white;
 }
 
 .button.green{
@@ -100,13 +221,15 @@ nav a:hover{
     color:white;
 }
 
-.button.blue{
-    background:#07549a;
-    color:white;
+.button.white{
+    background:white;
+    color:#07549a;
 }
 
 
-/* COMMON */
+/* =========================
+   SECTIONS
+========================= */
 
 section{
     padding:75px 5%;
@@ -114,20 +237,22 @@ section{
 
 .section-title{
     text-align:center;
-    font-size:36px;
     color:#07549a;
+    font-size:36px;
     margin-bottom:12px;
 }
 
 .section-subtitle{
     text-align:center;
     color:#666;
-    margin-bottom:40px;
     font-size:17px;
+    margin-bottom:40px;
 }
 
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero{
     min-height:550px;
@@ -152,11 +277,13 @@ section{
 .hero p{
     font-size:21px;
     line-height:1.6;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 
-/* PLANS */
+/* =========================
+   PLANS
+========================= */
 
 .plans{
     background:white;
@@ -181,14 +308,13 @@ section{
     color:white;
     padding:17px 12px;
     font-size:17px;
-    text-align:center;
 }
 
 .plan-table td{
     padding:15px 12px;
     text-align:center;
     border-bottom:1px solid #ddd;
-    font-size:17px;
+    font-size:16px;
     font-weight:600;
 }
 
@@ -205,13 +331,9 @@ section{
     color:#07549a;
 }
 
-.month-cell{
-    color:#333;
-}
-
 .price-cell{
     color:#087f32;
-    font-size:22px !important;
+    font-size:21px !important;
 }
 
 .plan-button{
@@ -225,12 +347,10 @@ section{
     font-weight:bold;
 }
 
-.plan-button:hover{
-    background:#1ebe5d;
-}
 
-
-/* WHY US */
+/* =========================
+   WHY US
+========================= */
 
 .why-us{
     background:#f5f8fc;
@@ -268,10 +388,12 @@ section{
 }
 
 
-/* SERVICES */
+/* =========================
+   SERVICES
+========================= */
 
 .services{
-    background:#f5f8fc;
+    background:white;
 }
 
 .services-container{
@@ -283,7 +405,7 @@ section{
 
 .service-card{
     width:280px;
-    background:white;
+    background:#f5f8fc;
     padding:32px 25px;
     border-radius:18px;
     text-align:center;
@@ -302,21 +424,23 @@ section{
 
 .service-card h3{
     color:#07549a;
-    font-size:23px;
+    font-size:22px;
     margin-bottom:12px;
 }
 
 .service-card p{
     color:#666;
     line-height:1.5;
-    margin-bottom:18px;
+    margin-bottom:15px;
 }
 
 
-/* ABOUT */
+/* =========================
+   ABOUT
+========================= */
 
 .about{
-    background:white;
+    background:#f5f8fc;
     text-align:center;
 }
 
@@ -332,10 +456,12 @@ section{
 }
 
 
-/* SERVICE AREA */
+/* =========================
+   SERVICE AREA
+========================= */
 
 .service-area{
-    background:#f5f8fc;
+    background:white;
     text-align:center;
 }
 
@@ -349,7 +475,7 @@ section{
 .area-card{
     width:240px;
     padding:30px 20px;
-    background:white;
+    background:#f5f8fc;
     border-radius:18px;
     box-shadow:0 5px 20px rgba(0,0,0,.08);
     transition:.3s;
@@ -366,7 +492,6 @@ section{
 
 .area-card h3{
     color:#07549a;
-    font-size:21px;
     margin-bottom:8px;
 }
 
@@ -374,22 +499,15 @@ section{
     color:#666;
 }
 
-.area-contact{
-    margin-top:40px;
-}
 
-.area-contact p{
-    color:#555;
-    margin:6px;
-}
-
-
-/* FORM BOX */
+/* =========================
+   FORMS
+========================= */
 
 .form-box{
     max-width:700px;
     margin:auto;
-    background:#f5f8fc;
+    background:white;
     padding:35px;
     border-radius:20px;
     box-shadow:0 5px 25px rgba(0,0,0,.08);
@@ -403,7 +521,6 @@ section{
     display:block;
     margin-bottom:7px;
     font-weight:bold;
-    color:#333;
 }
 
 .form-group input,
@@ -418,63 +535,187 @@ section{
     background:white;
 }
 
+.form-group textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus{
     border-color:#07549a;
 }
 
-.form-group textarea{
-    min-height:110px;
-    resize:vertical;
-}
-
 .submit-button{
     width:100%;
+    padding:15px;
+    border:0;
+    border-radius:8px;
     background:#25D366;
     color:white;
-    padding:15px;
-    border:none;
-    border-radius:8px;
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
 }
 
-.submit-button:hover{
-    background:#1ebe5d;
+
+/* =========================
+   CUSTOMER PORTAL
+========================= */
+
+.customer-portal{
+    background:#07549a;
+    color:white;
 }
 
-.form-note{
+.customer-portal .section-title{
+    color:white;
+}
+
+.customer-portal .section-subtitle{
+    color:#e7e7e7;
+}
+
+.dashboard{
+    display:none;
+    max-width:1050px;
+    margin:30px auto 0;
+    background:#f5f8fc;
+    color:#222;
+    padding:30px;
+    border-radius:20px;
+}
+
+.dashboard-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.dashboard-header h3{
+    color:#07549a;
+    font-size:26px;
+}
+
+.logout-button{
+    background:#dc3545;
+    color:white;
+    border:0;
+    padding:10px 18px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.customer-info{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.info-card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+
+.info-card span{
+    display:block;
+    color:#777;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.info-card strong{
+    color:#07549a;
+    font-size:18px;
+}
+
+.dashboard-actions{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.dashboard-card{
+    background:white;
+    padding:25px 18px;
+    border-radius:15px;
     text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+
+.dashboard-card-icon{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.dashboard-card h4{
+    color:#07549a;
+    margin-bottom:8px;
+}
+
+.dashboard-card p{
     color:#666;
-    margin-top:15px;
     font-size:14px;
+    line-height:1.5;
+}
+
+.referral{
+    margin-top:25px;
+    background:linear-gradient(135deg,#07549a,#0b8edb);
+    color:white;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.referral h3{
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.referral p{
+    line-height:1.6;
+}
+
+.security-box{
+    margin-top:20px;
+    background:white;
+    padding:20px;
+    border-radius:14px;
+}
+
+.security-box h4{
+    color:#07549a;
+    margin-bottom:8px;
+}
+
+.security-box p{
+    color:#666;
 }
 
 
-/* NEW CONNECTION */
+/* =========================
+   OTHER SECTIONS
+========================= */
 
 .connection{
-    background:white;
-}
-
-
-/* RENEWAL */
-
-.renewal{
     background:#f5f8fc;
 }
 
-
-/* COMPLAINT */
-
-.complaint{
+.renewal{
     background:white;
 }
 
-
-/* SUPPORT */
+.complaint{
+    background:#f5f8fc;
+}
 
 .support{
     background:#07549a;
@@ -490,9 +731,6 @@ section{
     color:#e5e5e5;
 }
 
-
-/* CONTACT */
-
 .contact{
     background:white;
     text-align:center;
@@ -504,7 +742,6 @@ section{
     background:#f5f8fc;
     padding:35px;
     border-radius:18px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
 .contact-box p{
@@ -519,7 +756,9 @@ section{
 }
 
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 footer{
     background:#111;
@@ -533,7 +772,9 @@ footer p{
 }
 
 
-/* WHATSAPP */
+/* =========================
+   WHATSAPP
+========================= */
 
 .whatsapp-float{
     position:fixed;
@@ -554,7 +795,9 @@ footer p{
 }
 
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:768px){
 
@@ -569,7 +812,7 @@ footer p{
     }
 
     nav{
-        gap:9px;
+        gap:8px;
     }
 
     nav a{
@@ -608,9 +851,50 @@ footer p{
         padding:25px 18px;
     }
 
-    .plan-table th,
-    .plan-table td{
-        padding:12px 10px;
+    .customer-info{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .dashboard-actions{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .first-login-box{
+        padding:25px 20px;
+    }
+
+    .first-login-box h1{
+        font-size:24px;
+    }
+
+    .customer-info{
+        grid-template-columns:1fr;
+    }
+
+    .dashboard-actions{
+        grid-template-columns:1fr;
+    }
+
+    .dashboard{
+        padding:20px;
+    }
+
+}
+
+
+/* =========================
+   MOBILE LOGIN
+========================= */
+
+@media(max-height:650px){
+
+    .first-login{
+        align-items:flex-start;
+        padding-top:15px;
     }
 
 }
@@ -623,7 +907,110 @@ footer p{
 <body>
 
 
-<!-- HEADER -->
+<!-- =====================================================
+     FIRST PAGE - LOGIN
+===================================================== -->
+
+<div class="first-login" id="firstLogin">
+
+    <div class="first-login-box">
+
+        <img src="logo.jpg"
+             alt="JS Internet Logo"
+             class="login-logo">
+
+        <h1>
+            Welcome to JS Internet
+        </h1>
+
+        <p class="login-subtitle">
+            Customer ID aur password se login karein
+        </p>
+
+
+        <form id="firstLoginForm">
+
+            <div class="login-field">
+
+                <label>
+                    Customer ID
+                </label>
+
+                <input
+                    type="text"
+                    id="firstCustomerId"
+                    placeholder="Example: JS10025"
+                    required>
+
+            </div>
+
+
+            <div class="login-field">
+
+                <label>
+                    Registered Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="firstCustomerMobile"
+                    placeholder="10 digit mobile number"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    required>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="first-login-button"
+                id="loginButton">
+
+                🔐 Login
+
+            </button>
+
+            <p id="loginMessage"
+               style="margin-top:15px;font-weight:bold;"></p>
+
+        </form>
+
+
+        <p class="login-help">
+
+            New Customer?
+
+            <a href="#connection"
+               onclick="continueAsNewCustomer()">
+
+                Get New Connection
+
+            </a>
+
+        </p>
+
+
+        <p class="demo-text">
+            Secure Customer Portal
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN WEBSITE
+===================================================== -->
+
+<div id="mainWebsite">
+
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -645,20 +1032,34 @@ footer p{
 
         <a href="#service-area">Area</a>
 
-        <a href="#connection">New Connection</a>
+        <a href="#customer-portal">
+            Customer Login
+        </a>
 
-        <a href="#renewal">Renewal</a>
+        <a href="#connection">
+            New Connection
+        </a>
 
-        <a href="#complaint">Complaint</a>
+        <a href="#renewal">
+            Renewal
+        </a>
 
-        <a href="#contact">Contact</a>
+        <a href="#complaint">
+            Complaint
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
 
     </nav>
 
 </header>
 
 
-<!-- HERO -->
+<!-- =========================
+     HOME
+========================= -->
 
 <section class="hero" id="home">
 
@@ -676,12 +1077,16 @@ footer p{
 
         <a href="#plans"
            class="button white">
+
             View Plans
+
         </a>
 
-        <a href="#connection"
+        <a href="#customer-portal"
            class="button green">
-            💬 Get New Connection
+
+            👤 Customer Portal
+
         </a>
 
     </div>
@@ -690,7 +1095,7 @@ footer p{
 
 
 <!-- =========================
-     NEW PLANS
+     PLANS
 ========================= -->
 
 <section class="plans" id="plans">
@@ -740,8 +1145,6 @@ footer p{
             <tbody>
 
 
-                <!-- 100 Mbps -->
-
                 <tr>
 
                     <td class="speed-cell">
@@ -752,7 +1155,7 @@ footer p{
                         📡 1000
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         1 Month
                     </td>
 
@@ -761,11 +1164,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('100 Mbps - 1000 Router Security - 1 Month - ₹1500')">
+                           onclick="selectPlan('100 Mbps - Router Security 1000 - 1 Month - ₹1500')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -781,7 +1188,7 @@ footer p{
                         📡 500
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         3 + 1 Month
                     </td>
 
@@ -790,11 +1197,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('100 Mbps - 500 Router Security - 3+1 Month - ₹2000')">
+                           onclick="selectPlan('100 Mbps - Router Security 500 - 3+1 Month - ₹2000')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -810,7 +1221,7 @@ footer p{
                         🚫 0
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         6 Month
                     </td>
 
@@ -819,17 +1230,19 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('100 Mbps - No Router Security - 6 Month - ₹3000')">
+                           onclick="selectPlan('100 Mbps - No Router - 6 Month - ₹3000')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
 
-
-                <!-- 150 Mbps -->
 
                 <tr>
 
@@ -841,7 +1254,7 @@ footer p{
                         📡 1000
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         1 Month
                     </td>
 
@@ -850,11 +1263,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('150 Mbps - 1000 Router Security - 1 Month - ₹1600')">
+                           onclick="selectPlan('150 Mbps - Router Security 1000 - 1 Month - ₹1600')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -870,7 +1287,7 @@ footer p{
                         📡 500
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         3 + 1 Month
                     </td>
 
@@ -879,11 +1296,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('150 Mbps - 500 Router Security - 3+1 Month - ₹2300')">
+                           onclick="selectPlan('150 Mbps - Router Security 500 - 3+1 Month - ₹2300')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -899,7 +1320,7 @@ footer p{
                         🚫 0
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         6 Month
                     </td>
 
@@ -908,17 +1329,19 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('150 Mbps - No Router Security - 6 Month - ₹3200')">
+                           onclick="selectPlan('150 Mbps - No Router - 6 Month - ₹3200')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
 
-
-                <!-- 200 Mbps -->
 
                 <tr>
 
@@ -930,7 +1353,7 @@ footer p{
                         📡 1000
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         1 Month
                     </td>
 
@@ -939,11 +1362,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('200 Mbps - 1000 Router Security - 1 Month - ₹1700')">
+                           onclick="selectPlan('200 Mbps - Router Security 1000 - 1 Month - ₹1700')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -959,7 +1386,7 @@ footer p{
                         📡 500
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         3 + 1 Month
                     </td>
 
@@ -968,11 +1395,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('200 Mbps - 500 Router Security - 3+1 Month - ₹2600')">
+                           onclick="selectPlan('200 Mbps - Router Security 500 - 3+1 Month - ₹2600')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -988,7 +1419,7 @@ footer p{
                         🚫 0
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         6 Month
                     </td>
 
@@ -997,17 +1428,19 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('200 Mbps - No Router Security - 6 Month - ₹3400')">
+                           onclick="selectPlan('200 Mbps - No Router - 6 Month - ₹3400')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
 
-
-                <!-- 300 Mbps -->
 
                 <tr>
 
@@ -1019,7 +1452,7 @@ footer p{
                         📡 1000
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         1 Month
                     </td>
 
@@ -1028,11 +1461,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('300 Mbps - 1000 Router Security - 1 Month - ₹1800')">
+                           onclick="selectPlan('300 Mbps - Router Security 1000 - 1 Month - ₹1800')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -1048,7 +1485,7 @@ footer p{
                         📡 500
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         3 + 1 Month
                     </td>
 
@@ -1057,11 +1494,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('300 Mbps - 500 Router Security - 3+1 Month - ₹2900')">
+                           onclick="selectPlan('300 Mbps - Router Security 500 - 3+1 Month - ₹2900')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -1077,7 +1518,7 @@ footer p{
                         🚫 0
                     </td>
 
-                    <td class="month-cell">
+                    <td>
                         6 Month
                     </td>
 
@@ -1086,11 +1527,15 @@ footer p{
                     </td>
 
                     <td>
+
                         <a href="#connection"
                            class="plan-button"
-                           onclick="selectPlan('300 Mbps - No Router Security - 6 Month - ₹4200')">
+                           onclick="selectPlan('300 Mbps - No Router - 6 Month - ₹4200')">
+
                             Select
+
                         </a>
+
                     </td>
 
                 </tr>
@@ -1102,21 +1547,14 @@ footer p{
 
     </div>
 
-
-    <div style="text-align:center;margin-top:25px;">
-
-        <p style="color:#666;">
-            📡 Router Security options as per selected plan.
-        </p>
-
-    </div>
-
 </section>
 
 
-<!-- WHY US -->
+<!-- =========================
+     WHY US
+========================= -->
 
-<section class="why-us" id="why-us">
+<section class="why-us">
 
     <h2 class="section-title">
         Why Choose JS Internet?
@@ -1142,7 +1580,7 @@ footer p{
 
             <p>
                 Fast broadband connection for
-                streaming, work and everyday use.
+                everyday internet use.
             </p>
 
         </div>
@@ -1177,8 +1615,8 @@ footer p{
             </h3>
 
             <p>
-                Multiple plans designed for
-                different customer requirements.
+                Multiple plans for different
+                customer requirements.
             </p>
 
         </div>
@@ -1195,7 +1633,7 @@ footer p{
             </h3>
 
             <p>
-                Contact our support team whenever
+                Contact our support team when
                 you need assistance.
             </p>
 
@@ -1207,7 +1645,9 @@ footer p{
 </section>
 
 
-<!-- CUSTOMER SERVICES -->
+<!-- =========================
+     SERVICES
+========================= -->
 
 <section class="services" id="services">
 
@@ -1240,9 +1680,7 @@ footer p{
 
             <a href="#connection"
                class="button blue">
-
                 Apply Now
-
             </a>
 
         </div>
@@ -1265,9 +1703,7 @@ footer p{
 
             <a href="#renewal"
                class="button blue">
-
                 Renew Plan
-
             </a>
 
         </div>
@@ -1290,9 +1726,30 @@ footer p{
 
             <a href="#complaint"
                class="button blue">
+                Complaint
+            </a>
 
-                Register Complaint
+        </div>
 
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                👤
+            </div>
+
+            <h3>
+                Customer Portal
+            </h3>
+
+            <p>
+                Check your plan and connection
+                details.
+            </p>
+
+            <a href="#customer-portal"
+               class="button blue">
+                Login
             </a>
 
         </div>
@@ -1303,7 +1760,9 @@ footer p{
 </section>
 
 
-<!-- ABOUT -->
+<!-- =========================
+     ABOUT
+========================= -->
 
 <section class="about" id="about">
 
@@ -1321,10 +1780,8 @@ footer p{
         <p>
             JS Internet provides broadband internet
             connectivity for homes and businesses.
-
-            We focus on providing affordable plans,
-            reliable connectivity and customer support
-            to our customers.
+            We focus on affordable plans, reliable
+            connectivity and customer support.
         </p>
 
     </div>
@@ -1332,7 +1789,9 @@ footer p{
 </section>
 
 
-<!-- SERVICE AREA -->
+<!-- =========================
+     SERVICE AREA
+========================= -->
 
 <section class="service-area" id="service-area">
 
@@ -1419,39 +1878,248 @@ footer p{
 
     </div>
 
+</section>
 
-    <div class="area-contact">
 
-        <p>
-            📶 Is your area not listed?
-        </p>
+<!-- =========================
+     CUSTOMER PORTAL
+========================= -->
 
-        <p>
-            Contact us to check availability.
-        </p>
+<section class="customer-portal"
+         id="customer-portal">
 
-        <a href="#connection"
-           class="button green">
+    <h2 class="section-title">
+        Customer Portal
+    </h2>
 
-            💬 Check Availability
+    <p class="section-subtitle">
+        View your JS Internet account
+    </p>
 
-        </a>
+
+    <div class="dashboard"
+         id="dashboard">
+
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <h3>
+                    Welcome, <span id="welcomeCustomerName">JS Internet Customer</span> 👋
+                </h3>
+
+                <p>
+                    Your connection details
+                </p>
+
+            </div>
+
+
+            <button
+                class="logout-button"
+                onclick="logoutCustomer()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+
+        <div class="customer-info">
+
+
+            <div class="info-card">
+                <span>Customer ID</span>
+                <strong id="showCustomerId">-</strong>
+            </div>
+
+
+            <div class="info-card">
+                <span>Customer Name</span>
+                <strong id="showCustomerName">-</strong>
+            </div>
+
+
+            <div class="info-card">
+                <span>Mobile</span>
+                <strong id="showCustomerMobile">-</strong>
+            </div>
+
+
+            <div class="info-card">
+                <span>Current Plan</span>
+                <strong id="showCustomerPlan">-</strong>
+            </div>
+
+
+            <div class="info-card">
+                <span>Plan Status</span>
+                <strong id="showCustomerStatus">-</strong>
+            </div>
+
+
+            <div class="info-card">
+                <span>Plan Expiry</span>
+                <strong id="showCustomerExpiry">-</strong>
+            </div>
+
+
+            <div class="info-card" style="grid-column:span 2;">
+                <span>Address</span>
+                <strong id="showCustomerAddress">-</strong>
+            </div>
+
+
+        </div>
+
+
+        <div class="dashboard-actions">
+
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-icon">
+                    📦
+                </div>
+
+                <h4>
+                    My Plan
+                </h4>
+
+                <p>
+                    View your current internet plan.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-icon">
+                    🔄
+                </div>
+
+                <h4>
+                    Renewal
+                </h4>
+
+                <p>
+                    Renew your internet plan.
+                </p>
+
+                <a href="#renewal"
+                   class="button blue">
+                    Renew
+                </a>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-icon">
+                    🛠️
+                </div>
+
+                <h4>
+                    Complaint
+                </h4>
+
+                <p>
+                    Report an internet problem.
+                </p>
+
+                <a href="#complaint"
+                   class="button blue">
+                    Complaint
+                </a>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-icon">
+                    📞
+                </div>
+
+                <h4>
+                    Support
+                </h4>
+
+                <p>
+                    Contact JS Internet support.
+                </p>
+
+                <a href="https://wa.me/918800969880"
+                   class="button green">
+                    WhatsApp
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="referral">
+
+            <h3>
+                🎁 Refer & Earn
+            </h3>
+
+            <p>
+                1 Customer Do → 1 Mahine Free
+                Aapka WiFi Plan
+            </p>
+
+            <br>
+
+            <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20to%20refer%20a%20customer."
+               class="button white">
+
+                Refer Customer
+
+            </a>
+
+        </div>
+
+
+        <div class="security-box">
+
+            <h4>
+                🔒 Router Security
+            </h4>
+
+            <p>
+                Router security details will be
+                connected with your customer account
+                when the real database is added.
+            </p>
+
+        </div>
+
 
     </div>
 
 </section>
 
 
-<!-- NEW CONNECTION -->
+<!-- =========================
+     NEW CONNECTION
+========================= -->
 
-<section class="connection" id="connection">
+<section class="connection"
+         id="connection">
 
     <h2 class="section-title">
         Get a New Connection
     </h2>
 
     <p class="section-subtitle">
-        Select your plan and send your enquiry on WhatsApp
+        Select your plan and send your enquiry
     </p>
 
 
@@ -1484,7 +2152,7 @@ footer p{
                 <input
                     type="tel"
                     id="mobile"
-                    placeholder="Enter 10 digit mobile number"
+                    placeholder="10 digit mobile number"
                     maxlength="10"
                     pattern="[0-9]{10}"
                     required>
@@ -1604,7 +2272,7 @@ footer p{
 
                 <textarea
                     id="address"
-                    placeholder="Enter your complete address"
+                    placeholder="Enter complete address"
                     required></textarea>
 
             </div>
@@ -1618,12 +2286,6 @@ footer p{
 
             </button>
 
-
-            <p class="form-note">
-                Your enquiry details will open in WhatsApp.
-            </p>
-
-
         </form>
 
     </div>
@@ -1631,9 +2293,12 @@ footer p{
 </section>
 
 
-<!-- PLAN RENEWAL -->
+<!-- =========================
+     RENEWAL
+========================= -->
 
-<section class="renewal" id="renewal">
+<section class="renewal"
+         id="renewal">
 
     <h2 class="section-title">
         Plan Renewal
@@ -1658,7 +2323,6 @@ footer p{
                 <input
                     type="text"
                     id="renewalName"
-                    placeholder="Enter your name"
                     required>
 
             </div>
@@ -1673,44 +2337,9 @@ footer p{
                 <input
                     type="tel"
                     id="renewalMobile"
-                    placeholder="Enter 10 digit mobile number"
                     maxlength="10"
                     pattern="[0-9]{10}"
                     required>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Current Plan *
-                </label>
-
-                <select id="currentPlan"
-                        required>
-
-                    <option value="">
-                        Select current plan
-                    </option>
-
-                    <option>
-                        100 Mbps
-                    </option>
-
-                    <option>
-                        150 Mbps
-                    </option>
-
-                    <option>
-                        200 Mbps
-                    </option>
-
-                    <option>
-                        300 Mbps
-                    </option>
-
-                </select>
 
             </div>
 
@@ -1789,12 +2418,6 @@ footer p{
 
             </button>
 
-
-            <p class="form-note">
-                Our team will contact you regarding renewal.
-            </p>
-
-
         </form>
 
     </div>
@@ -1802,9 +2425,12 @@ footer p{
 </section>
 
 
-<!-- COMPLAINT -->
+<!-- =========================
+     COMPLAINT
+========================= -->
 
-<section class="complaint" id="complaint">
+<section class="complaint"
+         id="complaint">
 
     <h2 class="section-title">
         Internet Complaint
@@ -1829,7 +2455,6 @@ footer p{
                 <input
                     type="text"
                     id="complaintName"
-                    placeholder="Enter your name"
                     required>
 
             </div>
@@ -1844,7 +2469,6 @@ footer p{
                 <input
                     type="tel"
                     id="complaintMobile"
-                    placeholder="Enter 10 digit mobile number"
                     maxlength="10"
                     pattern="[0-9]{10}"
                     required>
@@ -1902,7 +2526,7 @@ footer p{
 
                 <textarea
                     id="complaintMessage"
-                    placeholder="Explain your problem"
+                    placeholder="Describe your problem"
                     required></textarea>
 
             </div>
@@ -1916,12 +2540,6 @@ footer p{
 
             </button>
 
-
-            <p class="form-note">
-                Your complaint details will open in WhatsApp.
-            </p>
-
-
         </form>
 
     </div>
@@ -1929,9 +2547,11 @@ footer p{
 </section>
 
 
-<!-- SUPPORT -->
+<!-- =========================
+     SUPPORT
+========================= -->
 
-<section class="support" id="support">
+<section class="support">
 
     <h2 class="section-title">
         Customer Support
@@ -1942,7 +2562,7 @@ footer p{
     </p>
 
 
-    <a href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20need%20customer%20support."
+    <a href="https://wa.me/918800969880"
        class="button green">
 
         💬 WhatsApp Support
@@ -1960,9 +2580,12 @@ footer p{
 </section>
 
 
-<!-- CONTACT -->
+<!-- =========================
+     CONTACT
+========================= -->
 
-<section class="contact" id="contact">
+<section class="contact"
+         id="contact">
 
     <h2 class="section-title">
         Contact JS Internet
@@ -1976,7 +2599,7 @@ footer p{
     <div class="contact-box">
 
         <p>
-            📞 Phone:
+            📞
             <a href="tel:+918800969880">
                 8800969880
             </a>
@@ -1984,7 +2607,7 @@ footer p{
 
 
         <p>
-            📞 Phone:
+            📞
             <a href="tel:+918700067673">
                 8700067673
             </a>
@@ -1992,14 +2615,11 @@ footer p{
 
 
         <p>
-            💬 WhatsApp:
+            💬
             <a href="https://wa.me/918800969880">
-                Chat with us
+                WhatsApp
             </a>
         </p>
-
-
-        <br>
 
 
         <a href="https://wa.me/918800969880"
@@ -2022,7 +2642,9 @@ footer p{
 </section>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
@@ -2037,7 +2659,9 @@ footer p{
 </footer>
 
 
-<!-- FLOATING WHATSAPP -->
+<!-- =========================
+     FLOATING WHATSAPP
+========================= -->
 
 <a href="https://wa.me/918800969880"
    class="whatsapp-float"
@@ -2048,69 +2672,368 @@ footer p{
 </a>
 
 
-<!-- JAVASCRIPT -->
-
-<script>
+</div>
 
 
-/* PLAN SELECT */
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
-function selectPlan(planName){
+<script type="module">
 
-    document.getElementById("plan").value = planName;
+/* =====================================================
+   FIREBASE
+===================================================== */
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBjf0oUeD63l4MAyyWvXZm-CrKBH3T1DHk",
+    authDomain: "js-internet-4777a.firebaseapp.com",
+    projectId: "js-internet-4777a",
+    storageBucket: "js-internet-4777a.firebasestorage.app",
+    messagingSenderId: "447935925878",
+    appId: "1:447935925878:web:b3571d693a165924651957",
+    measurementId: "G-CKHHHSQ905"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function showMainWebsite() {
+    document.getElementById("firstLogin").style.display = "none";
+    document.getElementById("mainWebsite").style.display = "block";
+}
+
+function showLoginScreen() {
+    document.getElementById("mainWebsite").style.display = "none";
+    document.getElementById("firstLogin").style.display = "flex";
+}
+
+function setLoginMessage(message, success = false) {
+    const el = document.getElementById("loginMessage");
+    if (!el) return;
+    el.innerText = message;
+    el.style.color = success ? "#087f32" : "#dc3545";
+}
+
+function setCustomerText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = value || "-";
 }
 
 
-/* NEW CONNECTION */
+/* =====================================================
+   CUSTOMER FIRESTORE DATA
+===================================================== */
 
-document.getElementById("connectionForm").addEventListener("submit",function(event){
+async function loadCustomerData(user) {
+
+    try {
+
+        const customerRef = doc(db, "users", user.uid);
+        const customerSnap = await getDoc(customerRef);
+
+        if (!customerSnap.exists()) {
+
+            setLoginMessage(
+                "Customer account found, but customer data is not added yet."
+            );
+
+            await signOut(auth);
+            return;
+        }
+
+        const data = customerSnap.data();
+
+        if (data.role && data.role !== "customer") {
+
+            setLoginMessage("This account is not a customer account.");
+
+            await signOut(auth);
+            return;
+        }
+
+        setCustomerText("showCustomerId", data.customerId);
+        setCustomerText("showCustomerName", data.name);
+        setCustomerText("showCustomerMobile", data.mobile);
+        setCustomerText("showCustomerPlan", data.plan);
+        setCustomerText("showCustomerStatus", data.status);
+        setCustomerText("showCustomerExpiry", data.expiryDate);
+        setCustomerText("showCustomerAddress", data.address);
+        setCustomerText("welcomeCustomerName", data.name || "Customer");
+
+        showMainWebsite();
+
+        document.getElementById("dashboard").style.display = "block";
+
+        setLoginMessage("Login successful.", true);
+
+        setTimeout(() => {
+            setLoginMessage("");
+        }, 1500);
+
+    } catch (error) {
+
+        console.error(error);
+
+        setLoginMessage(
+            "Customer data load nahi ho pa raha. Please try again."
+        );
+
+        await signOut(auth);
+    }
+}
+
+
+/* =====================================================
+   CUSTOMER LOGIN
+===================================================== */
+
+document.getElementById("firstLoginForm")
+.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
-    var name =
+    const customerId =
+        document.getElementById("firstCustomerId").value.trim();
+
+    const password =
+        document.getElementById("firstCustomerPassword").value;
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    if (!customerId) {
+        setLoginMessage("Please enter Customer ID.");
+        return;
+    }
+
+    if (!password) {
+        setLoginMessage("Please enter your password.");
+        return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.innerText = "Logging in...";
+    setLoginMessage("");
+
+    /*
+       Firebase Authentication uses an email identifier.
+       Customers enter only their Customer ID.
+       Internally we map:
+       JS1001 -> JS1001@jsinternet.local
+    */
+    const loginEmail =
+        customerId.toLowerCase() + "@jsinternet.local";
+
+    try {
+
+        await signInWithEmailAndPassword(
+            auth,
+            loginEmail,
+            password
+        );
+
+        // onAuthStateChanged() will load Firestore customer data.
+
+    } catch (error) {
+
+        console.error(error);
+
+        let message = "Login failed. Please check Customer ID and password.";
+
+        if (
+            error.code === "auth/invalid-credential" ||
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/user-not-found"
+        ) {
+            message = "Customer ID ya password galat hai.";
+        }
+
+        if (error.code === "auth/too-many-requests") {
+            message = "Too many login attempts. Thodi der baad try karein.";
+        }
+
+        setLoginMessage(message);
+
+        loginButton.disabled = false;
+        loginButton.innerText = "🔐 Login";
+    }
+
+});
+
+
+/* =====================================================
+   FIREBASE AUTH STATE
+===================================================== */
+
+onAuthStateChanged(auth, async function(user) {
+
+    if (user) {
+
+        await loadCustomerData(user);
+
+    } else {
+
+        /*
+           New customers can still browse the public website
+           using the existing "Get New Connection" option.
+        */
+        if (localStorage.getItem("jsGuestMode") === "true") {
+            showMainWebsite();
+        } else {
+            showLoginScreen();
+        }
+    }
+
+});
+
+
+/* =====================================================
+   NEW CUSTOMER / GUEST
+===================================================== */
+
+window.continueAsNewCustomer = function() {
+
+    localStorage.setItem("jsGuestMode", "true");
+
+    showMainWebsite();
+
+    setTimeout(function() {
+
+        const connection =
+            document.getElementById("connection");
+
+        if (connection) {
+            connection.scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+    }, 100);
+};
+
+
+/* =====================================================
+   PLAN SELECT
+===================================================== */
+
+window.selectPlan = function(planName) {
+
+    const plan = document.getElementById("plan");
+
+    if (plan) {
+        plan.value = planName;
+    }
+
+};
+
+
+/* =====================================================
+   CUSTOMER DASHBOARD
+===================================================== */
+
+window.openCustomerDashboard = function() {
+
+    const dashboard =
+        document.getElementById("dashboard");
+
+    if (dashboard) {
+        dashboard.style.display = "block";
+    }
+
+};
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+window.logoutCustomer = async function() {
+
+    try {
+
+        localStorage.removeItem("jsGuestMode");
+
+        await signOut(auth);
+
+        document.getElementById("firstLoginForm").reset();
+
+        setLoginMessage("");
+
+        showLoginScreen();
+
+        window.scrollTo(0, 0);
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Logout failed. Please try again.");
+
+    }
+
+};
+
+
+/* =====================================================
+   NEW CONNECTION
+===================================================== */
+
+document.getElementById("connectionForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const name =
         document.getElementById("name").value.trim();
 
-    var mobile =
+    const mobile =
         document.getElementById("mobile").value.trim();
 
-    var area =
+    const area =
         document.getElementById("area").value;
 
-    var plan =
+    const plan =
         document.getElementById("plan").value;
 
-    var address =
+    const address =
         document.getElementById("address").value.trim();
 
+    if (!/^[0-9]{10}$/.test(mobile)) {
 
-    var message =
+        alert("Please enter a valid 10 digit mobile number.");
+        return;
+
+    }
+
+    const message =
         "Hello JS Internet,%0A%0A" +
-
         "I want a New Internet Connection.%0A%0A" +
-
-        "👤 Name: " +
-        encodeURIComponent(name) +
-        "%0A" +
-
-        "📱 Mobile: " +
-        encodeURIComponent(mobile) +
-        "%0A" +
-
-        "📍 Area: " +
-        encodeURIComponent(area) +
-        "%0A" +
-
-        "📦 Plan: " +
-        encodeURIComponent(plan) +
-        "%0A" +
-
-        "🏠 Address: " +
-        encodeURIComponent(address) +
-        "%0A%0A" +
-
-        "Please contact me regarding the connection.";
-
+        "Name: " + encodeURIComponent(name) + "%0A" +
+        "Mobile: " + encodeURIComponent(mobile) + "%0A" +
+        "Area: " + encodeURIComponent(area) + "%0A" +
+        "Plan: " + encodeURIComponent(plan) + "%0A" +
+        "Address: " + encodeURIComponent(address);
 
     window.open(
         "https://wa.me/918800969880?text=" + message,
@@ -2120,48 +3043,37 @@ document.getElementById("connectionForm").addEventListener("submit",function(eve
 });
 
 
-/* RENEWAL */
+/* =====================================================
+   RENEWAL
+===================================================== */
 
-document.getElementById("renewalForm").addEventListener("submit",function(event){
+document.getElementById("renewalForm")
+.addEventListener("submit", function(event) {
 
     event.preventDefault();
 
-    var name =
+    const name =
         document.getElementById("renewalName").value.trim();
 
-    var mobile =
+    const mobile =
         document.getElementById("renewalMobile").value.trim();
 
-    var currentPlan =
-        document.getElementById("currentPlan").value;
-
-    var renewalPlan =
+    const plan =
         document.getElementById("renewalPlan").value;
 
+    if (!/^[0-9]{10}$/.test(mobile)) {
 
-    var message =
+        alert("Please enter a valid 10 digit mobile number.");
+        return;
+
+    }
+
+    const message =
         "Hello JS Internet,%0A%0A" +
-
         "I want to renew my internet plan.%0A%0A" +
-
-        "👤 Customer Name: " +
-        encodeURIComponent(name) +
-        "%0A" +
-
-        "📱 Mobile: " +
-        encodeURIComponent(mobile) +
-        "%0A" +
-
-        "📦 Current Plan: " +
-        encodeURIComponent(currentPlan) +
-        "%0A" +
-
-        "🔄 Renewal Plan: " +
-        encodeURIComponent(renewalPlan) +
-        "%0A%0A" +
-
-        "Please contact me regarding plan renewal.";
-
+        "Customer Name: " + encodeURIComponent(name) + "%0A" +
+        "Mobile: " + encodeURIComponent(mobile) + "%0A" +
+        "Renewal Plan: " + encodeURIComponent(plan);
 
     window.open(
         "https://wa.me/918800969880?text=" + message,
@@ -2171,48 +3083,41 @@ document.getElementById("renewalForm").addEventListener("submit",function(event)
 });
 
 
-/* COMPLAINT */
+/* =====================================================
+   COMPLAINT
+===================================================== */
 
-document.getElementById("complaintForm").addEventListener("submit",function(event){
+document.getElementById("complaintForm")
+.addEventListener("submit", function(event) {
 
     event.preventDefault();
 
-    var name =
+    const name =
         document.getElementById("complaintName").value.trim();
 
-    var mobile =
+    const mobile =
         document.getElementById("complaintMobile").value.trim();
 
-    var type =
+    const type =
         document.getElementById("complaintType").value;
 
-    var problem =
+    const problem =
         document.getElementById("complaintMessage").value.trim();
 
+    if (!/^[0-9]{10}$/.test(mobile)) {
 
-    var message =
+        alert("Please enter a valid 10 digit mobile number.");
+        return;
+
+    }
+
+    const message =
         "Hello JS Internet,%0A%0A" +
-
-        "I want to register an internet complaint.%0A%0A" +
-
-        "👤 Customer Name: " +
-        encodeURIComponent(name) +
-        "%0A" +
-
-        "📱 Mobile: " +
-        encodeURIComponent(mobile) +
-        "%0A" +
-
-        "🛠️ Complaint Type: " +
-        encodeURIComponent(type) +
-        "%0A" +
-
-        "📝 Problem Details: " +
-        encodeURIComponent(problem) +
-        "%0A%0A" +
-
-        "Please help resolve my complaint.";
-
+        "I want to register an Internet Complaint.%0A%0A" +
+        "Customer Name: " + encodeURIComponent(name) + "%0A" +
+        "Mobile: " + encodeURIComponent(mobile) + "%0A" +
+        "Complaint Type: " + encodeURIComponent(type) + "%0A" +
+        "Problem: " + encodeURIComponent(problem);
 
     window.open(
         "https://wa.me/918800969880?text=" + message,
@@ -2220,7 +3125,6 @@ document.getElementById("complaintForm").addEventListener("submit",function(even
     );
 
 });
-
 
 </script>
 
