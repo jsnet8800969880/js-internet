@@ -1427,8 +1427,8 @@ footer p{
 
         <a href="#service-area">Area</a>
 
-        <a href="#customer-portal">
-            Customer Login
+        <a href="#" onclick="showLoginScreen(); return false;">
+            🔐 Customer Login
         </a>
 
         <a href="#connection">
@@ -3133,7 +3133,10 @@ function showMainWebsite() {
 
 function showLoginScreen() {
     document.getElementById("mainWebsite").style.display = "none";
+    document.getElementById("staffPanel").style.display = "none";
+    document.getElementById("adminPanel").style.display = "none";
     document.getElementById("firstLogin").style.display = "flex";
+    window.scrollTo(0, 0);
 }
 
 function setLoginMessage(message, success = false) {
