@@ -629,6 +629,16 @@ section{
     font-size:18px;
 }
 
+/* Customer dashboard - expired plan */
+.customer-expired-card{
+    border:2px solid #fecaca!important;
+    background:#fff1f2!important;
+}
+.customer-expired-text{
+    color:#dc2626!important;
+    font-weight:800!important;
+}
+
 .dashboard-actions{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -1022,6 +1032,12 @@ footer p{
     min-width:900px;
     border-collapse:collapse;
 }
+.staff-table th:nth-child(1),.staff-table td:nth-child(1){min-width:90px;}
+.staff-table th:nth-child(2),.staff-table td:nth-child(2){min-width:140px;}
+.staff-table th:nth-child(3),.staff-table td:nth-child(3){min-width:220px;}
+.staff-table th:nth-child(4),.staff-table td:nth-child(4){min-width:125px;}
+.staff-table th:nth-child(5),.staff-table td:nth-child(5){min-width:90px;}
+.staff-table th:nth-child(6),.staff-table td:nth-child(6){min-width:200px;}
 
 .staff-table th{
     background:#07549a;
@@ -1172,6 +1188,7 @@ footer p{
 .phase9-note{font-size:13px;color:#666;margin:0 0 14px}
 @media(max-width:700px){.phase9-security-grid{grid-template-columns:1fr}.phase9-security-grid .staff-form-full{grid-column:auto}.phase9-security-card{padding:16px}.phase9-security-actions button{flex:1 1 140px}}
 
+#newCustomerOffersSection{display:none !important;}
 </style>
 
 <style id="phase7-report-ui">
@@ -1361,8 +1378,173 @@ button,
     .hero h1{font-size:26px;}
 }
 
+<style id="customer-separate-page-ui">
+#customer-portal{display:none;min-height:100vh;background:#07549a;padding:28px 16px 50px;box-sizing:border-box;}
+#customer-portal .section-title{display:none;}
+#customer-portal .section-subtitle{display:none;}
+#customer-portal .dashboard{display:none;max-width:1100px;margin:0 auto;background:#f5f8fc;color:#222;padding:26px;border-radius:20px;box-sizing:border-box;}
+#customer-portal .dashboard-header{margin-bottom:22px;}
+#customer-portal .dashboard-header h3{margin:0;color:#07549a;font-size:25px;}
+#customer-portal .customer-info{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){#customer-portal{padding:12px 10px 30px;}#customer-portal .dashboard{padding:16px;border-radius:14px;}#customer-portal .customer-info{grid-template-columns:repeat(2,1fr);}#customer-portal .customer-info .info-card[style*="grid-column"]{grid-column:span 2 !important;}}
+@media(max-width:560px){#customer-portal .customer-info{grid-template-columns:1fr;}#customer-portal .customer-info .info-card[style*="grid-column"]{grid-column:span 1 !important;}#customer-portal .dashboard-actions{grid-template-columns:1fr 1fr;gap:10px;}#customer-portal .dashboard-card{padding:16px 10px;}#customer-portal .dashboard-card-icon{font-size:30px;}#customer-portal .dashboard-header{align-items:flex-start;}#customer-portal .dashboard-header h3{font-size:21px;}}
+
+/* Customer dashboard: hide public footer only while customer is logged in */
+
 </style>
 
+
+<style id="js-role-public-hide-guard">
+/* Public website must never remain visible underneath logged-in Staff/Admin/Customer dashboards. */
+body.admin-dashboard-active #mainWebsite,
+body.staff-dashboard-active #mainWebsite,
+body.customer-dashboard-active #mainWebsite{
+  display:none !important;
+}
+body.admin-dashboard-active #firstLogin,
+body.staff-dashboard-active #firstLogin,
+body.customer-dashboard-active #firstLogin{
+  display:none !important;
+}
+body.admin-dashboard-active #staffPanel,
+body.staff-dashboard-active #adminPanel,
+body.customer-dashboard-active #staffPanel,
+body.customer-dashboard-active #adminPanel{
+  display:none !important;
+}
+
+/* Extra protection for public sections that may sit outside #mainWebsite. */
+body.admin-dashboard-active #connection,
+body.staff-dashboard-active #connection,
+body.customer-dashboard-active #connection,
+body.admin-dashboard-active #renewal,
+body.staff-dashboard-active #renewal,
+body.customer-dashboard-active #renewal,
+body.admin-dashboard-active #complaint,
+body.staff-dashboard-active #complaint,
+body.customer-dashboard-active #complaint,
+body.admin-dashboard-active #contact,
+body.staff-dashboard-active #contact,
+body.customer-dashboard-active #contact,
+body.admin-dashboard-active #publicFooter,
+body.staff-dashboard-active #publicFooter,
+body.customer-dashboard-active #publicFooter,
+body.admin-dashboard-active section.support,
+body.staff-dashboard-active section.support,
+body.customer-dashboard-active section.support,
+body.admin-dashboard-active #customerSupportSection,
+body.staff-dashboard-active #customerSupportSection,
+body.customer-dashboard-active #customerSupportSection,
+body.admin-dashboard-active footer,
+body.staff-dashboard-active footer,
+body.customer-dashboard-active footer,
+body.admin-dashboard-active a.whatsapp-float,
+body.staff-dashboard-active a.whatsapp-float,
+body.customer-dashboard-active a.whatsapp-float{
+  display:none !important;
+}
+</style>
+
+
+<style id="public-footer-visibility-final">
+/* Public page footer: visible on the public site, hidden inside logged-in dashboards. */
+#publicFooter{display:block !important;}
+body.admin-dashboard-active #publicFooter,
+body.staff-dashboard-active #publicFooter,
+body.customer-dashboard-active #publicFooter{
+  display:none !important;
+}
+
+</style>
+
+<style id="staff-notification-popup-ui">
+#staffNotificationPopupStack{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  width:min(380px,calc(100vw - 36px));
+  display:grid;
+  gap:10px;
+  pointer-events:none;
+}
+.staff-notification-popup{
+  background:#fff;
+  border:1px solid #dbe5ef;
+  border-left:5px solid #07549a;
+  border-radius:12px;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  padding:13px 14px;
+  pointer-events:auto;
+  animation:staffNotificationPopIn .28s ease-out;
+}
+.staff-notification-popup .popup-title{
+  font-weight:800;
+  color:#07549a;
+  font-size:14px;
+  margin-bottom:4px;
+}
+.staff-notification-popup .popup-message{
+  color:#333;
+  font-size:13px;
+  line-height:1.45;
+  white-space:pre-line;
+}
+.staff-notification-popup .popup-meta{
+  color:#777;
+  font-size:11px;
+  margin-top:6px;
+}
+.staff-notification-popup .popup-close{
+  float:right;
+  border:0;
+  background:transparent;
+  color:#777;
+  font-size:18px;
+  line-height:1;
+  cursor:pointer;
+  padding:0 0 4px 8px;
+}
+@keyframes staffNotificationPopIn{
+  from{opacity:0;transform:translateY(12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+</style>
+<style id="js-dashboard-hard-hide-v5">
+/* V5: Never show public/action areas inside logged-in dashboards. */
+body.admin-dashboard-active #mainWebsite,
+body.staff-dashboard-active #mainWebsite,
+body.customer-dashboard-active #mainWebsite,
+body.admin-dashboard-active #customer-portal,
+body.staff-dashboard-active #customer-portal,
+body.customer-dashboard-active #customerActionArea,
+body.admin-dashboard-active #customerActionArea,
+body.staff-dashboard-active #customerActionArea,
+body.admin-dashboard-active #customerSupportSection,
+body.staff-dashboard-active #customerSupportSection,
+body.customer-dashboard-active #customerSupportSection,
+body.admin-dashboard-active #connection,
+body.staff-dashboard-active #connection,
+body.customer-dashboard-active #connection,
+body.admin-dashboard-active #renewal,
+body.staff-dashboard-active #renewal,
+body.customer-dashboard-active #renewal,
+body.admin-dashboard-active #complaint,
+body.staff-dashboard-active #complaint,
+body.customer-dashboard-active #complaint,
+body.admin-dashboard-active #contact,
+body.staff-dashboard-active #contact,
+body.customer-dashboard-active #contact,
+body.admin-dashboard-active #publicFooter,
+body.staff-dashboard-active #publicFooter,
+body.customer-dashboard-active #publicFooter,
+body.admin-dashboard-active footer,
+body.staff-dashboard-active footer,
+body.customer-dashboard-active footer,
+body.admin-dashboard-active .support,
+body.staff-dashboard-active .support,
+body.customer-dashboard-active .support { display:none !important; }
+</style>
 </head>
 <body>
 <!-- =====================================================
@@ -1486,6 +1668,7 @@ button,
 <strong>Search</strong>
 <small>Search &amp; Reports</small>
 </div>
+<div class="staff-expiry-stat action-stat stat-click" onclick="openStaffAttendanceCard()" onkeydown="if(event.key==='Enter'||event.key===' '){openStaffAttendanceCard();}" role="button" tabindex="0" title="Attendance aur salary dekhein"><span>🕘</span><strong id="staffAttendanceStatusBox">Duty</strong><small>Attendance & Salary</small></div>
 <div style="display:none !important;" class="staff-expiry-stat action-stat stat-click" onclick="openStaffSecurityCard()" onkeydown="if(event.key==='Enter'||event.key===' '){openStaffSecurityCard();}" role="button" tabindex="0" title="Profile aur security settings"><span>🔒</span><strong>Security</strong><small>Profile &amp; Password</small></div>
 <div class="staff-expiry-stat action-stat stat-click" onclick="openStaffNotificationsCard()" onkeydown="if(event.key==='Enter'||event.key===' '){openStaffNotificationsCard();}" role="button" tabindex="0" title="Notifications dekhein">
 <span>🔔</span>
@@ -1497,6 +1680,21 @@ button,
 <strong id="staffReceiptCount">0</strong>
 <small>Billing &amp; Receipts</small>
 </div>
+</div>
+<div class="staff-card" id="staffAttendanceCard" style="display:none;">
+<div class="admin-section-head"><div><h3>🕘 Attendance & Salary</h3><p class="admin-help">Office duty, location status aur current month salary yahan dekhein.</p></div><button class="button blue" onclick="closeStaffAttendanceCard()" type="button">✖ Close</button></div>
+<div class="payment-summary-grid">
+<div class="payment-summary-box"><span>Duty Status</span><strong id="staffDutyStatus">Not Started</strong></div>
+<div class="payment-summary-box"><span>Login Time</span><strong id="staffDutyLogin">-</strong></div>
+<div class="payment-summary-box"><span>Office Status</span><strong id="staffOfficeStatus">Checking...</strong></div>
+<div class="payment-summary-box"><span>Working Time</span><strong id="staffWorkingTime">00:00</strong></div>
+<div class="payment-summary-box"><span>Monthly Salary</span><strong id="staffMonthlySalary">₹0</strong></div>
+<div class="payment-summary-box"><span>Deduction</span><strong id="staffSalaryDeduction" class="payment-pending">₹0</strong></div>
+<div class="payment-summary-box"><span>Payable Salary</span><strong id="staffPayableSalary" class="payment-settled">₹0</strong></div>
+</div>
+<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;"><button class="button blue" onclick="requestStaffExit()" type="button">📍 Request Exit / Leave</button><button class="button blue" onclick="refreshStaffAttendance()" type="button">🔄 Refresh</button></div>
+<p class="staff-message" id="staffAttendanceMessage"></p>
+<div class="staff-table-wrap" style="margin-top:16px;"><table class="staff-table"><thead><tr><th>Date</th><th>Login</th><th>Logout</th><th>Outside Time</th><th>Approval</th><th>Deduction</th></tr></thead><tbody id="staffAttendanceHistoryBody"><tr><td colspan="6">Attendance load nahi hui.</td></tr></tbody></table></div>
 </div>
 <div class="phase9-security-card" id="staffSecurityCard" style="display:none;">
 <div class="admin-section-head"><div><h3>🔒 Profile & Security</h3><p class="phase9-note">Profile details update karein aur recent activity dekhein.</p></div><button class="button blue" onclick="closeStaffSecurityCard()" type="button">✖ Close</button></div>
@@ -1822,7 +2020,7 @@ button,
 <div class="admin-stat admin-stat-clickable" onclick="showAdminCustomerList('active')" onkeydown="if(event.key==='Enter'||event.key===' '){showAdminCustomerList('active');}" role="button" tabindex="0" title="Active customers dekhein"><span>✅</span><strong id="adminActiveCustomers">0</strong><small>Active</small></div>
 <div class="admin-stat admin-stat-clickable" onclick="showAdminCustomerList('expired')" onkeydown="if(event.key==='Enter'||event.key===' '){showAdminCustomerList('expired');}" role="button" tabindex="0" title="Expired / Inactive customers dekhein"><span>⏰</span><strong id="adminExpiredCustomers">0</strong><small>Expired / Inactive</small></div>
 <div class="admin-stat admin-stat-clickable" onclick="showAdminCustomerList('upcoming')" onkeydown="if(event.key==='Enter'||event.key===' '){showAdminCustomerList('upcoming');}" role="button" tabindex="0" title="Upcoming renewals dekhein"><span>⚠️</span><strong id="adminExpiringSoon">0</strong><small>Upcoming Renewal (5 Days)</small></div>
-<div class="admin-stat admin-stat-clickable action-stat" onclick="showAdminStaffList()" onkeydown="if(event.key==='Enter'||event.key===' '){showAdminStaffList();}" role="button" tabindex="0" title="Staff Management kholen"><span>👨‍💼</span><strong id="adminTotalStaff">0</strong><small>Staff Management</small></div>
+<div class="admin-stat admin-stat-clickable action-stat" onclick="showAdminStaffList()" onkeydown="if(event.key==='Enter'||event.key===' '){showAdminStaffList();}" role="button" tabindex="0" title="Staff Management kholen"><span>👨‍💼</span><strong id="adminTotalStaff">0</strong><small>Staff Management</small></div><div class="admin-stat admin-stat-clickable action-stat" onclick="openAdminAttendanceCard()" onkeydown="if(event.key==='Enter'||event.key===' '){openAdminAttendanceCard();}" role="button" tabindex="0" title="Staff attendance aur salary"><span>🕘</span><strong id="adminAttendanceActiveCount">0</strong><small>Attendance & Salary</small></div>
 <div class="admin-stat admin-stat-clickable collection-stat" onclick="showAdminCollectionList()" onkeydown="if(event.key==='Enter'||event.key===' '){showAdminCollectionList();}" role="button" tabindex="0" title="Staff se pending collection dekhein"><span>💰</span><strong id="adminPendingCollection">₹0</strong><small>Staff Se Lena Hai</small></div>
 <div class="admin-stat admin-stat-clickable" onclick="openAdminComplaintsCard()" onkeydown="if(event.key==='Enter'||event.key===' '){openAdminComplaintsCard();}" role="button" tabindex="0" title="Complaint management kholen"><span>🛠️</span><strong id="adminComplaintPendingBox">0</strong><small>Complaints</small></div>
 <div class="admin-stat admin-stat-clickable action-stat" onclick="openAdminReportsCard()" onkeydown="if(event.key==='Enter'||event.key===' '){openAdminReportsCard();}" role="button" tabindex="0" title="Search aur reports kholen"><span>🔎</span><strong>Search</strong><small>Search &amp; Reports</small></div>
@@ -1951,9 +2149,24 @@ button,
 <div class="staff-card" id="adminStaffFilterCard" style="display:none;">
 <div class="admin-section-head">
 <div><h3>👨‍💼 Staff List</h3><p class="admin-help">System mein registered saare staff yahan dikhenge.</p></div>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+<button class="button green" onclick="showAdminStaffAdd()" type="button">➕ New Staff</button>
 <button class="button blue" onclick="hideAdminStaffList()" type="button">✖ Close</button>
 </div>
-<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>Staff ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th><th>UID</th></tr></thead><tbody id="adminStaffFilterBody"><tr><td colspan="5">No data loaded.</td></tr></tbody></table></div>
+</div>
+<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>Staff ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th><th>UID</th></tr></thead><tbody id="adminStaffFilterBody"><tr><td colspan="6">No data loaded.</td></tr></tbody></table></div>
+</div>
+<div class="staff-card" id="adminAttendanceCard" style="display:none;">
+<div class="admin-section-head"><div><h3>🕘 Staff Attendance & Salary</h3><p class="admin-help">Staff ki attendance, office exit approval, salary aur deduction manage karein.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="button blue" onclick="loadAdminAttendanceSalary()" type="button">🔄 Refresh</button><button class="button blue" onclick="closeAdminAttendanceCard()" type="button">✖ Close</button></div></div>
+<div class="staff-form-grid">
+<div class="staff-form-group"><label>Office Latitude</label><input id="adminOfficeLat" placeholder="28.xxxxxx" inputmode="decimal"></div>
+<div class="staff-form-group"><label>Office Longitude</label><input id="adminOfficeLng" placeholder="77.xxxxxx" inputmode="decimal"></div>
+<div class="staff-form-group"><label>Office Radius (meters)</label><input id="adminOfficeRadius" type="number" min="15" value="15"></div>
+<div class="staff-form-group"><label>Default Working Days / Month</label><input id="adminWorkingDays" type="number" min="1" value="26"></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="button blue" onclick="saveAdminAttendanceSettings()" type="button">💾 Save Office Settings</button><button class="button blue" onclick="useCurrentOfficeLocation()" type="button">📍 Use Current Location</button></div>
+<p class="staff-message" id="adminAttendanceMessage"></p>
+<div class="staff-table-wrap" style="margin-top:16px;"><table class="staff-table"><thead><tr><th>Staff</th><th>Salary</th><th>Today</th><th>Outside</th><th>Approval</th><th>Deduction</th><th>Payable</th><th>Action</th></tr></thead><tbody id="adminAttendanceSalaryBody"><tr><td colspan="8">Attendance load nahi hui.</td></tr></tbody></table></div>
 </div>
 <div class="staff-card" id="adminCollectionCard" style="display:none;">
 <div class="admin-section-head"><div><h3>💰 Staff Collections</h3><p class="admin-help">Cash collections yahan dikhenge. <strong>Settled sirf Admin karega.</strong></p><p class="admin-help">Staff ne customers se jo paise collect kiye hain, unmein se jo Admin ko abhi lena hai woh yahan dikhega.</p></div><button class="button blue" onclick="loadAdminData()" type="button">🔄 Refresh</button></div>
@@ -2081,16 +2294,19 @@ button,
 </div>
 </div>
 </div>
-<div class="staff-card">
-<h3>👨‍💼 Staff Management</h3><p class="admin-help">Upar ke Staff card par click karke staff list bhi dekh sakte hain.</p>
+<div class="staff-card" id="adminStaffAddCard" style="display:none;">
+<div class="admin-section-head">
+<div><h3>➕ Add New Staff</h3><p class="admin-help">Naya staff account yahan create karein.</p></div>
+<button class="button blue" onclick="hideAdminStaffAdd()" type="button">✖ Close</button>
+</div>
 <form id="adminAddStaffForm"><div class="staff-form-grid">
 <div class="staff-form-group"><label>Staff ID *</label><input id="newStaffId" placeholder="Example: STAFF03" required=""/></div>
 <div class="staff-form-group"><label>Login Email (Real Email) *</label><input id="newStaffEmail" type="email" placeholder="staff@gmail.com" autocomplete="email" required=""/></div>
 <div class="staff-form-group"><label>Staff Password *</label><input id="newStaffPassword" minlength="6" required="" type="password"/></div>
 <div class="staff-form-group"><label>Staff Name *</label><input id="newStaffName" required=""/></div>
-<div class="staff-form-group"><label>Mobile *</label><input id="newStaffMobile" maxlength="10" pattern="[0-9]{10}" required=""/></div>
+<div class="staff-form-group"><label>Mobile *</label><input id="newStaffMobile" maxlength="10" pattern="[0-9]{10}" required=""/></div><div class="staff-form-group"><label>Monthly Salary (₹) *</label><input id="newStaffSalary" type="number" min="0" required="" placeholder="20000"/></div>
 </div><p class="staff-message" id="adminStaffMessage"></p><button class="submit-button" id="adminAddStaffButton" type="submit">➕ Add Staff</button></form>
-<div class="staff-table-wrap" style="margin-top:18px;"><table class="staff-table"><thead><tr><th>Staff ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th><th>UID</th></tr></thead><tbody id="adminStaffTableBody"><tr><td colspan="6">No data loaded.</td></tr></tbody></table></div>
+<div class="staff-table-wrap" style="margin-top:18px;"><table class="staff-table"><thead><tr><th>Staff ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th><th>Salary</th><th>UID</th></tr></thead><tbody id="adminStaffTableBody"><tr><td colspan="7">No data loaded.</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="admin-customer-form-page" id="adminCustomerFormPage" style="display:none;">
@@ -2431,223 +2647,19 @@ button,
 </div>
 </div>
 </section>
+
+
+</div>
 <!-- =========================
      CUSTOMER PORTAL
 ========================= -->
-<section class="customer-portal" id="customer-portal">
-<h2 class="section-title">
-        Customer Portal
-    </h2>
-<p class="section-subtitle">
-        View your JS Internet account
-    </p>
-<div class="dashboard" id="dashboard">
-<div class="dashboard-header">
-<div>
-<h3>
-                    Welcome, <span id="welcomeCustomerName">JS Internet Customer</span> 👋
-                </h3>
-<p>
-                    Your connection details
-                </p>
-</div>
-<button class="logout-button" onclick="logoutCustomer()">
-
-                Logout
-
-            </button>
-</div>
-<div class="customer-info">
-<div class="info-card">
-<span>Customer ID</span>
-<strong id="showCustomerId">-</strong>
-</div>
-<div class="info-card">
-<span>Customer Name</span>
-<strong id="showCustomerName">-</strong>
-</div>
-<div class="info-card">
-<span>Mobile</span>
-<strong id="showCustomerMobile">-</strong>
-</div>
-<div class="info-card">
-<span>Current Plan</span>
-<strong id="showCustomerPlan">-</strong>
-</div>
-<div class="info-card">
-<span>Plan Status</span>
-<strong id="showCustomerStatus">-</strong>
-</div>
-<div class="info-card">
-<span>Plan Expiry</span>
-<strong id="showCustomerExpiry">-</strong>
-</div>
-<div class="info-card" style="grid-column:span 2;">
-<span>Address</span>
-<strong id="showCustomerAddress">-</strong>
-</div>
-</div>
-<div class="dashboard-actions">
-<div class="dashboard-card">
-<div class="dashboard-card-icon">
-                    📦
-                </div>
-<h4>
-                    My Plan
-                </h4>
-<p>
-                    View your current internet plan.
-                </p>
-</div>
-<div class="dashboard-card">
-<div class="dashboard-card-icon">
-                    🔄
-                </div>
-<h4>
-                    Renewal
-                </h4>
-<p>
-                    Renew your internet plan.
-                </p>
-<a class="button blue" href="#renewal">
-                    Renew
-                </a>
-</div>
-<div class="dashboard-card">
-<div class="dashboard-card-icon">
-                    🛠️
-                </div>
-<h4>
-                    Complaint
-                </h4>
-<p>
-                    Report an internet problem.
-                </p>
-<a class="button blue" href="#complaint">
-                    Complaint
-                </a>
-</div>
-<div class="dashboard-card">
-<div class="dashboard-card-icon">
-                    📞
-                </div>
-<h4>
-                    Support
-                </h4>
-<p>
-                    Contact JS Internet support.
-                </p>
-<a class="button green" href="https://wa.me/918800969880">
-                    WhatsApp
-                </a>
-</div>
-<div style="display:none !important;" class="dashboard-card" onclick="openCustomerSecurityCard()" style="cursor:pointer;">
-<div class="dashboard-card-icon">🔒</div><h4>Profile &amp; Security</h4><p>Update profile, password and security activity.</p><button class="button blue" type="button" onclick="event.stopPropagation();openCustomerSecurityCard();">🔒 Open</button>
-</div>
-<div class="dashboard-card" onclick="openCustomerBillingCard()" style="cursor:pointer;">
-<div class="dashboard-card-icon">🧾</div>
-<h4>Billing &amp; Receipts</h4>
-<p>View your payments and print receipts.</p>
-<button class="button blue" type="button" onclick="event.stopPropagation();openCustomerBillingCard();">🧾 Open</button>
-</div>
-</div>
-<div class="staff-card billing-card" id="customerBillingCard" style="display:none;">
-<div class="admin-section-head">
-<div><h3>🧾 My Billing &amp; Receipts</h3><p class="billing-note">Aap apni payment receipts yahan se print/save PDF kar sakte hain.</p></div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="button blue" onclick="loadCustomerBilling()" type="button">🔄 Refresh</button><button class="button blue" onclick="closeCustomerBillingCard()" type="button">✖ Close</button></div>
-</div>
-<div class="billing-table-wrap"><table class="billing-table"><thead><tr><th>Receipt No.</th><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Collected By</th><th>Action</th></tr></thead><tbody id="customerBillingBody"><tr><td colspan="8"><div class="billing-empty">No receipts loaded.</div></td></tr></tbody></table></div>
-</div>
-<div class="staff-card payment-history-card" id="customerPaymentHistoryCard">
-<div class="admin-section-head">
-<div>
-<h3>🧾 Payment &amp; Renewal History</h3>
-<p class="payment-history-note">Aapke customer account par record hui payments aur renewals.</p>
-</div>
-<button class="button blue" onclick="loadCustomerPaymentHistory()" type="button">🔄 Refresh</button>
-</div>
-<div class="payment-history-summary">
-<div class="payment-summary-box"><span>Total Paid</span><strong id="customerHistoryTotalPaid">₹0</strong></div>
-<div class="payment-summary-box"><span>Cash</span><strong id="customerHistoryCash">₹0</strong></div>
-<div class="payment-summary-box"><span>Online</span><strong id="customerHistoryOnline">₹0</strong></div>
-<div class="payment-summary-box"><span>Transactions</span><strong id="customerHistoryCount">0</strong></div>
-</div>
-<div class="payment-history-table-wrap">
-<table class="payment-history-table">
-<thead><tr><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Collected By</th><th>Status</th></tr></thead>
-<tbody id="customerPaymentHistoryBody"><tr><td colspan="7">No payment history loaded.</td></tr></tbody>
-</table>
-</div>
-</div>
-<div class="phase9-security-card" id="customerSecurityCard" style="display:none;">
-<div class="admin-section-head"><div><h3>🔒 My Profile & Security</h3><p class="phase9-note">Profile details update karein, password change karein aur recent activity dekhein.</p></div><button class="button blue" onclick="closeCustomerSecurityCard()" type="button">✖ Close</button></div>
-<div class="phase9-security-grid">
-<div class="staff-form-group"><label>Name</label><input id="customerProfileName" /></div>
-<div class="staff-form-group"><label>Mobile Number</label><input id="customerProfileMobile" maxlength="10" inputmode="numeric" /></div>
-<div class="staff-form-group staff-form-full"><label>Address</label><input id="customerProfileAddress" placeholder="Optional" /></div>
-<div class="staff-form-group staff-form-full"><label>Login Email</label><input id="customerProfileEmail" type="email" placeholder="your-real-email@gmail.com" autocomplete="email" /></div>
-<div class="staff-form-group staff-form-full"><label>Current Password (for email change)</label><input id="customerEmailCurrentPassword" type="password" autocomplete="current-password" placeholder="Enter current password" /></div>
-</div>
-<div class="phase9-security-actions" style="margin-top:14px;"><button class="button blue" type="button" onclick="saveCustomerProfile()">💾 Save Profile</button><button class="button blue" type="button" onclick="updateCustomerLoginEmail()">📧 Update Login Email</button><button class="button blue" type="button" onclick="loadCustomerActivity()">🔄 Refresh Activity</button></div>
-<p class="staff-message" id="customerSecurityMessage"></p>
-<hr style="margin:20px 0;border:0;border-top:1px solid #e5eaf0;"/>
-<div class="phase9-note" style="padding:12px;border:1px solid #e5eaf0;border-radius:10px;background:#f8fbff;">🔐 Password change <strong>sirf Admin</strong> kar sakta hai. Customer dashboard par password change ka option available nahi hai.</div>
-<div class="phase9-note" style="margin-top:8px;padding:12px;border:1px solid #e5eaf0;border-radius:10px;background:#f8fbff;">📧 Login email change karne ke liye current password enter karein. Email update ke baad Customer login mein <strong>new real email</strong> use karein.</div>
-<div><h4 style="margin:22px 0 8px;color:#07549a;">🕘 Recent Activity</h4><div class="phase9-activity" id="customerActivityList"><div class="phase9-activity-item">No activity loaded.</div></div></div>
-</div>
-<div class="referral">
-<h3>
-                🎁 Refer &amp; Earn
-            </h3>
-<p>
-                1 Customer Do → 1 Mahine Free
-                Aapka WiFi Plan
-            </p>
-<br/>
-<a class="button white" href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20to%20refer%20a%20customer.">
-
-                Refer Customer
-
-            </a>
-</div>
-<div class="staff-card payment-history-card" id="customerComplaintHistoryCard" style="margin-top:20px;">
-<div class="admin-section-head">
-<div><h3>🛠️ My Complaints</h3><p class="payment-history-note">Aapki complaint ka status yahan dikhega.</p></div>
-<button class="button blue" onclick="loadCustomerComplaints()" type="button">🔄 Refresh</button>
-</div>
-<div class="complaint-table-wrap">
-<table class="complaint-table"><thead><tr><th>Ticket</th><th>Date</th><th>Type</th><th>Problem</th><th>Status</th></tr></thead>
-<tbody id="customerComplaintsBody"><tr><td colspan="5">No complaints loaded.</td></tr></tbody></table>
-</div>
-</div>
-<div class="staff-card payment-history-card" id="customerNotificationsCard" style="margin-top:20px;">
-<div class="admin-section-head">
-<div><h3>🔔 Notifications</h3><p class="payment-history-note">JS Internet ke latest notices aur important updates.</p></div>
-<button class="button blue" onclick="loadCustomerNotifications()" type="button">🔄 Refresh</button>
-</div>
-<div id="customerNotificationsList" style="display:grid;gap:10px;"><div class="payment-summary-box">Notifications load hone ka wait karein.</div></div>
-</div>
-
-
-<div class="security-box">
-<h4>
-                🔒 Router Security
-            </h4>
-<p>
-                Router security details will be
-                connected with your customer account
-                when the real database is added.
-            </p>
-</div>
-</div>
-</section>
 <!-- =========================
      NEW CONNECTION
 ========================= -->
 <section id="newCustomerOffersSection" style="padding:24px 5%;background:#fff7e8;display:none;">
 <div style="max-width:1100px;margin:0 auto;">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
-<div><h2 style="color:#b45309;margin:0;font-size:26px;">🎉 New Customer Festival Offers</h2><p style="margin:5px 0 0;color:#6b7280;">Ye special offers sirf new connection / new customers ke liye hain.</p></div>
+<div><h2 style="color:#b45309;margin:0;font-size:26px;">🎉 New Customer Festival Offers</h2><p style="margin:5px 0 0;color:#6b7280;">Ye section sirf tab dikhega jab Admin ka Festival Offer Active ho. Ye sirf New Connection / New Customers ke liye hai.</p></div>
 <span style="font-size:13px;font-weight:700;color:#92400e;background:#fde68a;padding:8px 12px;border-radius:999px;">NEW CONNECTION ONLY</span>
 </div>
 <div id="newCustomerOffersList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;"></div>
@@ -2907,7 +2919,7 @@ button,
 <!-- =========================
      SUPPORT
 ========================= -->
-<section class="support">
+<section class="support" id="customerSupportSection">
 <h2 class="section-title">
         Customer Support
     </h2>
@@ -2969,7 +2981,7 @@ button,
 <!-- =========================
      FOOTER
 ========================= -->
-<footer>
+<footer id="publicFooter">
 <p>
         © 2026 JS Internet. All Rights Reserved.
     </p>
@@ -2985,7 +2997,243 @@ button,
     💬
 
 </a>
+<section class="customer-portal" id="customer-portal">
+<h2 class="section-title">
+        Customer Portal
+    </h2>
+<p class="section-subtitle">
+        View your JS Internet account
+    </p>
+<div class="dashboard" id="dashboard">
+<div class="dashboard-header">
+<div>
+<h3>
+                    Welcome, <span id="welcomeCustomerName">JS Internet Customer</span> 👋
+                </h3>
+<p>
+                    Aapke internet connection ki poori details yahan hain.
+                </p>
 </div>
+<button class="logout-button" onclick="logoutCustomer()">
+
+                Logout
+
+            </button>
+</div>
+<div class="customer-info">
+<div class="info-card">
+<span>Customer ID</span>
+<strong id="showCustomerId">-</strong>
+</div>
+<div class="info-card">
+<span>Customer Name</span>
+<strong id="showCustomerName">-</strong>
+</div>
+<div class="info-card">
+<span>Mobile</span>
+<strong id="showCustomerMobile">-</strong>
+</div>
+<div class="info-card">
+<span>Current Plan</span>
+<strong id="showCustomerPlan">-</strong>
+</div>
+<div class="info-card">
+<span>Plan Status</span>
+<strong id="showCustomerStatus">-</strong>
+</div>
+<div class="info-card">
+<span>Plan Expiry</span>
+<strong id="showCustomerExpiry">-</strong>
+</div>
+<div class="info-card" style="grid-column:span 2;">
+<span>Address</span>
+<strong id="showCustomerAddress">-</strong>
+</div>
+</div>
+<div class="dashboard-actions">
+<div class="dashboard-card" onclick="openCustomerPlanAction()" style="cursor:pointer;">
+<div class="dashboard-card-icon">
+                    📦
+                </div>
+<h4>
+                    My Plan
+                </h4>
+<p>
+                    View your current internet plan.
+                </p>
+</div>
+<div class="dashboard-card" onclick="openCustomerRenewalAction()" style="cursor:pointer;">
+<div class="dashboard-card-icon">
+                    🔄
+                </div>
+<h4>
+                    Renewal
+                </h4>
+<p>
+                    Renew your internet plan.
+                </p>
+<button class="button blue" type="button" onclick="event.stopPropagation();openCustomerRenewalAction();">
+                    Renew
+                </button>
+</div>
+<div class="dashboard-card" onclick="openCustomerComplaintAction()" style="cursor:pointer;">
+<div class="dashboard-card-icon">
+                    🛠️
+                </div>
+<h4>
+                    Complaint
+                </h4>
+<p>
+                    Report an internet problem.
+                </p>
+<button class="button blue" type="button" onclick="event.stopPropagation();openCustomerComplaintAction();">
+                    Complaint
+                </button>
+</div>
+<div class="dashboard-card" onclick="openCustomerSupportAction()" style="cursor:pointer;">
+<div class="dashboard-card-icon">
+                    📞
+                </div>
+<h4>
+                    Support
+                </h4>
+<p>
+                    Contact JS Internet support.
+                </p>
+<a class="button green" href="https://wa.me/918800969880" target="_blank" rel="noopener">
+                    WhatsApp
+                </a>
+</div>
+<div style="display:none !important;" class="dashboard-card" onclick="openCustomerSecurityCard()" style="cursor:pointer;">
+<div class="dashboard-card-icon">🔒</div><h4>Profile &amp; Security</h4><p>Update profile, password and security activity.</p><button class="button blue" type="button" onclick="event.stopPropagation();openCustomerSecurityCard();">🔒 Open</button>
+</div>
+<div class="dashboard-card" onclick="openCustomerBillingCard()" style="cursor:pointer;">
+<div class="dashboard-card-icon">🧾</div>
+<h4>Billing &amp; Receipts</h4>
+<p>View your payments and print receipts.</p>
+<button class="button blue" type="button" onclick="event.stopPropagation();openCustomerBillingCard();">🧾 Open</button>
+</div>
+</div>
+<div id="customerActionArea" style="display:none;gap:18px;margin-top:20px;">
+<div id="customerActionHeader" style="display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 4px 16px rgba(0,0,0,.08);">
+<div><strong id="customerActionTitle" style="font-size:18px;color:#07549a;">Customer Action</strong><div id="customerActionHint" style="font-size:12px;color:#6b7280;margin-top:3px;">Yahan se action complete karein.</div></div>
+<button class="button blue" type="button" onclick="closeCustomerActionCard()">✖ Close</button>
+</div>
+</div>
+<div class="staff-card billing-card" id="customerBillingCard" style="display:none;">
+<div class="admin-section-head">
+<div><h3>🧾 My Billing &amp; Receipts</h3><p class="billing-note">Aap apni payment receipts yahan se print/save PDF kar sakte hain.</p></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="button blue" onclick="loadCustomerBilling()" type="button">🔄 Refresh</button><button class="button blue" onclick="closeCustomerBillingCard()" type="button">✖ Close</button></div>
+</div>
+<div class="billing-table-wrap"><table class="billing-table"><thead><tr><th>Receipt No.</th><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Collected By</th><th>Action</th></tr></thead><tbody id="customerBillingBody"><tr><td colspan="8"><div class="billing-empty">No receipts loaded.</div></td></tr></tbody></table></div>
+</div>
+<div class="staff-card payment-history-card" id="customerPaymentHistoryCard">
+<div class="admin-section-head">
+<div>
+<h3>🧾 Payment &amp; Renewal History</h3>
+<p class="payment-history-note">Aapke customer account par record hui payments aur renewals.</p>
+</div>
+<button class="button blue" onclick="loadCustomerPaymentHistory()" type="button">🔄 Refresh</button>
+</div>
+<div class="payment-history-summary">
+<div class="payment-summary-box"><span>Total Paid</span><strong id="customerHistoryTotalPaid">₹0</strong></div>
+<div class="payment-summary-box"><span>Cash</span><strong id="customerHistoryCash">₹0</strong></div>
+<div class="payment-summary-box"><span>Online</span><strong id="customerHistoryOnline">₹0</strong></div>
+<div class="payment-summary-box"><span>Transactions</span><strong id="customerHistoryCount">0</strong></div>
+</div>
+<div class="payment-history-table-wrap">
+<table class="payment-history-table">
+<thead><tr><th>Date</th><th>Type</th><th>Plan</th><th>Amount</th><th>Mode</th><th>Collected By</th><th>Status</th></tr></thead>
+<tbody id="customerPaymentHistoryBody"><tr><td colspan="7">No payment history loaded.</td></tr></tbody>
+</table>
+</div>
+</div>
+<div class="phase9-security-card" id="customerSecurityCard" style="display:none;">
+<div class="admin-section-head"><div><h3>🔒 My Profile & Security</h3><p class="phase9-note">Profile details update karein, password change karein aur recent activity dekhein.</p></div><button class="button blue" onclick="closeCustomerSecurityCard()" type="button">✖ Close</button></div>
+<div class="phase9-security-grid">
+<div class="staff-form-group"><label>Name</label><input id="customerProfileName" /></div>
+<div class="staff-form-group"><label>Mobile Number</label><input id="customerProfileMobile" maxlength="10" inputmode="numeric" /></div>
+<div class="staff-form-group staff-form-full"><label>Address</label><input id="customerProfileAddress" placeholder="Optional" /></div>
+<div class="staff-form-group staff-form-full"><label>Login Email</label><input id="customerProfileEmail" type="email" placeholder="your-real-email@gmail.com" autocomplete="email" /></div>
+<div class="staff-form-group staff-form-full"><label>Current Password (for email change)</label><input id="customerEmailCurrentPassword" type="password" autocomplete="current-password" placeholder="Enter current password" /></div>
+</div>
+<div class="phase9-security-actions" style="margin-top:14px;"><button class="button blue" type="button" onclick="saveCustomerProfile()">💾 Save Profile</button><button class="button blue" type="button" onclick="updateCustomerLoginEmail()">📧 Update Login Email</button><button class="button blue" type="button" onclick="loadCustomerActivity()">🔄 Refresh Activity</button></div>
+<p class="staff-message" id="customerSecurityMessage"></p>
+<hr style="margin:20px 0;border:0;border-top:1px solid #e5eaf0;"/>
+<div class="phase9-note" style="padding:12px;border:1px solid #e5eaf0;border-radius:10px;background:#f8fbff;">🔐 Password change <strong>sirf Admin</strong> kar sakta hai. Customer dashboard par password change ka option available nahi hai.</div>
+<div class="phase9-note" style="margin-top:8px;padding:12px;border:1px solid #e5eaf0;border-radius:10px;background:#f8fbff;">📧 Login email change karne ke liye current password enter karein. Email update ke baad Customer login mein <strong>new real email</strong> use karein.</div>
+<div><h4 style="margin:22px 0 8px;color:#07549a;">🕘 Recent Activity</h4><div class="phase9-activity" id="customerActivityList"><div class="phase9-activity-item">No activity loaded.</div></div></div>
+</div>
+<div class="referral">
+<h3>
+                🎁 Refer &amp; Earn
+            </h3>
+<p>
+                1 Customer Do → 1 Mahine Free
+                Aapka WiFi Plan
+            </p>
+<br/>
+<a class="button white" href="https://wa.me/918800969880?text=Hello%20JS%20Internet%2C%20I%20want%20to%20refer%20a%20customer.">
+
+                Refer Customer
+
+            </a>
+</div>
+<div class="staff-card payment-history-card" id="customerComplaintHistoryCard" style="margin-top:20px;">
+<div class="admin-section-head">
+<div><h3>🛠️ My Complaints</h3><p class="payment-history-note">Aapki complaint ka status yahan dikhega.</p></div>
+<button class="button blue" onclick="loadCustomerComplaints()" type="button">🔄 Refresh</button>
+</div>
+<div class="complaint-table-wrap">
+<table class="complaint-table"><thead><tr><th>Ticket</th><th>Date</th><th>Type</th><th>Problem</th><th>Status</th></tr></thead>
+<tbody id="customerComplaintsBody"><tr><td colspan="5">No complaints loaded.</td></tr></tbody></table>
+</div>
+</div>
+<div class="staff-card payment-history-card" id="customerNotificationsCard" style="margin-top:20px;">
+<div class="admin-section-head">
+<div><h3>🔔 Notifications</h3><p class="payment-history-note">JS Internet ke latest notices aur important updates.</p></div>
+<button class="button blue" onclick="loadCustomerNotifications()" type="button">🔄 Refresh</button>
+</div>
+<div id="customerNotificationsList" style="display:grid;gap:10px;"><div class="payment-summary-box">Notifications load hone ka wait karein.</div></div>
+</div>
+
+
+<div class="security-box">
+<h4>
+                🔒 Router Security
+            </h4>
+<p>
+                Router security details will be
+                connected with your customer account
+                when the real database is added.
+            </p>
+</div>
+</div>
+</section>
+
+<!-- Keep the Customer Portal outside #mainWebsite so logged-in customers get a completely separate page. -->
+<script>
+(function(){
+  try {
+    const portal = document.getElementById("customer-portal");
+    const publicSite = document.getElementById("mainWebsite");
+    if (portal && publicSite && portal.parentElement === publicSite) {
+      document.body.insertBefore(portal, publicSite);
+    }
+  } catch (e) {
+    console.error("Customer portal layout move failed", e);
+  }
+})();
+</script>
+
+
+<style id="customer-mode-final-fix">
+body.customer-dashboard-active #mainWebsite { display:none !important; }
+body.customer-dashboard-active #customer-portal { display:block !important; }
+
+body.customer-dashboard-active .whatsapp-float { display:none !important; }
+</style>
+
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
@@ -3077,16 +3325,170 @@ function escapeHtml(value) {
         .replace(/'/g, "&#39;");
 }
 
+
+function setLoggedInRoleView(role){
+    const body=document.body;
+    body.classList.remove("admin-dashboard-active","staff-dashboard-active","customer-dashboard-active");
+    if(role) body.classList.add(String(role)+"-dashboard-active");
+    const main=document.getElementById("mainWebsite");
+    const first=document.getElementById("firstLogin");
+    if(main) main.style.setProperty("display","none","important");
+    if(first) first.style.setProperty("display","none","important");
+    // Public-only UI, including footer/floating WhatsApp, stays hidden for logged-in dashboards.
+    ["connection","renewal","complaint","contact","newCustomerOffersSection"].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.style.setProperty("display","none","important");
+    });
+    document.querySelectorAll("section.support, footer, a.whatsapp-float").forEach(el=>el.style.setProperty("display","none","important"));
+}
+function clearLoggedInRoleView(){
+    document.body.classList.remove("admin-dashboard-active","staff-dashboard-active","customer-dashboard-active");
+}
+
 /* =====================================================
    HELPERS
 ===================================================== */
 
+function setCustomerPublicSections(visible){
+    // Public-only sections. Customer dashboard uses its own dedicated action cards.
+    const ids = ["newCustomerOffersSection","connection","contact"];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.style.display = visible ? "" : "none";
+    });
+    document.querySelectorAll("section.support, footer, a.whatsapp-float").forEach(el => {
+        const inMainWebsite = !!el.closest("#mainWebsite");
+        if(inMainWebsite) el.style.display = visible ? "" : "none";
+    });
+}
+
+let customerActionOriginals = {};
+function ensureCustomerActionHeader(){
+    const host=document.getElementById("customerActionArea");
+    if(!host) return null;
+    const header=document.getElementById("customerActionHeader");
+    if(header && header.parentNode!==host) host.prepend(header);
+    return header;
+}
+function mountCustomerActionSections(){
+    const host = document.getElementById("customerActionArea");
+    if(!host) return;
+    ["renewal","complaint","customerSupportSection"].forEach(id=>{
+        const el=document.getElementById(id);
+        if(!el) return;
+        if(!customerActionOriginals[id]){
+            customerActionOriginals[id]={parent:el.parentNode,next:el.nextSibling};
+        }
+        if(el.parentNode!==host) host.appendChild(el);
+        el.style.display="none";
+    });
+    const header=ensureCustomerActionHeader();
+    if(header) header.style.display="none";
+    host.style.display="none";
+}
+function showCustomerActionSection(id,title,hint){
+    mountCustomerActionSections();
+    const host=document.getElementById("customerActionArea");
+    if(!host) return;
+    ["renewal","complaint","customerSupportSection"].forEach(cid=>{
+        const el=document.getElementById(cid);
+        if(el) el.style.display = cid===id ? "block" : "none";
+    });
+    const header=ensureCustomerActionHeader();
+    const titleEl=document.getElementById("customerActionTitle");
+    const hintEl=document.getElementById("customerActionHint");
+    if(titleEl) titleEl.textContent=title || "Customer Action";
+    if(hintEl) hintEl.textContent=hint || "Yahan se action complete karein.";
+    if(header) header.style.display="flex";
+    host.style.display="grid";
+    host.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function unmountCustomerActionSections(){
+    const host=document.getElementById("customerActionArea");
+    ["renewal","complaint","customerSupportSection"].forEach(id=>{
+        const saved=customerActionOriginals[id];
+        const el=document.getElementById(id);
+        if(!el || !saved) return;
+        const parent=saved.parent;
+        const next=saved.next;
+        if(parent){
+            if(next && next.parentNode===parent) parent.insertBefore(el,next);
+            else parent.appendChild(el);
+        }
+        el.style.display="";
+    });
+    const header=document.getElementById("customerActionHeader");
+    if(header) header.style.display="none";
+    if(host) host.style.display="none";
+}
+window.closeCustomerActionCard=function(){
+    const host=document.getElementById("customerActionArea");
+    ["renewal","complaint","customerSupportSection"].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) el.style.display="none";
+    });
+    const header=document.getElementById("customerActionHeader");
+    if(header) header.style.display="none";
+    if(host) host.style.display="none";
+};
+window.openCustomerRenewalAction=function(){
+    showCustomerActionSection("renewal","🔄 Renewal","Renew ya plan change request submit karein.");
+};
+window.openCustomerComplaintAction=function(){
+    showCustomerActionSection("complaint","🛠️ Complaint","Internet problem ki complaint submit karein.");
+};
+window.openCustomerSupportAction=function(){
+    showCustomerActionSection("customerSupportSection","📞 Support","JS Internet support se contact karein.");
+};
+window.openCustomerPlanAction=function(){
+    closeCustomerActionCard();
+    const el=document.querySelector("#dashboard .customer-info");
+    if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+};
+
 function showMainWebsite() {
+    document.body.classList.remove("customer-dashboard-active");
     document.getElementById("firstLogin").style.display = "none";
     document.getElementById("mainWebsite").style.display = "block";
+    const cp=document.getElementById("customer-portal"); if(cp) cp.style.display="none";
+    setCustomerPublicSections(true);
+    // Public Festival Offers are loaded only from active, valid Admin offers.
+    setTimeout(() => { if(!auth.currentUser) { try { loadNewCustomerOffers(); } catch(e) { console.error(e); } } }, 0);
+}
+
+function showCustomerDashboardPage(){
+    document.body.classList.add("customer-dashboard-active");
+    document.getElementById("firstLogin").style.display = "none";
+    document.getElementById("mainWebsite").style.display = "none";
+    hideCustomerDashboardPage();
+    document.getElementById("staffPanel").style.display = "none";
+    document.getElementById("adminPanel").style.display = "none";
+    const cp=document.getElementById("customer-portal");
+    if(cp) cp.style.display="block";
+    mountCustomerActionSections();
+    // Logged-in customers should see only their dedicated dashboard page.
+    // Hide the public New Connection / Renewal / Complaint / Support / Contact
+    // sections that live alongside the dashboard.
+    setCustomerPublicSections(false);
+    window.scrollTo(0,0);
+}
+
+function hideCustomerDashboardPage(){
+    document.body.classList.remove("customer-dashboard-active");
+    closeCustomerActionCard();
+    unmountCustomerActionSections();
+    const cp=document.getElementById("customer-portal");
+    if(cp) cp.style.display="none";
+    const dashboard=document.getElementById("dashboard");
+    if(dashboard) dashboard.style.display="none";
+    const security=document.getElementById("customerSecurityCard");
+    if(security) security.style.display="none";
+    const billing=document.getElementById("customerBillingCard");
+    if(billing) billing.style.display="none";
 }
 
 function showLoginScreen() {
+    clearLoggedInRoleView();
+    document.body.classList.remove("customer-dashboard-active");
     if (typeof window.closeAdminCustomerFormPage === "function") {
         window.closeAdminCustomerFormPage(true);
     }
@@ -3096,6 +3498,7 @@ function showLoginScreen() {
     document.getElementById("firstLogin").style.display = "flex";
     const dashboard = document.getElementById("dashboard");
     if (dashboard) dashboard.style.display = "none";
+    setCustomerPublicSections(true);
     window.scrollTo(0, 0);
 }
 
@@ -3150,8 +3553,7 @@ window.logoutCustomer = async function() {
         const form = document.getElementById("firstLoginForm");
         if (form) form.reset();
 
-        const dashboard = document.getElementById("dashboard");
-        if (dashboard) dashboard.style.display = "none";
+        hideCustomerDashboardPage();
 
         const security = document.getElementById("customerSecurityCard");
         if (security) security.style.display = "none";
@@ -3290,8 +3692,24 @@ async function loadCustomerData(user) {
         setCustomerText("showCustomerName", data.name);
         setCustomerText("showCustomerMobile", data.mobile);
         setCustomerText("showCustomerPlan", data.plan);
-        setCustomerText("showCustomerStatus", data.status);
-        setCustomerText("showCustomerExpiry", data.expiryDate);
+
+        const customerStatus = effectiveCustomerStatus(data);
+        const isExpired = String(customerStatus).toLowerCase() === "expired";
+        const statusEl = document.getElementById("showCustomerStatus");
+        const expiryEl = document.getElementById("showCustomerExpiry");
+        const statusCard = statusEl?.closest(".info-card");
+        const expiryCard = expiryEl?.closest(".info-card");
+        if(statusEl){
+            statusEl.innerText = isExpired ? "Expired" : (customerStatus || "-");
+            statusEl.classList.toggle("customer-expired-text", isExpired);
+        }
+        if(expiryEl){
+            const formattedExpiry = formatDateForDisplay(data.expiryDate) || data.expiryDate || "-";
+            expiryEl.innerText = isExpired ? `Expired • ${formattedExpiry}` : formattedExpiry;
+            expiryEl.classList.toggle("customer-expired-text", isExpired);
+        }
+        if(statusCard) statusCard.classList.toggle("customer-expired-card", isExpired);
+        if(expiryCard) expiryCard.classList.toggle("customer-expired-card", isExpired);
         setCustomerText("showCustomerAddress", data.address);
         setCustomerText("welcomeCustomerName", data.name || "Customer");
         localStorage.setItem("jsKnownCustomer","true");
@@ -3300,8 +3718,7 @@ async function loadCustomerData(user) {
         const complaintMobileEl=document.getElementById("complaintMobile");
         if(complaintNameEl && !complaintNameEl.value) complaintNameEl.value=data.name||"";
         if(complaintMobileEl && !complaintMobileEl.value) complaintMobileEl.value=data.mobile||"";
-        showMainWebsite();
-
+        showCustomerDashboardPage();
         document.getElementById("dashboard").style.display = "block";
 
         fillPhase9Profile("customer", data);
@@ -3330,6 +3747,86 @@ async function loadCustomerData(user) {
 
 
 
+
+/* =====================================================
+   STAFF ATTENDANCE + OFFICE GEOFENCE + SALARY
+===================================================== */
+let staffAttendanceDocId=null, staffGeoWatchId=null, staffAttendanceTimer=null;
+const STAFF_GRACE_MINUTES=15;
+function attendanceNow(){return new Date().toISOString();}
+function moneyRs(v){return "₹"+Number(v||0).toLocaleString("en-IN");}
+function parseOfficeCoordinate(v){const s=String(v??"").trim().replace(/[°º]/g,"").replace(/[NSEW]/gi,"").trim();const n=Number(s);return Number.isFinite(n)?n:NaN;}
+function attendanceDateKey(d=new Date()){return d.toISOString().slice(0,10);}
+function haversineMeters(lat1,lon1,lat2,lon2){const R=6371000,rad=Math.PI/180,dLat=(lat2-lat1)*rad,dLon=(lon2-lon1)*rad,a=Math.sin(dLat/2)**2+Math.cos(lat1*rad)*Math.cos(lat2*rad)*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(a));}
+function setStaffAttendanceMessage(msg,ok=false){const e=document.getElementById("staffAttendanceMessage");if(e){e.innerText=msg;e.style.color=ok?"#087f32":"#dc3545";}}
+async function getOfficeSettings(){try{const s=await getDoc(doc(db,"settings","staffAttendance"));return s.exists()?s.data():{};}catch(e){console.warn(e);return {};}}
+async function saveStaffAttendanceEvent(data){if(!auth.currentUser)return;try{await addDoc(collection(db,"staffAttendance"),{...data,staffUid:auth.currentUser.uid,createdAt:attendanceNow()});}catch(e){console.warn("attendance event",e);}}
+async function startStaffAttendance(user){
+  if(!user)return;
+  const today=attendanceDateKey();
+  const q=query(collection(db,"staffAttendance"),where("staffUid","==",user.uid),where("dateKey","==",today));
+  const snap=await getDocs(q);
+  if(!snap.empty){const d=snap.docs[0];staffAttendanceDocId=d.id;window.staffAttendanceCurrent={id:d.id,...d.data()};}
+  else{const data={staffUid:user.uid,dateKey:today,loginAt:attendanceNow(),logoutAt:"",outsideStartedAt:"",outsideMinutes:0,approvedOutsideMinutes:0,approvalStatus:"None",deduction:0};const ref=await addDoc(collection(db,"staffAttendance"),data);staffAttendanceDocId=ref.id;window.staffAttendanceCurrent={id:ref.id,...data};}
+  startStaffGeoTracking();startStaffAttendanceTimer();await refreshStaffAttendance();
+}
+function startStaffAttendanceTimer(){if(staffAttendanceTimer)clearInterval(staffAttendanceTimer);staffAttendanceTimer=setInterval(()=>refreshStaffAttendance(false),30000);}
+function stopStaffAttendanceTracking(){if(staffGeoWatchId!==null&&navigator.geolocation){navigator.geolocation.clearWatch(staffGeoWatchId);staffGeoWatchId=null;}if(staffAttendanceTimer){clearInterval(staffAttendanceTimer);staffAttendanceTimer=null;}}
+async function startStaffGeoTracking(){
+ const settings=await getOfficeSettings();
+ if(!settings.lat||!settings.lng){setStaffAttendanceMessage("Admin ne office location set nahi ki hai. Abhi location check nahi ho sakti.");return;}
+ if(!navigator.geolocation){setStaffAttendanceMessage("Is device/browser mein location available nahi hai.");return;}
+ const check=async pos=>{const dist=haversineMeters(Number(pos.coords.latitude),Number(pos.coords.longitude),Number(settings.lat),Number(settings.lng));await handleStaffDistance(dist,Number(settings.radius||150));};
+ navigator.geolocation.getCurrentPosition(check,()=>setStaffAttendanceMessage("Location permission allow karein. Location unavailable ko unauthorized exit nahi maana jayega."),{enableHighAccuracy:true,maximumAge:30000,timeout:15000});
+ staffGeoWatchId=navigator.geolocation.watchPosition(check,()=>{}, {enableHighAccuracy:true,maximumAge:30000,timeout:15000});
+}
+async function handleStaffDistance(distance,radius){
+ const cur=window.staffAttendanceCurrent||{};if(!cur.id)return;
+ const inside=distance<=radius;const now=Date.now();
+ if(inside){
+   if(cur.outsideStartedAt){const mins=Math.max(0,Math.floor((now-new Date(cur.outsideStartedAt).getTime())/60000));cur.outsideMinutes=Number(cur.outsideMinutes||0)+mins;cur.outsideStartedAt="";cur.approvalStatus=cur.approvalStatus||"None";await updateDoc(doc(db,"staffAttendance",cur.id),{outsideStartedAt:"",outsideMinutes:cur.outsideMinutes,lastOfficeCheckAt:attendanceNow(),lastDistance:distance,officeStatus:"Inside"});}
+   else await updateDoc(doc(db,"staffAttendance",cur.id),{lastOfficeCheckAt:attendanceNow(),lastDistance:distance,officeStatus:"Inside"});
+   const e=document.getElementById("staffOfficeStatus");if(e){e.innerText="🟢 Inside Office";e.style.color="#087f32";}
+   return;
+ }
+ if(!cur.outsideStartedAt){cur.outsideStartedAt=attendanceNow();cur.officeStatus="Outside - Grace Period";await updateDoc(doc(db,"staffAttendance",cur.id),{outsideStartedAt:cur.outsideStartedAt,lastOfficeCheckAt:attendanceNow(),lastDistance:distance,officeStatus:cur.officeStatus});return;}
+ const outsideMins=Math.floor((now-new Date(cur.outsideStartedAt).getTime())/60000);
+ const statusEl=document.getElementById("staffOfficeStatus");if(statusEl){statusEl.innerText=`🟠 Outside (${outsideMins} min)`;statusEl.style.color=outsideMins>STAFF_GRACE_MINUTES?"#dc3545":"#c2410c";}
+ if(outsideMins>STAFF_GRACE_MINUTES && cur.approvalStatus!=="Approved" && cur.approvalStatus!=="Pending"){
+   cur.approvalStatus="Pending";await updateDoc(doc(db,"staffAttendance",cur.id),{approvalStatus:"Pending",officeStatus:"Unauthorized Exit Pending",lastOfficeCheckAt:attendanceNow(),lastDistance:distance});
+ }
+ if(outsideMins>STAFF_GRACE_MINUTES && cur.approvalStatus!=="Approved" && outsideMins>=STAFF_GRACE_MINUTES+1){
+   if(auth.currentUser){setStaffAttendanceMessage("15 minute grace period complete. Admin approval ke bina office se bahar rehne par duty lock/logout ho sakta hai.");}
+ }
+}
+async function calculateStaffSalary(uid,monthKey){
+ const prof=window.adminProfilesByUid?.[uid]||((auth.currentUser?.uid===uid)?(await getDoc(doc(db,"users",uid))).data():{})||{};const salary=Number(prof.monthlySalary||0);if(!salary)return {salary:0,deduction:0,payable:0,rows:[]};
+ const snap=await getDocs(query(collection(db,"staffAttendance"),where("staffUid","==",uid)));const rows=[];snap.forEach(d=>{const x={id:d.id,...d.data()};if(String(x.dateKey||"").startsWith(monthKey))rows.push(x);});
+ const workingDays=26;const perMinute=salary/(workingDays*8*60);let deduction=0;rows.forEach(x=>{const out=Number(x.outsideMinutes||0),approved=Number(x.approvedOutsideMinutes||0);const unauthorized=Math.max(out-approved,0);if(unauthorized>STAFF_GRACE_MINUTES)deduction+=unauthorized*perMinute; x.deduction=Math.round(unauthorized*perMinute);});
+ return {salary,deduction:Math.round(deduction),payable:Math.max(0,Math.round(salary-deduction)),rows};
+}
+function formatTime(v){if(!v)return "-";const d=new Date(v);return isNaN(d)?"-":d.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});}
+function formatDuration(min){min=Math.max(0,Math.floor(min||0));return String(Math.floor(min/60)).padStart(2,"0")+":"+String(min%60).padStart(2,"0");}
+async function refreshStaffAttendance(showMsg=true){
+ if(!auth.currentUser||!staffAttendanceDocId)return;const snap=await getDoc(doc(db,"staffAttendance",staffAttendanceDocId));if(!snap.exists())return;const x={id:snap.id,...snap.data()};window.staffAttendanceCurrent=x;
+ const salary=await calculateStaffSalary(auth.currentUser.uid,attendanceDateKey().slice(0,7));
+ const loginMs=x.loginAt?new Date(x.loginAt).getTime():Date.now();const workMin=Math.floor((Date.now()-loginMs)/60000);
+ document.getElementById("staffDutyStatus").innerText=x.logoutAt?"Logged Out":(x.approvalStatus==="Pending"?"Exit Approval Pending":"🟢 Duty Active");document.getElementById("staffDutyLogin").innerText=formatTime(x.loginAt);document.getElementById("staffWorkingTime").innerText=formatDuration(workMin);document.getElementById("staffMonthlySalary").innerText=moneyRs(salary.salary);document.getElementById("staffSalaryDeduction").innerText=moneyRs(salary.deduction);document.getElementById("staffPayableSalary").innerText=moneyRs(salary.payable);document.getElementById("staffAttendanceStatusBox").innerText=x.approvalStatus==="Pending"?"Approval":"Active";
+ const body=document.getElementById("staffAttendanceHistoryBody");if(body){body.innerHTML=salary.rows.sort((a,b)=>String(b.dateKey).localeCompare(String(a.dateKey))).map(r=>`<tr><td>${r.dateKey||"-"}</td><td>${formatTime(r.loginAt)}</td><td>${formatTime(r.logoutAt)}</td><td>${formatDuration(r.outsideMinutes||0)}</td><td>${r.approvalStatus||"None"}</td><td>${moneyRs(r.deduction||0)}</td></tr>`).join("")||'<tr><td colspan="6">Is month ka attendance record nahi hai.</td></tr>';}
+ if(showMsg)setStaffAttendanceMessage("Attendance refreshed.",true);
+}
+window.openStaffAttendanceCard=async function(){hideStaffActionCards();const c=document.getElementById("staffAttendanceCard");if(c){c.style.display="block";c.scrollIntoView({behavior:"smooth",block:"start"});}await refreshStaffAttendance();};
+window.closeStaffAttendanceCard=function(){const c=document.getElementById("staffAttendanceCard");if(c)c.style.display="none";};
+window.requestStaffExit=async function(){if(!auth.currentUser||!staffAttendanceDocId)return;const reason=prompt("Exit/Leave ka reason likhein:");if(!reason)return;await updateDoc(doc(db,"staffAttendance",staffAttendanceDocId),{approvalStatus:"Pending",exitRequestReason:reason,exitRequestedAt:attendanceNow()});setStaffAttendanceMessage("Exit request Admin ko bhej di gayi hai.",true);await refreshStaffAttendance();};
+window.useCurrentOfficeLocation=function(){if(!navigator.geolocation){setAdminAttendanceMessage("Location available nahi hai.");return;}navigator.geolocation.getCurrentPosition(p=>{document.getElementById("adminOfficeLat").value=p.coords.latitude.toFixed(6);document.getElementById("adminOfficeLng").value=p.coords.longitude.toFixed(6);setAdminAttendanceMessage("Current location fields mein aa gayi. Save Office Settings karein.",true);},()=>setAdminAttendanceMessage("Location permission allow karein."),{enableHighAccuracy:true,timeout:15000});};
+function setAdminAttendanceMessage(msg,ok=false){const e=document.getElementById("adminAttendanceMessage");if(e){e.innerText=msg;e.style.color=ok?"#087f32":"#dc3545";}}
+window.openAdminAttendanceCard=async function(){closeAllPhase7Cards("adminAttendanceCard");const c=document.getElementById("adminAttendanceCard");if(c){c.style.display="block";c.scrollIntoView({behavior:"smooth",block:"start"});}const s=await getOfficeSettings();if(s.lat)document.getElementById("adminOfficeLat").value=s.lat;if(s.lng)document.getElementById("adminOfficeLng").value=s.lng;if(s.radius)document.getElementById("adminOfficeRadius").value=s.radius;if(s.workingDays)document.getElementById("adminWorkingDays").value=s.workingDays;await loadAdminAttendanceSalary();};
+window.closeAdminAttendanceCard=function(){const c=document.getElementById("adminAttendanceCard");if(c)c.style.display="none";};
+window.saveAdminAttendanceSettings=async function(){if(!auth.currentUser)return;const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAttendanceMessage("Sirf Admin settings change kar sakta hai.");return;}const lat=parseOfficeCoordinate(document.getElementById("adminOfficeLat").value),lng=parseOfficeCoordinate(document.getElementById("adminOfficeLng").value),radius=Math.max(15,Number(document.getElementById("adminOfficeRadius").value||15)),workingDays=Math.max(1,Number(document.getElementById("adminWorkingDays").value||26));if(!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180){setAdminAttendanceMessage("Valid office latitude/longitude enter karein. Example: 28.5348 / 77.2185");return;}try{await setDoc(doc(db,"settings","staffAttendance"),{lat,lng,radius,workingDays,updatedAt:attendanceNow(),updatedBy:auth.currentUser.uid},{merge:true});document.getElementById("adminOfficeLat").value=lat.toFixed(6);document.getElementById("adminOfficeLng").value=lng.toFixed(6);document.getElementById("adminOfficeRadius").value=radius;setAdminAttendanceMessage("Office attendance settings save ho gayi.",true);}catch(e){console.error(e);setAdminAttendanceMessage("Save nahi hua: "+firebaseErrorText(e));}};
+window.loadAdminAttendanceSalary=async function(){if(!auth.currentUser)return;const body=document.getElementById("adminAttendanceSalaryBody");if(!body)return;const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){body.innerHTML='<tr><td colspan="8">Sirf Admin dekh sakta hai.</td></tr>';return;}const snap=await getDocs(collection(db,"users"));const staff=[];snap.forEach(d=>{if(d.data().role==="staff")staff.push({uid:d.id,...d.data()});});window.adminProfilesByUid=Object.fromEntries(staff.map(x=>[x.uid,x]));const month=attendanceDateKey().slice(0,7);let active=0;body.innerHTML="";for(const st of staff){const sal=await calculateStaffSalary(st.uid,month);const rows=sal.rows||[];const today=rows.find(r=>r.dateKey===attendanceDateKey());if(today&&!today.logoutAt)active++;const pending=rows.find(r=>r.approvalStatus==="Pending");const action=pending?`<button class="payment-action" type="button" onclick="approveStaffExit('${pending.id}')">Approve Exit</button>`:`<button class="button blue" type="button" onclick="setStaffSalary('${st.uid}',${sal.salary||0})">Set Salary</button>`;body.innerHTML+=`<tr><td>${st.staffId||st.name||"-"}</td><td>${moneyRs(sal.salary)}</td><td>${today?(today.logoutAt?"Logged Out":"🟢 Active"):"-"}</td><td>${today?formatDuration(today.outsideMinutes||0):"-"}</td><td>${pending?"🟠 Pending":"-"}</td><td>${moneyRs(sal.deduction)}</td><td>${moneyRs(sal.payable)}</td><td>${action}</td></tr>`;}document.getElementById("adminAttendanceActiveCount").innerText=String(active);if(!staff.length)body.innerHTML='<tr><td colspan="8">No staff found.</td></tr>';};
+window.approveStaffExit=async function(id){if(!auth.currentUser)return;const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){alert("Sirf Admin approval de sakta hai.");return;}await updateDoc(doc(db,"staffAttendance",id),{approvalStatus:"Approved",approvedOutsideMinutes:999999,approvedAt:attendanceNow(),approvedBy:auth.currentUser.uid});await loadAdminAttendanceSalary();};
+window.setStaffSalary=async function(uid,current){const v=prompt("Monthly salary (₹) enter karein:",String(current||0));if(v===null)return;const n=Math.max(0,Number(v));if(!n){alert("Valid salary enter karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){alert("Sirf Admin salary change kar sakta hai.");return;}await updateDoc(doc(db,"users",uid),{monthlySalary:n,salaryUpdatedAt:attendanceNow(),salaryUpdatedBy:auth.currentUser.uid});await loadAdminAttendanceSalary();};
+
 /* =====================================================
    STAFF LOGIN + STAFF PANEL
 ===================================================== */
@@ -3351,8 +3848,10 @@ function setAddCustomerMessage(message, success = false) {
 }
 
 function showStaffPanel() {
+    // Always activate the Staff role guard, including direct/manual Staff login.
+    if (typeof setLoggedInRoleView === "function") setLoggedInRoleView("staff");
     document.getElementById("firstLogin").style.display = "none";
-    document.getElementById("mainWebsite").style.display = "none";
+    document.getElementById("mainWebsite").style.setProperty("display", "none", "important");
     document.getElementById("staffPanel").style.display = "block";
 }
 
@@ -3374,8 +3873,11 @@ window.openStaffLogin = function() {
 };
 
 window.closeStaffLogin = async function() {
+    stopStaffNotificationPolling();
+    document.getElementById("staffNotificationPopupStack")?.remove();
     try { await signOut(auth); } catch (e) {}
     document.getElementById("staffPanel").style.display = "none";
+    clearLoggedInRoleView();
     showLoginScreen();
 };
 
@@ -3400,11 +3902,16 @@ async function loadStaffProfile(user) {
     document.getElementById("staffDashboard").style.display = "block";
     fillPhase9Profile("staff", data);
     try{await logActivity("Login","Staff login successful");}catch(e){}
+    try { await startStaffAttendance(user); } catch(e) { console.warn("Staff attendance start failed",e); }
 
     try { await loadStaffCustomers(); } catch (e) { console.error("Staff customers load failed:", e); }
     try { await loadStaffCollections(); } catch (e) { console.error("Staff collections load failed:", e); }
     try { await loadStaffComplaints(); } catch (e) { console.error("Staff complaints load failed:", e); }
-        try { await loadStaffNotifications(); } catch (e) { console.error("Staff notifications load failed:", e); }
+        try { 
+        staffNotificationSeenIds = getStaffNotificationSeenIds();
+        await loadStaffNotifications({popupNew:true});
+        startStaffNotificationPolling();
+    } catch (e) { console.error("Staff notifications load failed:", e); }
     return true;
 }
 
@@ -3480,7 +3987,11 @@ document.getElementById("staffLoginForm").addEventListener("submit", async funct
 });
 
 window.staffLogout = async function() {
+    try { if(staffAttendanceDocId && auth.currentUser) await updateDoc(doc(db,"staffAttendance",staffAttendanceDocId),{logoutAt:attendanceNow(),officeStatus:"Logged Out"}); } catch(e) {}
+    stopStaffAttendanceTracking();
     try { await logActivity("Logout","Staff logout"); } catch(e) {}
+    stopStaffNotificationPolling();
+    document.getElementById("staffNotificationPopupStack")?.remove();
     try {
         await signOut(auth);
         document.getElementById("staffLoginForm").reset();
@@ -3973,7 +4484,7 @@ async function loadAdminData(){
           staffBody=document.getElementById("adminStaffTableBody");
     if(!customerBody||!staffBody||!auth.currentUser)return;
     customerBody.innerHTML='<tr><td colspan="9">Loading...</td></tr>';
-    staffBody.innerHTML='<tr><td colspan="5">Loading...</td></tr>';
+    staffBody.innerHTML='<tr><td colspan="6">Loading...</td></tr>';
     try{
         const snap=await getDocs(collection(db,"users"));
         const customers=[],staff=[],profilesByUid={};
@@ -4003,12 +4514,12 @@ async function loadAdminData(){
         renderAdminCustomers(customers);
         renderAdminExpiringSoon(expiringSoon);
 
-        if(!staff.length) staffBody.innerHTML='<tr><td colspan="5">No staff found.</td></tr>';
+        if(!staff.length) staffBody.innerHTML='<tr><td colspan="6">No staff found.</td></tr>';
         else{
             staffBody.innerHTML="";
             staff.forEach(s=>{
                 const row=document.createElement("tr");
-                row.innerHTML=`<td>${s.staffId||"-"}</td><td>${s.name||"-"}</td><td>${s.mobile||"-"}</td><td>${s.role||"-"}</td><td style="font-size:11px">${s.uid}</td>`;
+                row.innerHTML=`<td>${s.staffId||"-"}</td><td>${s.name||"-"}</td><td>${s.email||s.loginEmail||"-"}</td><td>${s.mobile||"-"}</td><td>${s.role||"-"}</td><td>${moneyText(s.monthlySalary||0)}</td><td style="font-size:11px;word-break:break-all">${s.uid||"-"}</td>`;
                 staffBody.appendChild(row);
             });
         }
@@ -4111,28 +4622,76 @@ window.showAdminStaffList = function() {
     const card = document.getElementById("adminStaffFilterCard");
     const tbody = document.getElementById("adminStaffFilterBody");
     if (!card || !tbody) return;
+
+    // Same open/close behavior as the other Admin cards: hide other detail cards first.
+    const detailIds = [
+        "adminFilterCard",
+        "adminCollectionCard",
+        "adminBillingCard",
+        "adminExpiringSoonCard",
+        "adminExpiredInactiveCard",
+        "adminComplaintsCard",
+        "adminReportsCard",
+        "adminNotificationsCard",
+        "adminOfferCard",
+        "adminPasswordManagementCard",
+        "adminSecurityCard",
+        "adminStaffAddCard"
+    ];
+    detailIds.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = "none"; });
+
     const staff = window.adminStaffCache || [];
     if (!staff.length) {
-        tbody.innerHTML = '<tr><td colspan="5">No staff found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6">No staff found.</td></tr>';
     } else {
         tbody.innerHTML = "";
         staff.forEach(s => {
             const row = document.createElement("tr");
-            row.innerHTML = `<td>${s.staffId||"-"}</td><td>${s.name||"-"}</td><td>${s.mobile||"-"}</td><td>${s.role||"-"}</td><td style="font-size:11px">${s.uid||"-"}</td>`;
+            row.innerHTML = `<td>${s.staffId||"-"}</td><td>${s.name||"-"}</td><td>${s.email||s.loginEmail||"-"}</td><td>${s.mobile||"-"}</td><td>${s.role||"-"}</td><td style="font-size:11px;word-break:break-all">${s.uid||"-"}</td>`;
             tbody.appendChild(row);
         });
     }
-    const customerCard = document.getElementById("adminFilterCard");
-    if (customerCard) customerCard.style.display = "none";
-    const expiredCard = document.getElementById("adminExpiredInactiveCard");
-    if (expiredCard) expiredCard.style.display = "none";
+
     card.style.display = "block";
     card.scrollIntoView({behavior:"smooth",block:"start"});
 };
 
+window.showAdminStaffAdd = function() {
+    const card = document.getElementById("adminStaffAddCard");
+    if (!card) return;
+    const detailIds = [
+        "adminFilterCard",
+        "adminStaffFilterCard",
+        "adminCollectionCard",
+        "adminBillingCard",
+        "adminExpiringSoonCard",
+        "adminExpiredInactiveCard",
+        "adminComplaintsCard",
+        "adminReportsCard",
+        "adminNotificationsCard",
+        "adminOfferCard",
+        "adminPasswordManagementCard",
+        "adminSecurityCard"
+    ];
+    detailIds.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = "none"; });
+    card.style.display = "block";
+    card.scrollIntoView({behavior:"smooth",block:"start"});
+};
+
+window.hideAdminStaffAdd = function() {
+    const card = document.getElementById("adminStaffAddCard");
+    if (card) card.style.display = "none";
+    const dashboard = document.getElementById("adminDashboard");
+    if (dashboard) dashboard.scrollIntoView({behavior:"smooth",block:"start"});
+};
+
 window.hideAdminStaffList = function() {
     const card = document.getElementById("adminStaffFilterCard");
-    if (card) card.style.display = "none";
+    if (card) {
+        card.style.display = "none";
+        const dashboard = document.getElementById("adminDashboard");
+        if (dashboard) dashboard.scrollIntoView({behavior:"smooth",block:"start"});
+    }
 };
 
 window.hideAdminCustomerList=function(){
@@ -4144,7 +4703,7 @@ window.showAdminExpiredInactiveCustomers=function(){showAdminCustomerList("expir
 window.hideAdminExpiredInactiveCustomers=function(){hideAdminCustomerList();};
 
 window.openAdminComplaintsCard=function(){
-    ["adminFilterCard","adminStaffFilterCard","adminCollectionCard","adminBillingCard","adminExpiringSoonCard","adminExpiredInactiveCard","adminPasswordManagementCard"].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display="none";});
+    ["adminFilterCard","adminStaffFilterCard","adminCollectionCard","adminBillingCard","adminExpiringSoonCard","adminExpiredInactiveCard","adminPasswordManagementCard","adminAttendanceCard"].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display="none";});
     const card=document.getElementById("adminComplaintsCard");
     if(card){card.style.display="block";card.scrollIntoView({behavior:"smooth",block:"start"});}
     loadAdminComplaints();
@@ -4156,7 +4715,7 @@ window.closeAdminComplaintsCard=function(){const card=document.getElementById("a
    PHASE 7 - SEARCH + REPORTS
 ========================= */
 function closeAllPhase7Cards(exceptId){
-  const ids=["staffReportsCard","staffFilterCard","staffCollectionCard","staffBillingCard","staffRenewalCard","staffComplaintsCard","staffNotificationsCard","staffSelectedCustomerHistoryCard","adminReportsCard","adminFilterCard","adminStaffFilterCard","adminCollectionCard","adminBillingCard","adminComplaintsCard","adminExpiringSoonCard","adminExpiredInactiveCard","adminNotificationsCard","adminOfferCard","adminPasswordManagementCard"];
+  const ids=["staffReportsCard","staffFilterCard","staffCollectionCard","staffBillingCard","staffRenewalCard","staffComplaintsCard","staffNotificationsCard","staffSelectedCustomerHistoryCard","staffAttendanceCard","adminReportsCard","adminFilterCard","adminStaffFilterCard","adminCollectionCard","adminBillingCard","adminComplaintsCard","adminExpiringSoonCard","adminExpiredInactiveCard","adminNotificationsCard","adminOfferCard","adminPasswordManagementCard"];
   ids.forEach(id=>{if(id!==exceptId){const el=document.getElementById(id);if(el)el.style.display="none";}});
 }
 function setCurrentMonthReportDates(fromId,toId){const now=new Date();const first=new Date(now.getFullYear(),now.getMonth(),1);const iso=d=>d.toISOString().slice(0,10);const f=document.getElementById(fromId),t=document.getElementById(toId);if(f&&!f.value)f.value=iso(first);if(t&&!t.value)t.value=iso(now);}
@@ -4368,6 +4927,7 @@ document.getElementById("adminLoginForm").addEventListener("submit", async funct
             throw new Error("NOT_ADMIN");
         }
 
+        setLoggedInRoleView("admin");
         const nameEl = document.getElementById("adminName");
         if(nameEl) nameEl.innerText = data.name || adminId;
         fillPhase9Profile("admin", data);
@@ -4411,8 +4971,8 @@ document.getElementById("adminLoginForm").addEventListener("submit", async funct
         button.innerText = "🔐 Admin Login";
     }
 });
-window.adminLogout=async function(){try{await logActivity("Logout","Admin logout");}catch(e){} try{await signOut(auth);}catch(e){}window.closeAdminCustomerFormPage(true);document.getElementById("adminPanel").style.display="none";document.getElementById("adminLoginBox").style.display="block";document.getElementById("adminDashboard").style.display="none";document.getElementById("adminLoginForm").reset();showLoginScreen();window.scrollTo(0,0);};
-document.getElementById("adminAddStaffForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminStaffMessage("Pehle admin login karein.");return;}const staffId=document.getElementById("newStaffId").value.trim().toUpperCase(),email=document.getElementById("newStaffEmail").value.trim().toLowerCase(),password=document.getElementById("newStaffPassword").value,name=document.getElementById("newStaffName").value.trim(),mobile=document.getElementById("newStaffMobile").value.trim();if(!/^STAFF[0-9]+$/.test(staffId)){setAdminStaffMessage("Staff ID STAFF03 jaisa rakhein.");return;}if(!/^\S+@\S+\.\S+$/.test(email)){setAdminStaffMessage("Valid real email enter karein.");return;}if(password.length<6){setAdminStaffMessage("Password minimum 6 characters hona chahiye.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminStaffMessage("Valid 10 digit mobile number enter karein.");return;}const btn=document.getElementById("adminAddStaffButton");btn.disabled=true;btn.innerText="Adding...";setAdminStaffMessage("");try{const credential=await createUserWithEmailAndPassword(customerAuth,email,password);await setDoc(doc(db,"users",credential.user.uid),{staffId,name,email,mobile,role:"staff",createdAt:new Date().toISOString(),createdBy:auth.currentUser.uid,createdByName:(document.getElementById("adminName")?.innerText||"Admin")});await signOut(customerAuth);setAdminStaffMessage("Staff successfully add ho gaya.",true);document.getElementById("adminAddStaffForm").reset();await loadAdminData();}catch(error){console.error(error);setAdminStaffMessage(error.code==="auth/email-already-in-use"?"Ye email already registered hai.":"Staff create nahi ho paya: "+(error.code||"unknown"));}finally{btn.disabled=false;btn.innerText="➕ Add Staff";}});
+window.adminLogout=async function(){ clearLoggedInRoleView();try{await logActivity("Logout","Admin logout");}catch(e){} try{await signOut(auth);}catch(e){}window.closeAdminCustomerFormPage(true);document.getElementById("adminPanel").style.display="none";document.getElementById("adminLoginBox").style.display="block";document.getElementById("adminDashboard").style.display="none";document.getElementById("adminLoginForm").reset();showLoginScreen();window.scrollTo(0,0);};
+document.getElementById("adminAddStaffForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminStaffMessage("Pehle admin login karein.");return;}const staffId=document.getElementById("newStaffId").value.trim().toUpperCase(),email=document.getElementById("newStaffEmail").value.trim().toLowerCase(),password=document.getElementById("newStaffPassword").value,name=document.getElementById("newStaffName").value.trim(),mobile=document.getElementById("newStaffMobile").value.trim();const monthlySalary=Math.max(Number(document.getElementById("newStaffSalary").value||0),0);if(!/^STAFF[0-9]+$/.test(staffId)){setAdminStaffMessage("Staff ID STAFF03 jaisa rakhein.");return;}if(!/^\S+@\S+\.\S+$/.test(email)){setAdminStaffMessage("Valid real email enter karein.");return;}if(password.length<6){setAdminStaffMessage("Password minimum 6 characters hona chahiye.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminStaffMessage("Valid 10 digit mobile number enter karein.");return;}if(monthlySalary<=0){setAdminStaffMessage("Monthly salary enter karein.");return;}const btn=document.getElementById("adminAddStaffButton");btn.disabled=true;btn.innerText="Adding...";setAdminStaffMessage("");try{const credential=await createUserWithEmailAndPassword(customerAuth,email,password);await setDoc(doc(db,"users",credential.user.uid),{staffId,name,email,mobile,monthlySalary,role:"staff",createdAt:new Date().toISOString(),createdBy:auth.currentUser.uid,createdByName:(document.getElementById("adminName")?.innerText||"Admin")});await signOut(customerAuth);setAdminStaffMessage("Staff successfully add ho gaya.",true);document.getElementById("adminAddStaffForm").reset();await loadAdminData();}catch(error){console.error(error);setAdminStaffMessage(error.code==="auth/email-already-in-use"?"Ye email already registered hai.":"Staff create nahi ho paya: "+(error.code||"unknown"));}finally{btn.disabled=false;btn.innerText="➕ Add Staff";}});
 
 syncStaffAddPlanFields();
 syncAdminAddPaymentFields();
@@ -4436,20 +4996,30 @@ function showNewCustomerOffers(){
     if(sec) sec.style.display="block";
 }
 window.loadNewCustomerOffers=async function(){
+    // Public website should not display the Festival Offers section.
+    // Offers remain available inside Admin -> Festival Offers for management.
+    hideNewCustomerOffers();
+    return;
+
     const list=document.getElementById("newCustomerOffersList");
     const sec=document.getElementById("newCustomerOffersSection");
     if(!list||!sec)return;
-    if(auth.currentUser || localStorage.getItem("jsKnownCustomer")==="true"){
-        hideNewCustomerOffers();
-        return;
-    }
-    list.innerHTML='<div class="payment-summary-box">Offers loading...</div>';
     try{
+        // Only Admin-created offers with active === true are eligible.
+        // validUntil is checked client-side so expired offers never appear.
         const snap=await getDocs(query(collection(db,"offers"),where("active","==",true)));
         const rows=[];
-        snap.forEach(d=>{const x={id:d.id,...d.data()}; if(offerDateValid(x.validUntil)) rows.push(x);});
+        snap.forEach(d=>{
+            const x={id:d.id,...d.data()};
+            const active = x.active === true;
+            const valid = offerDateValid(x.validUntil);
+            if(active && valid) rows.push(x);
+        });
         rows.sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
-        if(!rows.length){hideNewCustomerOffers();return;}
+        if(!rows.length){
+            hideNewCustomerOffers();
+            return;
+        }
         list.innerHTML=rows.slice(0,6).map(o=>`<div style="background:#fff;border:1px solid #f3d6a3;border-radius:14px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.05)"><div style="font-size:12px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.4px">${escapeHtml(String(o.festival||"Special Offer"))}</div><h3 style="margin:6px 0;color:#07549a;font-size:20px">${escapeHtml(String(o.title||"New Customer Offer"))}</h3><p style="margin:0 0 10px;color:#374151;white-space:pre-line">${escapeHtml(String(o.text||""))}</p>${o.validUntil?`<small style="color:#6b7280">Valid till: ${escapeHtml(formatDateForDisplay(String(o.validUntil)))}</small>`:"<small style=\"color:#6b7280\">Limited period offer</small>"}<div style="margin-top:12px"><a class="button blue" href="#connection">Get New Connection</a></div></div>`).join("");
         showNewCustomerOffers();
     }catch(e){
@@ -4499,6 +5069,232 @@ document.getElementById("adminOfferForm")?.addEventListener("submit",async funct
     }catch(e){console.error(e);if(msg){msg.innerText="Offer publish nahi hua: "+firebaseErrorText(e);msg.style.color="#dc3545";}}
     finally{btn.disabled=false;btn.innerText="🎁 Publish Offer";}
 });
+
+/* =====================================================
+   NOTIFICATIONS - ADMIN / STAFF / CUSTOMER
+===================================================== */
+function notificationDateValid(showUntil){
+    if(!showUntil) return true;
+    const d = new Date(String(showUntil) + "T23:59:59");
+    return !Number.isNaN(d.getTime()) && d.getTime() >= Date.now();
+}
+function notificationAudienceLabel(audience){
+    return audience === "customer" ? "Customers Only" : audience === "staff" ? "Staff Only" : "Customer + Staff";
+}
+function notificationVisibleForRole(n, role){
+    if(!n || n.active === false || !notificationDateValid(n.showUntil)) return false;
+    const a = String(n.audience || "all").toLowerCase();
+    return a === "all" || a === role;
+}
+function closeNotificationCardsExcept(id){
+    ["staffNotificationsCard","adminNotificationsCard"].forEach(cid=>{
+        const el=document.getElementById(cid);
+        if(el && cid!==id) el.style.display="none";
+    });
+}
+window.openAdminNotificationsCard=function(){
+    if(!auth.currentUser){ setAdminMessage("Pehle Admin login karein."); return; }
+    if(typeof closeAllPhase7Cards === "function") closeAllPhase7Cards("adminNotificationsCard");
+    closeNotificationCardsExcept("adminNotificationsCard");
+    const c=document.getElementById("adminNotificationsCard");
+    if(c){
+        c.style.display="block";
+        requestAnimationFrame(()=>c.scrollIntoView({behavior:"smooth",block:"start"}));
+    }
+    loadAdminNotifications();
+};
+window.closeAdminNotificationsCard=function(){
+    const c=document.getElementById("adminNotificationsCard");
+    if(c) c.style.display="none";
+};
+window.loadAdminNotifications=async function(){
+    const list=document.getElementById("adminNotificationsList");
+    const count=document.getElementById("adminNotificationCount");
+    if(!list || !auth.currentUser) return;
+    list.innerHTML='<div class="payment-summary-box">Loading...</div>';
+    try{
+        const snap=await getDocs(collection(db,"notifications"));
+        const rows=[];
+        snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+        rows.sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+        const activeRows=rows.filter(n=>n.active===true && notificationDateValid(n.showUntil));
+        if(count) count.innerText=activeRows.length;
+        if(!rows.length){
+            list.innerHTML='<div class="payment-summary-box">Abhi koi notification nahi hai.</div>';
+            return;
+        }
+        list.innerHTML=rows.slice(0,20).map(n=>{
+            const activeNow=n.active===true && notificationDateValid(n.showUntil);
+            const statusText=activeNow?"Active":"Inactive / Expired";
+            const statusColor=activeNow?"#087f32":"#6b7280";
+            return `<div class="payment-summary-box" style="text-align:left"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><strong>${escapeHtml(String(n.title||"Notification"))}</strong><div style="font-size:12px;color:#6b7280;margin-top:3px">${escapeHtml(notificationAudienceLabel(String(n.audience||"all")))}${n.showUntil?" • Till "+escapeHtml(formatDateForDisplay(String(n.showUntil))):""}</div></div><span style="font-weight:700;color:${statusColor}">${statusText}</span></div><p style="margin:8px 0;white-space:pre-line">${escapeHtml(String(n.message||""))}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="button blue" type="button" onclick="toggleAdminNotification('${n.id}',${n.active===true?'false':'true'})">${n.active===true?'⏸ Deactivate':'▶ Activate'}</button><button class="button blue" type="button" onclick="deleteAdminNotification('${n.id}')">🗑️ Delete</button></div></div>`;
+        }).join("");
+    }catch(e){
+        console.error("Admin notifications load failed",e);
+        list.innerHTML='<div class="payment-summary-box">Notifications load nahi hui. Firestore Rules check karein.</div>';
+        if(count) count.innerText="0";
+    }
+};
+window.toggleAdminNotification=async function(id,active){
+    if(!auth.currentUser) return;
+    try{
+        await updateDoc(doc(db,"notifications",id),{active:Boolean(active),updatedAt:new Date().toISOString(),updatedBy:auth.currentUser.uid});
+        await loadAdminNotifications();
+    }catch(e){ alert("Notification update nahi hua: "+firebaseErrorText(e)); }
+};
+window.deleteAdminNotification=async function(id){
+    if(!confirm("Ye notification delete karna hai?")) return;
+    try{
+        await deleteDoc(doc(db,"notifications",id));
+        await loadAdminNotifications();
+    }catch(e){ alert("Notification delete nahi hua: "+firebaseErrorText(e)); }
+};
+
+const adminNotificationForm=document.getElementById("adminNotificationForm");
+if(adminNotificationForm){
+    adminNotificationForm.addEventListener("submit",async function(event){
+        event.preventDefault();
+        const statusEl=document.getElementById("adminNotificationMessageStatus");
+        const btn=document.getElementById("adminNotificationButton");
+        if(!auth.currentUser){ if(statusEl) statusEl.innerText="Pehle Admin login karein."; return; }
+        const title=document.getElementById("adminNotificationTitle")?.value.trim()||"";
+        const audience=document.getElementById("adminNotificationAudience")?.value||"all";
+        const message=document.getElementById("adminNotificationMessage")?.value.trim()||"";
+        const showUntil=document.getElementById("adminNotificationExpiry")?.value||"";
+        if(!title || !message){ if(statusEl) statusEl.innerText="Title aur Message required hai."; return; }
+        if(showUntil && !notificationDateValid(showUntil)){ if(statusEl) statusEl.innerText="Show Until date future date honi chahiye."; return; }
+        if(btn){btn.disabled=true;btn.innerText="Publishing...";}
+        try{
+            await addDoc(collection(db,"notifications"),{
+                title,message,audience,showUntil,active:true,
+                createdAt:new Date().toISOString(),
+                createdBy:auth.currentUser.uid
+            });
+            if(statusEl){statusEl.innerText="Notification successfully publish ho gayi.";statusEl.style.color="#087f32";}
+            adminNotificationForm.reset();
+            await loadAdminNotifications();
+        }catch(e){
+            console.error(e);
+            if(statusEl){statusEl.innerText="Notification publish nahi hui: "+firebaseErrorText(e);statusEl.style.color="#dc3545";}
+        }finally{
+            if(btn){btn.disabled=false;btn.innerText="📢 Publish Notification";}
+        }
+    });
+}
+
+window.loadCustomerNotifications=async function(){
+    const list=document.getElementById("customerNotificationsList");
+    if(!list || !auth.currentUser) return;
+    list.innerHTML='<div class="payment-summary-box">Notifications loading...</div>';
+    try{
+        const [allSnap,customerSnap]=await Promise.all([
+            getDocs(query(collection(db,"notifications"),where("audience","==","all"))),
+            getDocs(query(collection(db,"notifications"),where("audience","==","customer")))
+        ]);
+        const map=new Map();
+        allSnap.forEach(d=>map.set(d.id,{id:d.id,...d.data()}));
+        customerSnap.forEach(d=>map.set(d.id,{id:d.id,...d.data()}));
+        const rows=[...map.values()].filter(n=>notificationVisibleForRole(n,"customer")).sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+        if(!rows.length){list.innerHTML='<div class="payment-summary-box">Abhi koi active notification nahi hai.</div>';return;}
+        list.innerHTML=rows.slice(0,20).map(n=>`<div class="payment-summary-box" style="text-align:left"><strong>${escapeHtml(String(n.title||"Notification"))}</strong><div style="font-size:12px;color:#6b7280;margin:4px 0">${n.showUntil?"Valid till: "+escapeHtml(formatDateForDisplay(String(n.showUntil))):""}</div><p style="margin:0;white-space:pre-line">${escapeHtml(String(n.message||""))}</p></div>`).join("");
+    }catch(e){
+        console.error("Customer notifications load failed",e);
+        list.innerHTML='<div class="payment-summary-box">Notifications load nahi hui.</div>';
+    }
+};
+let staffNotificationPollTimer = null;
+let staffNotificationSeenIds = new Set();
+
+function getStaffNotificationSeenIds(){
+    try{
+        const raw = JSON.parse(sessionStorage.getItem("jsStaffNotificationSeenIds") || "[]");
+        return new Set(Array.isArray(raw) ? raw.map(String) : []);
+    }catch(e){ return new Set(); }
+}
+function saveStaffNotificationSeenIds(){
+    try{
+        sessionStorage.setItem("jsStaffNotificationSeenIds", JSON.stringify([...staffNotificationSeenIds].slice(-200)));
+    }catch(e){}
+}
+function ensureStaffNotificationPopupStack(){
+    let stack=document.getElementById("staffNotificationPopupStack");
+    if(!stack){
+        stack=document.createElement("div");
+        stack.id="staffNotificationPopupStack";
+        document.body.appendChild(stack);
+    }
+    return stack;
+}
+function showStaffNotificationPopup(n){
+    const stack=ensureStaffNotificationPopupStack();
+    const popup=document.createElement("div");
+    popup.className="staff-notification-popup";
+    const title=escapeHtml(String(n.title||"Notification"));
+    const message=escapeHtml(String(n.message||""));
+    const valid=n.showUntil ? "Valid till: "+escapeHtml(formatDateForDisplay(String(n.showUntil))) : "No expiry";
+    popup.innerHTML=`<button class="popup-close" type="button" aria-label="Close">×</button>
+      <div class="popup-title">🔔 ${title}</div>
+      <div class="popup-message">${message}</div>
+      <div class="popup-meta">${valid}</div>`;
+    popup.querySelector(".popup-close")?.addEventListener("click",()=>popup.remove());
+    stack.appendChild(popup);
+    setTimeout(()=>{ if(popup.isConnected) popup.remove(); }, 8000);
+}
+function popNewStaffNotifications(rows){
+    staffNotificationSeenIds = getStaffNotificationSeenIds();
+    const fresh = rows.filter(n => n.id && !staffNotificationSeenIds.has(String(n.id)));
+    fresh.slice(0,10).reverse().forEach(n=>{
+        showStaffNotificationPopup(n);
+        staffNotificationSeenIds.add(String(n.id));
+    });
+    rows.forEach(n=>{ if(n.id) staffNotificationSeenIds.add(String(n.id)); });
+    saveStaffNotificationSeenIds();
+}
+function startStaffNotificationPolling(){
+    if(staffNotificationPollTimer) clearInterval(staffNotificationPollTimer);
+    staffNotificationPollTimer=setInterval(()=>{
+        if(auth.currentUser && document.getElementById("staffDashboard")?.style.display !== "none"){
+            loadStaffNotifications({popupNew:true});
+        }
+    },15000);
+}
+function stopStaffNotificationPolling(){
+    if(staffNotificationPollTimer){
+        clearInterval(staffNotificationPollTimer);
+        staffNotificationPollTimer=null;
+    }
+}
+
+window.loadStaffNotifications=async function(options={}){
+    const list=document.getElementById("staffNotificationsList");
+    if(!list || !auth.currentUser) return;
+    list.innerHTML='<div class="payment-summary-box">Notifications loading...</div>';
+    try{
+        const [allSnap,staffSnap]=await Promise.all([
+            getDocs(query(collection(db,"notifications"),where("audience","==","all"))),
+            getDocs(query(collection(db,"notifications"),where("audience","==","staff")))
+        ]);
+        const map=new Map();
+        allSnap.forEach(d=>map.set(d.id,{id:d.id,...d.data()}));
+        staffSnap.forEach(d=>map.set(d.id,{id:d.id,...d.data()}));
+        const rows=[...map.values()].filter(n=>notificationVisibleForRole(n,"staff")).sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+        const countEl=document.getElementById("staffNotificationCount");
+        if(countEl) countEl.innerText=String(rows.length);
+        if(options.popupNew) popNewStaffNotifications(rows);
+        if(!rows.length){list.innerHTML='<div class="payment-summary-box">Abhi koi active notification nahi hai.</div>';return;}
+        list.innerHTML=rows.slice(0,20).map(n=>`<div class="payment-summary-box" style="text-align:left"><strong>${escapeHtml(String(n.title||"Notification"))}</strong><div style="font-size:12px;color:#6b7280;margin:4px 0">${n.showUntil?"Valid till: "+escapeHtml(formatDateForDisplay(String(n.showUntil))):""}</div><p style="margin:0;white-space:pre-line">${escapeHtml(String(n.message||""))}</p></div>`).join("");
+    }catch(e){
+        console.error("Staff notifications load failed",e);
+        list.innerHTML='<div class="payment-summary-box">Notifications load nahi hui.</div>';
+    }
+};
+window.openStaffNotificationsCard=function(){
+    hideStaffActionCards();
+    const c=document.getElementById("staffNotificationsCard");
+    if(c){c.style.display="block";c.scrollIntoView({behavior:"smooth",block:"start"});}
+    loadStaffNotifications();
+};
+window.closeStaffNotificationsCard=function(){const c=document.getElementById("staffNotificationsCard");if(c)c.style.display="none";};
 
 /* =====================================================
    PHASE 9 - ACCOUNT & SECURITY
@@ -4845,6 +5641,7 @@ onAuthStateChanged(auth, async function(user) {
             const role = data.role;
 
             if (role === "admin") {
+                setLoggedInRoleView("admin");
                 document.getElementById("firstLogin").style.display = "none";
                 document.getElementById("mainWebsite").style.display = "none";
                 document.getElementById("staffPanel").style.display = "none";
@@ -4860,9 +5657,11 @@ onAuthStateChanged(auth, async function(user) {
                 try { await loadAdminNotifications(); } catch(e) { console.error("Admin notifications load failed:", e); }
 
             } else if (role === "staff") {
+                setLoggedInRoleView("staff");
                 await loadStaffProfile(user);
 
             } else if (role === "customer") {
+                setLoggedInRoleView("customer");
                 await loadCustomerData(user);
 
             } else {
@@ -4904,7 +5703,10 @@ setTimeout(()=>{ if(!auth.currentUser && localStorage.getItem("jsKnownCustomer")
 
 /* =====================================================
    PHASE 8 - BILLING & RECEIPTS
+   FINAL ONE-PAGE RECEIPT / PRINT / PDF
 ===================================================== */
+
+const RECEIPT_LOGO_DATA = "data:image/png;base64,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";
 
 function makeReceiptNo(){
     const now=new Date();
@@ -4919,14 +5721,17 @@ function getReceiptNo(payment){
     const pad=n=>String(n).padStart(2,"0");
     return `JS-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${id}`;
 }
+
 function receiptDate(value){
     const d=new Date(value||Date.now());
     if(Number.isNaN(d.getTime())) return "-";
     return d.toLocaleString("en-IN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
 }
+
 function escapeReceiptHtml(value){
     return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
+
 function receiptContentHtml(payment){
     const p=payment||{};
     const receiptNo=getReceiptNo(p);
@@ -4939,20 +5744,42 @@ function receiptContentHtml(payment){
     const type=p.collectionType||"Payment";
     const plan=p.plan||"-";
     const collected=p.collectedByName||p.collectedByStaffId||"JS Internet";
+
     return `<div class="js-receipt-paper">
-      <div class="receipt-top"><div class="receipt-brand-wrap"><img class="receipt-brand-logo" src="logo.jpg" alt="JS Internet Logo" onerror="this.style.display='none'"><div><div class="receipt-brand">JS INTERNET</div><div class="receipt-muted">Fast Internet. Better Connectivity.</div><div class="receipt-muted">Malviya Nagar • Hauz Rani • Khirki Extension • Khirki Village</div></div></div><div><div><strong>RECEIPT</strong></div><div class="receipt-muted">Receipt No: ${escapeReceiptHtml(receiptNo)}</div><div class="receipt-muted">Date: ${escapeReceiptHtml(receiptDate(p.createdAt))}</div></div></div>
+      <div class="receipt-top">
+        <div class="receipt-brand-wrap">
+          <img class="receipt-brand-logo" src="${RECEIPT_LOGO_DATA}" alt="JS Internet Logo">
+          <div>
+            <div class="receipt-brand">JS INTERNET</div>
+            <div class="receipt-muted">Fast Internet. Better Connectivity.</div>
+            <div class="receipt-muted">Malviya Nagar • Hauz Rani • Khirki Extension • Khirki Village</div>
+          </div>
+        </div>
+        <div class="receipt-meta">
+          <div class="receipt-meta-title">RECEIPT</div>
+          <div class="receipt-muted">Receipt No: ${escapeReceiptHtml(receiptNo)}</div>
+          <div class="receipt-muted">Date: ${escapeReceiptHtml(receiptDate(p.createdAt))}</div>
+        </div>
+      </div>
+
       <div class="receipt-title">Payment Receipt</div>
+
       <div class="receipt-grid">
         <div class="receipt-row"><div class="receipt-label">Customer ID</div><div class="receipt-value">${escapeReceiptHtml(customerId)}</div></div>
         <div class="receipt-row"><div class="receipt-label">Customer Name</div><div class="receipt-value">${escapeReceiptHtml(customerName)}</div></div>
         <div class="receipt-row"><div class="receipt-label">Payment Type</div><div class="receipt-value">${escapeReceiptHtml(type)}</div></div>
-        <div class="receipt-row"><div class="receipt-label">Plan</div><div class="receipt-value">${escapeReceiptHtml(plan)}</div></div>
+        <div class="receipt-row"><div class="receipt-label">Plan</div><div class="receipt-value receipt-plan-value">${escapeReceiptHtml(plan)}</div></div>
         <div class="receipt-row"><div class="receipt-label">Payment Mode</div><div class="receipt-value">${escapeReceiptHtml(mode)}</div></div>
         <div class="receipt-row"><div class="receipt-label">Collected By</div><div class="receipt-value">${escapeReceiptHtml(collected)}</div></div>
         <div class="receipt-row"><div class="receipt-label">Plan Amount</div><div class="receipt-value">₹${planAmount.toLocaleString("en-IN")}</div></div>
         <div class="receipt-row"><div class="receipt-label">Customer Due</div><div class="receipt-value">₹${due.toLocaleString("en-IN")}</div></div>
       </div>
-      <div class="receipt-total-box"><div class="receipt-label">AMOUNT RECEIVED</div><div class="receipt-total">₹${amount.toLocaleString("en-IN")}</div></div>
+
+      <div class="receipt-total-box">
+        <div class="receipt-label">AMOUNT RECEIVED</div>
+        <div class="receipt-total">₹${amount.toLocaleString("en-IN")}</div>
+      </div>
+
       <div class="receipt-footer">This is a computer generated receipt from JS Internet. Thank you.</div>
     </div>`;
 }
@@ -4960,26 +5787,152 @@ function receiptContentHtml(payment){
 function ensureReceiptModal(){
     let modal=document.getElementById("jsReceiptModal");
     if(modal) return modal;
+
     const style=document.createElement("style");
     style.id="jsReceiptModalStyle";
     style.textContent=`
-      .receipt-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;padding:16px;z-index:100000;overflow:auto}
-      .receipt-modal{width:min(820px,100%);max-height:92vh;overflow:auto;background:#eef2f7;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:14px}
-      .receipt-modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:10px}
-      .receipt-modal-actions button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer}
-      .receipt-close-btn{background:#e5e7eb;color:#222}.receipt-print-btn{background:#07549a;color:#fff}.receipt-download-btn{background:#0f766e;color:#fff}
-      .js-receipt-paper{max-width:720px;margin:0 auto;background:#fff;border:1px solid #ddd;border-radius:14px;padding:28px;color:#222}
-      .receipt-top{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #07549a;padding-bottom:16px}.receipt-brand-wrap{display:flex;align-items:center;gap:14px}.receipt-brand-logo{width:78px;height:auto;max-height:78px;object-fit:contain}.receipt-brand{color:#07549a;font-size:28px;font-weight:800}.receipt-muted{color:#666;font-size:13px}.receipt-title{font-size:22px;font-weight:800;margin:20px 0}.receipt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.receipt-row{padding:11px 0;border-bottom:1px solid #eee}.receipt-label{font-size:12px;color:#667085}.receipt-value{font-weight:700;margin-top:4px}.receipt-total{font-size:24px;color:#07549a;font-weight:800}.receipt-total-box{margin-top:20px;padding:15px;border-radius:10px;background:#f5f8fc}.receipt-footer{margin-top:24px;padding-top:16px;border-top:1px dashed #bbb;text-align:center;color:#666;font-size:12px}
-      @media(max-width:600px){.receipt-modal-backdrop{padding:7px}.receipt-modal{padding:8px;max-height:96vh}.js-receipt-paper{padding:18px}.receipt-grid{grid-template-columns:1fr}.receipt-top{flex-direction:column}.receipt-brand-logo{width:64px;max-height:64px}}
+      /* Receipt preview */
+      .receipt-modal-backdrop{
+        position:fixed;inset:0;background:rgba(0,0,0,.58);
+        display:none;align-items:flex-start;justify-content:center;
+        padding:16px;z-index:100000;overflow:auto;
+      }
+      .receipt-modal{
+        width:min(920px,100%);max-height:92vh;overflow:auto;
+        background:#eef2f7;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.3);
+        padding:14px;
+      }
+      .receipt-modal-actions{
+        display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:10px
+      }
+      .receipt-modal-actions button{
+        border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer
+      }
+      .receipt-close-btn{background:#e5e7eb;color:#222}
+      .receipt-print-btn{background:#07549a;color:#fff}
+      .receipt-download-btn{background:#0f766e;color:#fff}
+
+      /* One-page A4 receipt */
+      .js-receipt-paper{
+        width:190mm;max-width:100%;box-sizing:border-box;
+        margin:0 auto;background:#fff;color:#222;
+        padding:11mm 10mm 8mm;
+        border:0;border-radius:0;
+        font-family:Arial,Helvetica,sans-serif;
+      }
+      .receipt-top{
+        display:flex;justify-content:space-between;align-items:flex-start;
+        gap:12mm;border-bottom:1.2px solid #07549a;padding-bottom:7mm;
+      }
+      .receipt-brand-wrap{display:flex;align-items:flex-start;gap:4mm;min-width:0}
+      .receipt-brand-logo{width:26mm;height:21mm;object-fit:contain;object-position:center}
+      .receipt-brand{color:#07549a;font-size:22pt;font-weight:800;line-height:1.05;letter-spacing:.2px}
+      .receipt-muted{color:#4e5968;font-size:9.5pt;line-height:1.35}
+      .receipt-meta{min-width:58mm;padding-top:1mm}
+      .receipt-meta-title{font-size:11pt;font-weight:800;line-height:1.2;margin-bottom:1.5mm}
+      .receipt-title{
+        font-size:19pt;font-weight:800;text-transform:uppercase;
+        margin:9mm 0 10mm;color:#161616;
+      }
+      .receipt-grid{
+        display:grid;grid-template-columns:1fr 1fr;
+        column-gap:14mm;row-gap:0;
+      }
+      .receipt-row{
+        padding:0 0 5mm;
+        margin-bottom:4mm;
+        border-bottom:1px solid #e1e3e6;
+        min-height:13mm;
+        box-sizing:border-box;
+      }
+      .receipt-label{font-size:9.5pt;color:#667085;line-height:1.2}
+      .receipt-value{
+        font-size:10.5pt;font-weight:700;margin-top:2mm;
+        line-height:1.25;color:#111;
+        word-break:break-word;
+      }
+      .receipt-plan-value{max-width:82mm}
+      .receipt-total-box{
+        margin-top:4mm;padding:7mm 8mm;border-radius:3.5mm;background:#f5f8fc;
+      }
+      .receipt-total{font-size:21pt;color:#07549a;font-weight:800;margin-top:1.5mm}
+      .receipt-footer{
+        margin-top:6mm;padding-top:4mm;border-top:1px dashed #b8bcc2;
+        text-align:center;color:#667085;font-size:8.5pt;
+      }
+
+      @page{
+        size:A4 portrait;
+        margin:0;
+      }
       @media print{
-        body.js-printing-receipt *{visibility:hidden!important}
-        body.js-printing-receipt #jsReceiptModal,body.js-printing-receipt #jsReceiptModal *{visibility:visible!important}
-        body.js-printing-receipt #jsReceiptModal{display:block!important;position:absolute!important;inset:0!important;background:#fff!important;padding:0!important;overflow:visible!important}
-        body.js-printing-receipt .receipt-modal{box-shadow:none!important;width:100%!important;max-height:none!important;background:#fff!important;padding:0!important;overflow:visible!important}
-        body.js-printing-receipt .receipt-modal-actions{display:none!important}
-        body.js-printing-receipt .js-receipt-paper{border:0!important;max-width:none!important;border-radius:0!important;margin:0!important}
-      }    `;
+        html,body{
+          margin:0!important;padding:0!important;
+          width:210mm!important;background:#fff!important;
+          -webkit-print-color-adjust:exact!important;
+          print-color-adjust:exact!important;
+        }
+        body.js-printing-receipt{
+          background:#fff!important;
+        }
+        body.js-printing-receipt > *{
+          display:none!important;
+        }
+        body.js-printing-receipt #jsReceiptModal{
+          display:block!important;
+          position:static!important;
+          width:210mm!important;
+          min-height:297mm!important;
+          height:auto!important;
+          max-height:none!important;
+          padding:0!important;
+          margin:0!important;
+          background:#fff!important;
+          overflow:visible!important;
+          box-shadow:none!important;
+        }
+        body.js-printing-receipt #jsReceiptModal .receipt-modal{
+          display:block!important;
+          width:210mm!important;
+          max-width:none!important;
+          min-height:297mm!important;
+          max-height:none!important;
+          padding:0!important;
+          margin:0!important;
+          background:#fff!important;
+          border-radius:0!important;
+          box-shadow:none!important;
+          overflow:visible!important;
+        }
+        body.js-printing-receipt .receipt-modal-actions{
+          display:none!important;
+        }
+        body.js-printing-receipt .js-receipt-paper{
+          width:190mm!important;
+          max-width:none!important;
+          min-height:0!important;
+          margin:0 auto!important;
+          padding:11mm 10mm 8mm!important;
+          border:0!important;
+          border-radius:0!important;
+          box-shadow:none!important;
+          page-break-inside:avoid!important;
+          break-inside:avoid!important;
+        }
+      }
+
+      @media(max-width:700px){
+        .receipt-modal-backdrop{padding:7px}
+        .receipt-modal{padding:8px;max-height:96vh}
+        .js-receipt-paper{width:100%;padding:18px}
+        .receipt-grid{grid-template-columns:1fr}
+        .receipt-top{flex-direction:column}
+        .receipt-brand-logo{width:64px;height:52px}
+        .receipt-meta{min-width:0}
+      }
+    `;
     document.head.appendChild(style);
+
     modal=document.createElement("div");
     modal.id="jsReceiptModal";
     modal.className="receipt-modal-backdrop";
@@ -4995,21 +5948,40 @@ window.printPaymentReceipt=function(payment){
     document.getElementById("jsReceiptModalBody").innerHTML=receiptContentHtml(window.currentReceiptForPrint);
     modal.style.display="flex";
 };
+
 window.openReceiptById=function(id){
     const key=String(id||"");
     const p=(window.receiptCache||{})[key];
-    if(!p){alert("Receipt data nahi mila. Please Refresh karke dobara try karein.");return;}
+    if(!p){
+      alert("Receipt data nahi mila. Please Refresh karke dobara try karein.");
+      return;
+    }
     window.printPaymentReceipt(p);
 };
-window.closeReceiptModal=function(){const modal=document.getElementById("jsReceiptModal");if(modal) modal.style.display="none";document.body.classList.remove("js-printing-receipt");};
+
+window.closeReceiptModal=function(){
+    const modal=document.getElementById("jsReceiptModal");
+    if(modal) modal.style.display="none";
+    document.body.classList.remove("js-printing-receipt");
+    if(window.__originalReceiptTitle){document.title=window.__originalReceiptTitle;window.__originalReceiptTitle=null;}
+};
+
 window.printOpenReceipt=function(){
     if(!window.currentReceiptForPrint){alert("Receipt data nahi mila.");return;}
     const modal=document.getElementById("jsReceiptModal");
     if(!modal){alert("Receipt open nahi hai.");return;}
+
     modal.style.display="flex";
+    if(!window.__originalReceiptTitle) window.__originalReceiptTitle=document.title;
+    document.title="JS Internet Payment Receipt";
     document.body.classList.add("js-printing-receipt");
+
+    let done=false;
     const cleanup=function(){
+        if(done) return;
+        done=true;
         document.body.classList.remove("js-printing-receipt");
+        if(window.__originalReceiptTitle){document.title=window.__originalReceiptTitle;window.__originalReceiptTitle=null;}
         window.removeEventListener("afterprint",cleanup);
     };
     window.addEventListener("afterprint",cleanup);
@@ -5020,144 +5992,145 @@ window.printOpenReceipt=function(){
         alert("Print dialog open nahi ho saka. Browser ke print permission/settings check karein.");
     }
 };
+
 async function loadJsPdf(){
     if(window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
     return new Promise((resolve,reject)=>{
-        const existing=document.getElementById('jspdf-cdn-script');
+        const existing=document.getElementById("jspdf-cdn-script");
         if(existing){
-            existing.addEventListener('load',()=>resolve(window.jspdf?.jsPDF));
-            existing.addEventListener('error',reject);
+            existing.addEventListener("load",()=>resolve(window.jspdf?.jsPDF));
+            existing.addEventListener("error",reject);
             return;
         }
-        const script=document.createElement('script');
-        script.id='jspdf-cdn-script';
-        script.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        const script=document.createElement("script");
+        script.id="jspdf-cdn-script";
+        script.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
         script.onload=()=>resolve(window.jspdf?.jsPDF);
-        script.onerror=()=>reject(new Error('PDF library load failed'));
+        script.onerror=()=>reject(new Error("PDF library load failed"));
         document.head.appendChild(script);
     });
 }
 
 function loadReceiptLogoData(){
-    return new Promise((resolve)=>{
-        try{
-            const img=new Image();
-            img.onload=function(){
-                try{
-                    const canvas=document.createElement('canvas');
-                    canvas.width=img.naturalWidth||200;
-                    canvas.height=img.naturalHeight||80;
-                    const ctx=canvas.getContext('2d');
-                    ctx.drawImage(img,0,0,canvas.width,canvas.height);
-                    resolve(canvas.toDataURL('image/jpeg',0.92));
-                }catch(e){ resolve(null); }
-            };
-            img.onerror=()=>resolve(null);
-            img.src='logo.jpg'+(String(window.location.protocol)==='file:'?'':'?v=1');
-        }catch(e){ resolve(null); }
-    });
+    return Promise.resolve(RECEIPT_LOGO_DATA);
 }
 
 window.downloadReceiptPdf=async function(){
-    if(!window.currentReceiptForPrint){alert('Receipt data nahi mila.');return;}
+    if(!window.currentReceiptForPrint){alert("Receipt data nahi mila.");return;}
     try{
         const jsPDF=await loadJsPdf();
-        if(!jsPDF) throw new Error('PDF library not available');
+        if(!jsPDF) throw new Error("PDF library not available");
+
         const p=window.currentReceiptForPrint||{};
-        const doc=new jsPDF({unit:'mm',format:'a4'});
+        const doc=new jsPDF({unit:"mm",format:"a4",orientation:"portrait",compress:true});
+        doc.setProperties({
+          title:"JS Internet Payment Receipt",
+          subject:"Payment Receipt",
+          author:"JS Internet",
+          creator:"JS Internet"
+        });
+
         const receiptNo=getReceiptNo(p);
         const amount=Number(p.amountReceived||0);
         const planAmount=Number(p.planAmount||0);
         const due=Math.max(Number(p.customerDue!=null?p.customerDue:(planAmount-amount)),0);
-        const customerName=p.customerName||'-';
-        const customerId=p.customerId||'-';
-        const type=p.collectionType||'Payment';
-        const plan=p.plan||'-';
-        const mode=p.paymentMode||'-';
-        const collected=p.collectedByName||p.collectedByStaffId||'JS Internet';
+        const customerName=p.customerName||"-";
+        const customerId=p.customerId||"-";
+        const type=p.collectionType||"Payment";
+        const plan=p.plan||"-";
+        const mode=p.paymentMode||"-";
+        const collected=p.collectedByName||p.collectedByStaffId||"JS Internet";
         const date=receiptDate(p.createdAt);
 
-        doc.setDrawColor(7,84,154);
-        doc.setLineWidth(0.8);
-        doc.line(15,42,195,42);
-
+        /* Header */
         const logo=await loadReceiptLogoData();
         if(logo){
-            try{ doc.addImage(logo,'JPEG',15,12,27,20); }catch(e){}
+          try{doc.addImage(logo,"PNG",15,11,29,23,"JSLOGO","FAST");}catch(e){}
         }
         doc.setTextColor(7,84,154);
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(19);
-        doc.text('JS INTERNET',48,21);
-        doc.setTextColor(90,90,90);
-        doc.setFont('helvetica','normal');
+        doc.setFont("helvetica","bold");
+        doc.setFontSize(20);
+        doc.text("JS INTERNET",48,20);
+        doc.setTextColor(78,89,104);
+        doc.setFont("helvetica","normal");
         doc.setFontSize(9);
-        doc.text('Fast Internet. Better Connectivity.',48,28);
-        doc.text('Malviya Nagar • Hauz Rani • Khirki Extension • Khirki Village',48,34);
+        doc.text("Fast Internet. Better Connectivity.",48,27);
+        doc.text("Malviya Nagar • Hauz Rani • Khirki Extension • Khirki Village",48,33);
 
-        doc.setTextColor(30,30,30);
-        doc.setFont('helvetica','bold');
+        doc.setDrawColor(7,84,154);
+        doc.setLineWidth(.8);
+        doc.line(15,40,195,40);
+
+        /* Receipt heading and meta */
+        doc.setTextColor(20,20,20);
+        doc.setFont("helvetica","bold");
         doc.setFontSize(18);
-        doc.text('PAYMENT RECEIPT',15,57);
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(10);
-        doc.text('Receipt No: '+receiptNo,140,54);
-        doc.text('Date: '+date,140,61);
+        doc.text("PAYMENT RECEIPT",15,56);
+        doc.setFont("helvetica","normal");
+        doc.setFontSize(9.5);
+        doc.text("Receipt No: "+receiptNo,135,52);
+        doc.text("Date: "+date,135,58);
 
-        const rows=[
-            ['Customer ID',customerId],
-            ['Customer Name',customerName],
-            ['Payment Type',type],
-            ['Plan',plan],
-            ['Payment Mode',mode],
-            ['Collected By',collected],
-            ['Plan Amount','₹'+planAmount.toLocaleString('en-IN')],
-            ['Customer Due','₹'+due.toLocaleString('en-IN')]
-        ];
+        const leftX=15, rightX=110, fieldW=78;
         let y=72;
-        doc.setFontSize(10);
-        rows.forEach((row,i)=>{
-            const x=(i%2===0)?15:110;
-            if(i%2===0 && i>0) y+=16;
-            doc.setTextColor(110,118,130);
-            doc.setFont('helvetica','normal');
-            doc.text(row[0],x,y);
-            doc.setTextColor(25,25,25);
-            doc.setFont('helvetica','bold');
-            const value=String(row[1]);
-            doc.text(value.length>30?value.slice(0,30)+'…':value,x,y+6);
-            doc.setDrawColor(230,230,230);
-            doc.line(x,y+9,x+75,y+9);
-        });
+        const rows=[
+          ["Customer ID",customerId],
+          ["Customer Name",customerName],
+          ["Payment Type",type],
+          ["Plan",plan],
+          ["Payment Mode",mode],
+          ["Collected By",collected],
+          ["Plan Amount","Rs. "+planAmount.toLocaleString("en-IN")],
+          ["Customer Due","Rs. "+due.toLocaleString("en-IN")]
+        ];
 
+        for(let i=0;i<rows.length;i++){
+          const x=(i%2===0)?leftX:rightX;
+          if(i>0 && i%2===0) y+=18;
+          doc.setTextColor(102,112,128);
+          doc.setFont("helvetica","normal");
+          doc.setFontSize(9);
+          doc.text(rows[i][0],x,y);
+          doc.setTextColor(20,20,20);
+          doc.setFont("helvetica","bold");
+          doc.setFontSize(10);
+          const lines=doc.splitTextToSize(String(rows[i][1]),fieldW);
+          doc.text(lines.slice(0,2),x,y+6,{lineHeightFactor:1.15});
+          const lineY=y+12+(Math.min(lines.length,2)-1)*4.5;
+          doc.setDrawColor(225,227,230);
+          doc.setLineWidth(.35);
+          doc.line(x,lineY,x+fieldW,lineY);
+        }
+
+        const boxY=146;
         doc.setFillColor(245,248,252);
-        doc.roundedRect(15,145,180,28,3,3,'F');
+        doc.roundedRect(15,boxY,180,28,3,3,"F");
         doc.setTextColor(90,98,110);
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(10);
-        doc.text('AMOUNT RECEIVED',22,155);
+        doc.setFont("helvetica","normal");
+        doc.setFontSize(9);
+        doc.text("AMOUNT RECEIVED",22,boxY+11);
         doc.setTextColor(7,84,154);
-        doc.setFont('helvetica','bold');
+        doc.setFont("helvetica","bold");
         doc.setFontSize(22);
-        doc.text('₹'+amount.toLocaleString('en-IN'),22,166);
+        doc.text("Rs. "+amount.toLocaleString("en-IN"),22,boxY+21);
 
         doc.setTextColor(100,100,100);
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(9);
-        doc.text('This is a computer generated receipt from JS Internet. Thank you.',105,190,{align:'center'});
+        doc.setFont("helvetica","normal");
+        doc.setFontSize(8.5);
+        doc.text("This is a computer generated receipt from JS Internet. Thank you.",105,188,{align:"center"});
 
-        doc.save(receiptNo+'.pdf');
+        doc.save(receiptNo+".pdf");
     }catch(error){
-        console.error('PDF generation error:',error);
-        alert('PDF save nahi ho pa raha. Internet connection check karke dobara try karein.');
+        console.error("PDF generation error:",error);
+        /* Robust fallback: open browser print so the user can select Save as PDF. */
+        alert("Direct PDF download nahi hua. Print dialog se 'Save as PDF' select karein.");
+        window.printOpenReceipt();
     }
 };
 
 window.downloadOpenReceipt=function(){
-    // Backward-compatible button handler: download PDF.
     window.downloadReceiptPdf();
 };
-
 
 
 function billingSearchMatch(p,term){
@@ -5234,5 +6207,60 @@ window.openCustomerBillingCard=function(){
 window.closeCustomerBillingCard=function(){const card=document.getElementById("customerBillingCard");if(card)card.style.display="none";};
 
 </script>
+
+<style id="final-dashboard-public-hide">
+body.admin-dashboard-active #mainWebsite section.support,
+body.staff-dashboard-active #mainWebsite section.support,
+body.customer-dashboard-active #mainWebsite section.support,
+body.admin-dashboard-active #mainWebsite footer,
+body.staff-dashboard-active #mainWebsite footer,
+body.customer-dashboard-active #mainWebsite footer,
+body.admin-dashboard-active #mainWebsite a.whatsapp-float,
+body.staff-dashboard-active #mainWebsite a.whatsapp-float,
+body.customer-dashboard-active #mainWebsite a.whatsapp-float {
+  display: none !important;
+}
+</style>
+
+
+<style id="final-exact-public-section-hide">
+body.admin-dashboard-active #customerSupportSection,
+body.staff-dashboard-active #customerSupportSection,
+body.customer-dashboard-active #customerSupportSection,
+body.admin-dashboard-active #contact,
+body.staff-dashboard-active #contact,
+body.customer-dashboard-active #contact,
+body.admin-dashboard-active #connection,
+body.staff-dashboard-active #connection,
+body.customer-dashboard-active #connection,
+body.admin-dashboard-active #renewal,
+body.staff-dashboard-active #renewal,
+body.customer-dashboard-active #renewal,
+body.admin-dashboard-active #complaint,
+body.staff-dashboard-active #complaint,
+body.customer-dashboard-active #complaint {
+  display: none !important;
+}
+</style>
+
+
+<style id="final-dashboard-blue-strip-hide">
+body.admin-dashboard-active #publicFooter,
+body.staff-dashboard-active #publicFooter,
+body.customer-dashboard-active #publicFooter,
+body.admin-dashboard-active footer#publicFooter,
+body.staff-dashboard-active footer#publicFooter,
+body.customer-dashboard-active footer#publicFooter {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+</style>
+
 </body>
 </html>
