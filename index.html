@@ -3820,12 +3820,225 @@ window.closeStaffAttendanceCard=function(){const c=document.getElementById("staf
 window.requestStaffExit=async function(){if(!auth.currentUser||!staffAttendanceDocId)return;const reason=prompt("Exit/Leave ka reason likhein:");if(!reason)return;await updateDoc(doc(db,"staffAttendance",staffAttendanceDocId),{approvalStatus:"Pending",exitRequestReason:reason,exitRequestedAt:attendanceNow()});setStaffAttendanceMessage("Exit request Admin ko bhej di gayi hai.",true);await refreshStaffAttendance();};
 window.useCurrentOfficeLocation=function(){if(!navigator.geolocation){setAdminAttendanceMessage("Location available nahi hai.");return;}navigator.geolocation.getCurrentPosition(p=>{document.getElementById("adminOfficeLat").value=p.coords.latitude.toFixed(6);document.getElementById("adminOfficeLng").value=p.coords.longitude.toFixed(6);setAdminAttendanceMessage("Current location fields mein aa gayi. Save Office Settings karein.",true);},()=>setAdminAttendanceMessage("Location permission allow karein."),{enableHighAccuracy:true,timeout:15000});};
 function setAdminAttendanceMessage(msg,ok=false){const e=document.getElementById("adminAttendanceMessage");if(e){e.innerText=msg;e.style.color=ok?"#087f32":"#dc3545";}}
-window.openAdminAttendanceCard=async function(){closeAllPhase7Cards("adminAttendanceCard");const c=document.getElementById("adminAttendanceCard");if(c){c.style.display="block";c.scrollIntoView({behavior:"smooth",block:"start"});}const s=await getOfficeSettings();if(s.lat)document.getElementById("adminOfficeLat").value=s.lat;if(s.lng)document.getElementById("adminOfficeLng").value=s.lng;if(s.radius)document.getElementById("adminOfficeRadius").value=s.radius;if(s.workingDays)document.getElementById("adminWorkingDays").value=s.workingDays;await loadAdminAttendanceSalary();};
+
+window.openAdminAttendanceCard=async function(){
+    closeAllPhase7Cards("adminAttendanceCard");
+    const c=document.getElementById("adminAttendanceCard");
+    if(c){c.style.display="block";c.scrollIntoView({behavior:"smooth",block:"start"});}
+    const s=await getOfficeSettings();
+    if(s.lat)document.getElementById("adminOfficeLat").value=s.lat;
+    if(s.lng)document.getElementById("adminOfficeLng").value=s.lng;
+    if(s.radius)document.getElementById("adminOfficeRadius").value=s.radius;
+    if(s.workingDays)document.getElementById("adminWorkingDays").value=s.workingDays;
+    
+    // --- 30-DAY AUTO DELETE LOGIC ---
+    try {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        const qCleanup = query(collection(db, "staffAttendance"), where("dateKey", "<", thirtyDaysAgo.toISOString().slice(0, 10)));
+        const snapCleanup = await getDocs(qCleanup);
+        snapCleanup.forEach(async (docSnap) => { await deleteDoc(doc(db, "staffAttendance", docSnap.id)); });
+    } catch(e) { console.log("Auto delete check done."); }
+    
+    await loadAdminAttendanceSalary();
+};
+
 window.closeAdminAttendanceCard=function(){const c=document.getElementById("adminAttendanceCard");if(c)c.style.display="none";};
+
 window.saveAdminAttendanceSettings=async function(){if(!auth.currentUser)return;const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAttendanceMessage("Sirf Admin settings change kar sakta hai.");return;}const lat=parseOfficeCoordinate(document.getElementById("adminOfficeLat").value),lng=parseOfficeCoordinate(document.getElementById("adminOfficeLng").value),radius=Math.max(15,Number(document.getElementById("adminOfficeRadius").value||15)),workingDays=Math.max(1,Number(document.getElementById("adminWorkingDays").value||26));if(!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180){setAdminAttendanceMessage("Valid office latitude/longitude enter karein. Example: 28.5348 / 77.2185");return;}try{await setDoc(doc(db,"settings","staffAttendance"),{lat,lng,radius,workingDays,updatedAt:attendanceNow(),updatedBy:auth.currentUser.uid},{merge:true});document.getElementById("adminOfficeLat").value=lat.toFixed(6);document.getElementById("adminOfficeLng").value=lng.toFixed(6);document.getElementById("adminOfficeRadius").value=radius;setAdminAttendanceMessage("Office attendance settings save ho gayi.",true);}catch(e){console.error(e);setAdminAttendanceMessage("Save nahi hua: "+firebaseErrorText(e));}};
-window.loadAdminAttendanceSalary=async function(){if(!auth.currentUser)return;const body=document.getElementById("adminAttendanceSalaryBody");if(!body)return;const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){body.innerHTML='<tr><td colspan="8">Sirf Admin dekh sakta hai.</td></tr>';return;}const snap=await getDocs(collection(db,"users"));const staff=[];snap.forEach(d=>{if(d.data().role==="staff")staff.push({uid:d.id,...d.data()});});window.adminProfilesByUid=Object.fromEntries(staff.map(x=>[x.uid,x]));const month=attendanceDateKey().slice(0,7);let active=0;body.innerHTML="";for(const st of staff){const sal=await calculateStaffSalary(st.uid,month);const rows=sal.rows||[];const today=rows.find(r=>r.dateKey===attendanceDateKey());if(today&&!today.logoutAt)active++;const pending=rows.find(r=>r.approvalStatus==="Pending");const action=pending?`<button class="payment-action" type="button" onclick="approveStaffExit('${pending.id}')">Approve Exit</button>`:`<button class="button blue" type="button" onclick="setStaffSalary('${st.uid}',${sal.salary||0})">Set Salary</button>`;body.innerHTML+=`<tr><td>${st.staffId||st.name||"-"}</td><td>${moneyRs(sal.salary)}</td><td>${today?(today.logoutAt?"Logged Out":"🟢 Active"):"-"}</td><td>${today?formatDuration(today.outsideMinutes||0):"-"}</td><td>${pending?"🟠 Pending":"-"}</td><td>${moneyRs(sal.deduction)}</td><td>${moneyRs(sal.payable)}</td><td>${action}</td></tr>`;}document.getElementById("adminAttendanceActiveCount").innerText=String(active);if(!staff.length)body.innerHTML='<tr><td colspan="8">No staff found.</td></tr>';};
+
+window.loadAdminAttendanceSalary=async function(){
+    if(!auth.currentUser)return;
+    const body=document.getElementById("adminAttendanceSalaryBody");
+    if(!body)return;
+    const profile=await getDoc(doc(db,"users",auth.currentUser.uid));
+    if(!profile.exists()||profile.data().role!=="admin"){body.innerHTML='<tr><td colspan="8">Sirf Admin dekh sakta hai.</td></tr>';return;}
+    const snap=await getDocs(collection(db,"users"));
+    const staff=[];
+    snap.forEach(d=>{if(d.data().role==="staff")staff.push({uid:d.id,...d.data()});});
+    window.adminProfilesByUid=Object.fromEntries(staff.map(x=>[x.uid,x]));
+    const month=attendanceDateKey().slice(0,7);
+    let active=0;
+    body.innerHTML="";
+    for(const st of staff){
+        const sal=await calculateStaffSalary(st.uid,month);
+        const rows=sal.rows||[];
+        const today=rows.find(r=>r.dateKey===attendanceDateKey());
+        if(today&&!today.logoutAt)active++;
+        const pending=rows.find(r=>r.approvalStatus==="Pending");
+        
+        // --- EXIT REASON LOGIC ---
+        const approvalText = pending ? '🟠 Pending<br><small style="color:#c2410c;font-weight:bold;line-height:1.2;display:inline-block;margin-top:4px;">Reason: ' + (pending.exitRequestReason || 'No reason specified') + '</small>' : '-';
+        
+        const action=pending?`<button class="payment-action" type="button" onclick="approveStaffExit('${pending.id}')">Approve Exit</button>`:`<button class="button blue" type="button" onclick="setStaffSalary('${st.uid}',${sal.salary||0})">Set Salary</button>`;
+        
+        body.innerHTML+=`<tr><td>${st.staffId||st.name||"-"}</td><td>${moneyRs(sal.salary)}</td><td>${today?(today.logoutAt?"Logged Out":"🟢 Active"):"-"}</td><td>${today?formatDuration(today.outsideMinutes||0):"-"}</td><td>${approvalText}</td><td>${moneyRs(sal.deduction)}</td><td>${moneyRs(sal.payable)}</td><td>${action}</td></tr>`;
+    }
+    document.getElementById("adminAttendanceActiveCount").innerText=String(active);
+    if(!staff.length)body.innerHTML='<tr><td colspan="8">No staff found.</td></tr>';
+};
+
 window.approveStaffExit=async function(id){if(!auth.currentUser)return;const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){alert("Sirf Admin approval de sakta hai.");return;}await updateDoc(doc(db,"staffAttendance",id),{approvalStatus:"Approved",approvedOutsideMinutes:999999,approvedAt:attendanceNow(),approvedBy:auth.currentUser.uid});await loadAdminAttendanceSalary();};
 window.setStaffSalary=async function(uid,current){const v=prompt("Monthly salary (₹) enter karein:",String(current||0));if(v===null)return;const n=Math.max(0,Number(v));if(!n){alert("Valid salary enter karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){alert("Sirf Admin salary change kar sakta hai.");return;}await updateDoc(doc(db,"users",uid),{monthlySalary:n,salaryUpdatedAt:attendanceNow(),salaryUpdatedBy:auth.currentUser.uid});await loadAdminAttendanceSalary();};
+
+// ==========================================
+// FIELD VISIT TRACKER (UI + FIREBASE LOGIC)
+// ==========================================
+document.addEventListener("DOMContentLoaded", function() {
+    const staffDash = document.getElementById("staffDashboard");
+    if(staffDash) {
+        const taskBox = document.createElement("div");
+        taskBox.className = "dashboard-card";
+        taskBox.style.marginTop = "20px";
+        taskBox.style.background = "#f8f9fa";
+        taskBox.style.border = "2px solid #087f32";
+        taskBox.innerHTML = `
+            <h3 style="color:#087f32; margin-top:0;">🚶 Field Visit Tracker</h3>
+            <p style="font-size:14px; margin-bottom:10px;">Customer ke yahan jane se pehle details bharein:</p>
+            <input type="text" id="taskCustomer" placeholder="Customer Name ya ID" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+            <input type="text" id="taskDesc" placeholder="Kaam kya hai? (e.g. Router fix, Wire tuti hai)" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+            <button id="btnStartTask" onclick="startFieldTask()" style="background:#087f32; color:#fff; width:100%; padding:12px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; font-size:16px;">🟢 Start Visit (Location Record Hogi)</button>
+            
+            <div id="activeTaskDiv" style="display:none; margin-top:10px; padding:15px; background:#ffeeba; border-radius:5px; border:1px solid #ffe8a1;">
+                <strong style="color:#856404;">⏳ Kaam Chal Raha Hai:</strong><br><span id="activeTaskName" style="color:#856404; font-size:14px;"></span><br><br>
+                <button onclick="endFieldTask()" style="background:#dc3545; color:#fff; width:100%; padding:12px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; font-size:16px;">🔴 Kaam Khatam (Complete Task)</button>
+            </div>
+            <p id="taskMsg" style="margin-top:10px; font-weight:bold; font-size:14px;"></p>
+        `;
+        staffDash.appendChild(taskBox);
+        setTimeout(() => { if(window.checkActiveTask) window.checkActiveTask(); }, 2000);
+    }
+
+    const adminDash = document.getElementById("adminDashboard");
+    if(adminDash) {
+        const adminBox = document.createElement("div");
+        adminBox.className = "dashboard-card";
+        adminBox.style.marginTop = "20px";
+        adminBox.style.border = "2px solid #17a2b8";
+        adminBox.innerHTML = `
+            <h3 style="color:#17a2b8; margin-top:0;">📍 Staff Field Visit Report</h3>
+            <p style="font-size:14px;">Dekhein kaunsa staff kis location par customer ka kaam karne gaya.</p>
+            <button onclick="openFieldReport()" style="background:#17a2b8; color:#fff; width:100%; padding:12px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; font-size:16px;">📋 View Field Reports</button>
+            <div id="fieldReportDiv" style="display:none; margin-top:15px; overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
+                    <thead style="background:#17a2b8; color:white;"><tr><th style="padding:10px;">Date</th><th style="padding:10px;">Staff Name</th><th style="padding:10px;">Customer</th><th style="padding:10px;">Kaam</th><th style="padding:10px;">Start</th><th style="padding:10px;">End</th><th style="padding:10px;">Map</th></tr></thead>
+                    <tbody id="fieldReportBody"></tbody>
+                </table>
+            </div>
+        `;
+        adminDash.insertBefore(adminBox, adminDash.children[2]); 
+    }
+});
+
+window.taskMsg = function(msg, isError=false) {
+    const el = document.getElementById("taskMsg");
+    if(el) { el.innerText = msg; el.style.color = isError ? "red" : "green"; }
+};
+
+window.checkActiveTask = async function() {
+    if(!auth || !auth.currentUser) return;
+    try {
+        const q = query(collection(db, "staffTasks"), where("staffUid", "==", auth.currentUser.uid), where("status", "==", "Ongoing"));
+        const snap = await getDocs(q);
+        if(!snap.empty) {
+            const task = snap.docs[0];
+            window.activeTaskId = task.id;
+            document.getElementById("btnStartTask").style.display = "none";
+            document.getElementById("activeTaskDiv").style.display = "block";
+            document.getElementById("activeTaskName").innerText = task.data().customerName + " (" + task.data().taskDesc + ")";
+            document.getElementById("taskCustomer").style.display = "none";
+            document.getElementById("taskDesc").style.display = "none";
+        } else {
+            window.activeTaskId = null;
+            document.getElementById("btnStartTask").style.display = "block";
+            document.getElementById("activeTaskDiv").style.display = "none";
+            document.getElementById("taskCustomer").style.display = "block";
+            document.getElementById("taskDesc").style.display = "block";
+        }
+    } catch(e) {}
+};
+
+window.startFieldTask = function() {
+    const cust = document.getElementById("taskCustomer").value.trim();
+    const desc = document.getElementById("taskDesc").value.trim();
+    if(!cust || !desc) { window.taskMsg("Customer aur kaam likhna zaroori hai!", true); return; }
+    if(!navigator.geolocation) { window.taskMsg("Location support nahi hai.", true); return; }
+    
+    window.taskMsg("GPS pakad raha hai, kripya wait karein...", false);
+    
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        try {
+            const profile = await getDoc(doc(db, "users", auth.currentUser.uid));
+            const staffName = profile.exists() ? (profile.data().name || "Staff") : "Staff";
+            const today = new Date().toISOString().slice(0,10);
+            const taskId = auth.currentUser.uid + "_" + Date.now(); 
+            
+            await setDoc(doc(db, "staffTasks", taskId), {
+                staffUid: auth.currentUser.uid,
+                staffName: staffName,
+                customerName: cust,
+                taskDesc: desc,
+                dateKey: today,
+                startTime: new Date().toLocaleTimeString(),
+                startLat: pos.coords.latitude,
+                startLng: pos.coords.longitude,
+                status: "Ongoing"
+            });
+            
+            window.taskMsg("✅ Kaam shuru! Location Admin ko bhej di gayi.", false);
+            document.getElementById("taskCustomer").value = "";
+            document.getElementById("taskDesc").value = "";
+            await window.checkActiveTask();
+        } catch(e) { window.taskMsg("Error: " + e.message, true); }
+    }, () => { window.taskMsg("❌ Location ON karein!", true); }, {enableHighAccuracy:true, timeout:15000});
+};
+
+window.endFieldTask = function() {
+    if(!window.activeTaskId) return;
+    window.taskMsg("Complete ho raha hai...", false);
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        try {
+            await updateDoc(doc(db, "staffTasks", window.activeTaskId), {
+                endTime: new Date().toLocaleTimeString(),
+                endLat: pos.coords.latitude,
+                endLng: pos.coords.longitude,
+                status: "Completed"
+            });
+            window.taskMsg("✅ Kaam khatam! Detail save ho gayi.", false);
+            await window.checkActiveTask();
+        } catch(e) { window.taskMsg("Error saving, dobara try karein.", true); }
+    }, () => window.taskMsg("Location permission zaroori hai!", true), {enableHighAccuracy:true, timeout:15000});
+};
+
+window.openFieldReport = async function() {
+    const div = document.getElementById("fieldReportDiv");
+    const body = document.getElementById("fieldReportBody");
+    if(div.style.display === "block") { div.style.display = "none"; return; }
+    div.style.display = "block";
+    body.innerHTML = "<tr><td colspan='7'>Data nikaal raha hai...</td></tr>";
+    try {
+        const snap = await getDocs(collection(db, "staffTasks"));
+        const tasks = [];
+        snap.forEach(d => tasks.push({id:d.id, ...d.data()}));
+        tasks.sort((a,b) => (b.dateKey + b.startTime).localeCompare(a.dateKey + a.startTime));
+        
+        body.innerHTML = "";
+        tasks.forEach(t => {
+            const mapLink = `https://www.google.com/maps?q=${t.startLat},${t.startLng}`;
+            body.innerHTML += `
+                <tr style="border-bottom:1px solid #ddd;">
+                    <td style="padding:10px;">${t.dateKey}</td>
+                    <td style="padding:10px; font-weight:bold; color:#087f32;">${t.staffName}</td>
+                    <td style="padding:10px;">${t.customerName}</td>
+                    <td style="padding:10px;">${t.taskDesc}</td>
+                    <td style="padding:10px;">${t.startTime}</td>
+                    <td style="padding:10px; font-weight:bold; color:${t.status==='Ongoing'?'red':'black'};"><span style="${t.status==='Ongoing'?'background:#ffcccc;padding:2px 5px;border-radius:3px;':''}">${t.status==='Ongoing' ? '⏳ Nahi Aaya' : t.endTime}</span></td>
+                    <td style="padding:10px;"><a href="${mapLink}" target="_blank" style="color:blue; font-weight:bold;">📍 Open Map</a></td>
+                </tr>`;
+        });
+        if(tasks.length === 0) body.innerHTML = "<tr><td colspan='7' style='padding:10px;'>Abhi tak kisi ne field report nahi bheji.</td></tr>";
+    } catch(e) { body.innerHTML = "<tr><td colspan='7'>Data laane me error aayi.</td></tr>"; }
+};
 
 /* =====================================================
    STAFF LOGIN + STAFF PANEL
@@ -4328,7 +4541,6 @@ document.getElementById("addCustomerForm").addEventListener("submit", async func
     const amountReceived=Math.max(Number(document.getElementById("newCustomerAmountReceived").value||0),0);
     const paymentMode=document.getElementById("newCustomerPaymentMode").value;
     const customerDue=paymentDue(planAmount,amountReceived);
-    if(!/^JS[0-9]+$/.test(customerId)){setAddCustomerMessage("Customer ID format JS1002 jaisa rakhein.");return;}
     if(!/^\S+@\S+\.\S+$/.test(email)){setAddCustomerMessage("Valid real email enter karein.");return;}
     if(!/^[0-9]{10}$/.test(mobile)){setAddCustomerMessage("Valid 10 digit mobile number enter karein.");return;}
     if(password.length<6){setAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");return;}
@@ -4890,7 +5102,7 @@ document.getElementById("adminNewCustomerStartDate").addEventListener("change",s
 document.getElementById("adminNewCustomerAmountReceived").addEventListener("input",syncAdminAddPaymentFields);
 function syncAdminAddPaymentFields(){const plan=document.getElementById("adminNewCustomerPlan")?.value||"";const amount=planAmountFromText(plan);const planEl=document.getElementById("adminNewCustomerPlanAmount"),rec=document.getElementById("adminNewCustomerAmountReceived"),due=document.getElementById("adminNewCustomerAmountDue");if(planEl)planEl.value=amount||0;if(due)due.value=paymentDue(amount,rec?rec.value:0);}
 
-document.getElementById("adminAddCustomerForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminAddCustomerMessage("Pehle admin login karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAddCustomerMessage("Admin permission verify nahi ho pa rahi.");return;}const customerId=document.getElementById("adminNewCustomerId").value.trim().toUpperCase();const email=document.getElementById("adminNewCustomerEmail").value.trim().toLowerCase();const password=document.getElementById("adminNewCustomerPassword").value;const name=document.getElementById("adminNewCustomerName").value.trim();const mobile=document.getElementById("adminNewCustomerMobile").value.trim();const address=document.getElementById("adminNewCustomerAddress").value.trim();const serviceArea=document.getElementById("adminNewCustomerArea").value;const plan=document.getElementById("adminNewCustomerPlan").value;const startDate=document.getElementById("adminNewCustomerStartDate").value;const expiryDate=document.getElementById("adminNewCustomerExpiryDate").value;const status=document.getElementById("adminNewCustomerStatus").value;const routerSecurity=document.getElementById("adminNewCustomerRouter").value;const planAmount=planAmountFromText(plan);const amountReceived=Math.max(Number(document.getElementById("adminNewCustomerAmountReceived").value||0),0);const customerDue=paymentDue(planAmount,amountReceived);const paymentMode=document.getElementById("adminNewCustomerPaymentMode").value;if(!/^JS[0-9]+$/.test(customerId)){setAdminAddCustomerMessage("Customer ID format JS1003 jaisa rakhein.");return;}if(!/^\S+@\S+\.\S+$/.test(email)){setAdminAddCustomerMessage("Valid real email enter karein.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminAddCustomerMessage("Valid 10 digit mobile number enter karein.");return;}if(password.length<6){setAdminAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");return;}if(!serviceArea||!plan||!startDate||!expiryDate){setAdminAddCustomerMessage("Saare required fields fill karein.");return;}if(amountReceived>planAmount){setAdminAddCustomerMessage("Amount received plan amount se zyada nahi ho sakta.");return;}const button=document.getElementById("adminAddCustomerButton");button.disabled=true;button.innerText="Saving...";setAdminAddCustomerMessage("");const loginEmail=email;try{const credential=await createUserWithEmailAndPassword(customerAuth,loginEmail,password);await setDoc(doc(db,"users",credential.user.uid),{customerId,username:customerId,email:loginEmail,role:"customer",name,mobile,address,serviceArea,plan,speed:plan.split(" - ")[0],routerSecurity,startDate,expiryDate,status,planAmount,initialAmountReceived:amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),createdBy:auth.currentUser.uid,createdByName:profile.data().name||"Admin",createdByLabel:"Admin",createdByRole:"admin",createdAt:new Date().toISOString()});if(amountReceived>0){await addDoc(collection(db,"payments"),{customerUid:credential.user.uid,customerId,customerName:name,collectionType:"New Connection",plan,planAmount,amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),paymentMode,collectedByUid:auth.currentUser.uid,collectedByName:profile.data().name||"Admin",collectedByStaffId:"",collectedByRole:"admin",settlementStatus:"Not Applicable",receiptNo:makeReceiptNo(),createdAt:new Date().toISOString()});}await signOut(customerAuth);setAdminAddCustomerMessage("Customer successfully add ho gaya.",true);document.getElementById("adminAddCustomerForm").reset();syncAdminAddPaymentFields();await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);let message="Customer save nahi ho paya.";if(error.code==="auth/email-already-in-use")message="Ye Customer ID already registered hai.";else if(error.code==="permission-denied")message="Firestore permission denied. Payments rules publish karein.";else if(error.code==="auth/weak-password")message="Password weak hai. Minimum 6 characters rakhein.";setAdminAddCustomerMessage(message);}finally{button.disabled=false;button.innerText="💾 Save Customer";}});
+document.getElementById("adminAddCustomerForm").addEventListener("submit",async function(event){event.preventDefault();if(!auth.currentUser){setAdminAddCustomerMessage("Pehle admin login karein.");return;}const profile=await getDoc(doc(db,"users",auth.currentUser.uid));if(!profile.exists()||profile.data().role!=="admin"){setAdminAddCustomerMessage("Admin permission verify nahi ho pa rahi.");return;}const customerId=document.getElementById("adminNewCustomerId").value.trim().toUpperCase();const email=document.getElementById("adminNewCustomerEmail").value.trim().toLowerCase();const password=document.getElementById("adminNewCustomerPassword").value;const name=document.getElementById("adminNewCustomerName").value.trim();const mobile=document.getElementById("adminNewCustomerMobile").value.trim();const address=document.getElementById("adminNewCustomerAddress").value.trim();const serviceArea=document.getElementById("adminNewCustomerArea").value;const plan=document.getElementById("adminNewCustomerPlan").value;const startDate=document.getElementById("adminNewCustomerStartDate").value;const expiryDate=document.getElementById("adminNewCustomerExpiryDate").value;const status=document.getElementById("adminNewCustomerStatus").value;const routerSecurity=document.getElementById("adminNewCustomerRouter").value;const planAmount=planAmountFromText(plan);const amountReceived=Math.max(Number(document.getElementById("adminNewCustomerAmountReceived").value||0),0);const customerDue=paymentDue(planAmount,amountReceived);const paymentMode=document.getElementById("adminNewCustomerPaymentMode").value;if(!/^\S+@\S+\.\S+$/.test(email)){setAdminAddCustomerMessage("Valid real email enter karein.");return;}if(!/^[0-9]{10}$/.test(mobile)){setAdminAddCustomerMessage("Valid 10 digit mobile number enter karein.");return;}if(password.length<6){setAdminAddCustomerMessage("Password minimum 6 characters ka hona chahiye.");return;}if(!serviceArea||!plan||!startDate||!expiryDate){setAdminAddCustomerMessage("Saare required fields fill karein.");return;}if(amountReceived>planAmount){setAdminAddCustomerMessage("Amount received plan amount se zyada nahi ho sakta.");return;}const button=document.getElementById("adminAddCustomerButton");button.disabled=true;button.innerText="Saving...";setAdminAddCustomerMessage("");const loginEmail=email;try{const credential=await createUserWithEmailAndPassword(customerAuth,loginEmail,password);await setDoc(doc(db,"users",credential.user.uid),{customerId,username:customerId,email:loginEmail,role:"customer",name,mobile,address,serviceArea,plan,speed:plan.split(" - ")[0],routerSecurity,startDate,expiryDate,status,planAmount,initialAmountReceived:amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),createdBy:auth.currentUser.uid,createdByName:profile.data().name||"Admin",createdByLabel:"Admin",createdByRole:"admin",createdAt:new Date().toISOString()});if(amountReceived>0){await addDoc(collection(db,"payments"),{customerUid:credential.user.uid,customerId,customerName:name,collectionType:"New Connection",plan,planAmount,amountReceived,customerDue,paymentStatus:paymentStatus(planAmount,amountReceived),paymentMode,collectedByUid:auth.currentUser.uid,collectedByName:profile.data().name||"Admin",collectedByStaffId:"",collectedByRole:"admin",settlementStatus:"Not Applicable",receiptNo:makeReceiptNo(),createdAt:new Date().toISOString()});}await signOut(customerAuth);setAdminAddCustomerMessage("Customer successfully add ho gaya.",true);document.getElementById("adminAddCustomerForm").reset();syncAdminAddPaymentFields();await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);let message="Customer save nahi ho paya.";if(error.code==="auth/email-already-in-use")message="Ye Customer ID already registered hai.";else if(error.code==="permission-denied")message="Firestore permission denied. Payments rules publish karein.";else if(error.code==="auth/weak-password")message="Password weak hai. Minimum 6 characters rakhein.";setAdminAddCustomerMessage(message);}finally{button.disabled=false;button.innerText="💾 Save Customer";}});
 
 document.getElementById("adminEditCustomerForm").addEventListener("submit",async function(event){event.preventDefault();const uid=document.getElementById("adminEditUid").value;if(!uid||!auth.currentUser){setAdminEditMessage("Pehle customer select karein.");return;}const mobile=document.getElementById("adminEditMobile").value.trim();if(!/^[0-9]{10}$/.test(mobile)){setAdminEditMessage("Valid 10 digit mobile number enter karein.");return;}const button=document.getElementById("adminEditButton");button.disabled=true;button.innerText="Updating...";setAdminEditMessage("");try{const plan=document.getElementById("adminEditPlan").value;await updateDoc(doc(db,"users",uid),{name:document.getElementById("adminEditName").value.trim(),mobile,address:document.getElementById("adminEditAddress").value.trim(),serviceArea:document.getElementById("adminEditArea").value,plan,speed:plan.split(" - ")[0],startDate:document.getElementById("adminEditStartDate").value,expiryDate:document.getElementById("adminEditExpiryDate").value,status:document.getElementById("adminEditStatus").value,routerSecurity:document.getElementById("adminEditRouter").value.trim(),updatedAt:new Date().toISOString(),updatedBy:auth.currentUser.uid});setAdminEditMessage("Customer successfully update ho gaya.",true);await loadAdminData();setTimeout(()=>window.closeAdminCustomerFormPage(),400);}catch(error){console.error(error);setAdminEditMessage("Customer update nahi ho paya. Rules check karein.");}finally{button.disabled=false;button.innerText="💾 Update Customer";}});
 document.getElementById("adminLoginForm").addEventListener("submit", async function(event){
@@ -6261,6 +6473,294 @@ body.customer-dashboard-active footer#publicFooter {
   overflow: hidden !important;
 }
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // 1. PUBLIC WEBSITE SE PLANS CHHUPANA
+    const hiddenPlans = [
+        "100 Mbps - No Router - 1 Month - ₹500", "100 Mbps - No Router - 3+1 Month - ₹1500",
+        "150 Mbps - No Router - 1 Month - ₹600", "150 Mbps - No Router - 3+1 Month - ₹1800",
+        "200 Mbps - No Router - 1 Month - ₹700", "200 Mbps - No Router - 3+1 Month - ₹2100",
+        "300 Mbps - No Router - 1 Month - ₹800", "300 Mbps - No Router - 3+1 Month - ₹2400"
+    ];
+    document.querySelectorAll('.plan-button').forEach(btn => {
+        hiddenPlans.forEach(hp => {
+            if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(hp)) {
+                const tr = btn.closest('tr'); if (tr) tr.style.display = 'none'; 
+            }
+        });
+    });
+    ["plan", "renewalPlan"].forEach(dropdownId => {
+        const dropdown = document.getElementById(dropdownId);
+        if (dropdown) Array.from(dropdown.options).forEach(opt => { if (hiddenPlans.includes(opt.innerText.trim())) opt.remove(); });
+    });
+
+    // 2. MOBILE CSS FIXES
+    if (!document.getElementById("mobile-fixes-style")) {
+        const style = document.createElement("style");
+        style.id = "mobile-fixes-style";
+        style.innerHTML = `
+        @media (max-width: 600px) {
+            .staff-form-grid { display: flex !important; flex-direction: column !important; gap: 15px !important; }
+            .staff-form-group { width: 100% !important; }
+            .staff-form-group label { font-size: 14px !important; margin-bottom: 6px !important; }
+            input, select, textarea { font-size: 16px !important; padding: 14px !important; }
+            .staff-card, .form-box, .first-login-box, .dashboard-card { padding: 20px 15px !important; border-radius: 12px !important; }
+        }`;
+        document.head.appendChild(style);
+    }
+
+    // 3. STAFF SE EDIT CUSTOMER HATAO
+    const staffEditCard = document.getElementById("staffEditCustomerCard");
+    if (staffEditCard) staffEditCard.remove();
+    document.querySelectorAll('button').forEach(btn => {
+        const onclickText = btn.getAttribute('onclick');
+        if (onclickText && onclickText.includes('openStaffEditCustomerCard')) btn.remove();
+    });
+
+    // 4. AMOUNT BOX SE LOCK (READONLY) HATANA
+    const amtIds = ["newCustomerPlanAmount", "adminNewCustomerPlanAmount", "staffRenewalPlanAmount", "adminEditPlanAmount"];
+    amtIds.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) { el.removeAttribute("readonly"); el.classList.remove("money-readonly"); }
+    });
+
+    // 5. ROUTER SECURITY KO EDITABLE INPUT BANANA
+    const routerIds = ["newCustomerRouter", "adminNewCustomerRouter", "adminEditRouter"];
+    routerIds.forEach(id => {
+        let oldEl = document.getElementById(id);
+        if (oldEl && oldEl.tagName === "SELECT") {
+            let newEl = document.createElement("input");
+            newEl.type = "number"; newEl.id = id; newEl.min = "0";
+            newEl.placeholder = "Router amount (e.g. 0, 500)";
+            newEl.className = oldEl.className;
+            newEl.style.width = "100%"; newEl.style.padding = "13px"; newEl.style.border = "1px solid #ccc"; newEl.style.borderRadius = "8px"; newEl.style.fontSize = "15px";
+            newEl.value = oldEl.value || "0";
+            oldEl.parentNode.replaceChild(newEl, oldEl);
+        }
+    });
+
+    // 6. CUSTOM PLAN, MONTHS & DATES LOGIC
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const planSelects = [
+        { selectId: "newCustomerPlan", amountId: "newCustomerPlanAmount", dueId: "newCustomerAmountDue", recId: "newCustomerAmountReceived", startId: "newCustomerStartDate", expiryId: "newCustomerExpiryDate", routerId: "newCustomerRouter" },
+        { selectId: "adminNewCustomerPlan", amountId: "adminNewCustomerPlanAmount", dueId: "adminNewCustomerAmountDue", recId: "adminNewCustomerAmountReceived", startId: "adminNewCustomerStartDate", expiryId: "adminNewCustomerExpiryDate", routerId: "adminNewCustomerRouter" },
+        { selectId: "staffRenewalPlan", amountId: "staffRenewalPlanAmount", dueId: "staffRenewalCustomerDue", recId: "staffRenewalAmountReceived", startId: "staffRenewalStartDate", expiryId: "staffRenewalExpiryDate", routerId: null },
+        { selectId: "adminEditPlan", amountId: "adminEditPlanAmount", dueId: "adminEditCustomerDue", recId: "adminEditRecordedPayments", startId: "adminEditStartDate", expiryId: "adminEditExpiryDate", routerId: "adminEditRouter" }
+    ];
+
+    planSelects.forEach(item => {
+        const selectEl = document.getElementById(item.selectId);
+        const amountEl = document.getElementById(item.amountId);
+        const dueEl = document.getElementById(item.dueId);
+        const recEl = document.getElementById(item.recId);
+        const startEl = document.getElementById(item.startId);
+        const expiryEl = document.getElementById(item.expiryId);
+        const routerEl = document.getElementById(item.routerId);
+
+        if(startEl && !startEl.value && item.selectId !== "adminEditPlan") startEl.value = todayStr;
+
+        if(selectEl) {
+            if(![...selectEl.options].some(o => o.value === "custom")) {
+                const customOpt = document.createElement("option");
+                customOpt.value = "custom";
+                customOpt.innerHTML = "✏️ Custom Plan (Apni marzi se likhein)";
+                selectEl.insertBefore(customOpt, selectEl.options[1]);
+            }
+
+            let customContainer = selectEl.nextElementSibling;
+            if(!customContainer || !customContainer.classList.contains('custom-fields-container')) {
+                customContainer = document.createElement("div");
+                customContainer.className = "custom-fields-container";
+                customContainer.style.display = "none";
+                customContainer.innerHTML = `
+                    <input type="text" class="custom-plan-name" placeholder="Plan ka naam (e.g. 50 Mbps)" style="margin-top:8px; width:100%; padding:13px; border:1px solid #ccc; border-radius:8px;">
+                    <input type="number" class="custom-plan-months" placeholder="Kitne mahine? (e.g. 1, 3, 6)" min="1" style="margin-top:8px; width:100%; padding:13px; border:1px solid #ccc; border-radius:8px;">
+                `;
+                selectEl.parentNode.insertBefore(customContainer, selectEl.nextSibling);
+            }
+
+            const customInputName = customContainer.querySelector('.custom-plan-name');
+            const customInputMonths = customContainer.querySelector('.custom-plan-months');
+
+            const updateLogic = () => {
+                const planVal = selectEl.value;
+                let monthsToAdd = 0;
+
+                if(planVal === "custom") {
+                    customContainer.style.display = "block";
+                    customInputName.required = true;
+                    customInputMonths.required = true;
+                    monthsToAdd = parseInt(customInputMonths.value) || 0;
+                } else {
+                    customContainer.style.display = "none";
+                    customInputName.required = false;
+                    customInputMonths.required = false;
+                    
+                    if(amountEl && document.activeElement !== amountEl) {
+                        const m = String(planVal).match(/₹\s*([0-9]+)/);
+                        if(m) amountEl.value = Number(m[1]);
+                    }
+
+                    if(planVal.includes("3+1 Month")) monthsToAdd = 4;
+                    else if(planVal.includes("6 Month")) monthsToAdd = 6;
+                    else if(planVal.includes("1 Month")) monthsToAdd = 1;
+
+                    if(routerEl && document.activeElement !== routerEl) {
+                        if(planVal.includes("Router Security 1000")) routerEl.value = "1000";
+                        else if(planVal.includes("Router Security 500")) routerEl.value = "500";
+                        else if(planVal.includes("No Router")) routerEl.value = "0";
+                    }
+                }
+
+                if(startEl && startEl.value && expiryEl && monthsToAdd > 0) {
+                    let d = new Date(startEl.value + "T00:00:00");
+                    let day = d.getDate();
+                    d.setMonth(d.getMonth() + monthsToAdd);
+                    if(d.getDate() !== day) d.setDate(0); 
+                    expiryEl.value = d.toISOString().slice(0, 10);
+                } else if(expiryEl && monthsToAdd === 0 && planVal === "custom" && !expiryEl.value) {
+                    expiryEl.value = ""; 
+                }
+
+                if(amountEl && dueEl) {
+                    const currentAmt = Number(amountEl.value || 0);
+                    const recAmt = recEl ? (isNaN(Number(recEl.value)) ? 0 : Number(recEl.value)) : 0;
+                    dueEl.value = Math.max(currentAmt - recAmt, 0);
+                }
+            };
+
+            selectEl.addEventListener("change", updateLogic);
+            if(amountEl) amountEl.addEventListener("input", updateLogic);
+            if(recEl) recEl.addEventListener("input", updateLogic);
+            if(startEl) startEl.addEventListener("change", updateLogic);
+            customInputName.addEventListener("input", updateLogic);
+            customInputMonths.addEventListener("input", updateLogic);
+        }
+    });
+
+    document.querySelectorAll("form .submit-button").forEach(btn => {
+        btn.addEventListener("click", function() {
+            const form = btn.closest("form");
+            if(form) {
+                const selects = form.querySelectorAll("select");
+                selects.forEach(selEl => {
+                    const cbox = selEl.nextElementSibling;
+                    if(cbox && cbox.classList.contains('custom-fields-container')) {
+                        const iName = cbox.querySelector('.custom-plan-name');
+                        const iMonths = cbox.querySelector('.custom-plan-months');
+                        if(selEl.value === "custom" && iName.value.trim() !== "") {
+                            const finalPlanName = iName.value.trim() + " - " + (iMonths.value || "1") + " Month";
+                            let newOpt = Array.from(selEl.options).find(o => o.value === finalPlanName);
+                            if (!newOpt) {
+                                newOpt = document.createElement("option");
+                                newOpt.value = finalPlanName;
+                                newOpt.innerHTML = finalPlanName;
+                                selEl.appendChild(newOpt);
+                            }
+                            selEl.value = finalPlanName;
+                            const hiddenInputId = selEl.id.replace("Plan", "CustomPlan");
+                            const hiddenInput = document.getElementById(hiddenInputId);
+                            if (hiddenInput) {
+                                hiddenInput.value = finalPlanName;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    const originalSelectAdmin = window.selectAdminCustomer;
+    if(originalSelectAdmin) {
+        window.selectAdminCustomer = function(uid) {
+            const c = (window.adminCustomersCache||[]).find(x => x.uid === uid);
+            if(c && c.plan) {
+                const sel = document.getElementById("adminEditPlan");
+                if(sel && ![...sel.options].some(o => o.value === c.plan)) {
+                    const opt = document.createElement("option");
+                    opt.value = c.plan; opt.innerHTML = c.plan;
+                    sel.appendChild(opt);
+                }
+            }
+            originalSelectAdmin.apply(this, arguments);
+        };
+    }
+
+    // 7. LOGIN SCREEN PAR PUBLIC WEBSITE HIDE KARNA
+    function hideAllPublicSections() {
+        const sections = [
+            "mainWebsite", "newCustomerOffersSection", "connection", 
+            "renewal", "complaint", "customerSupportSection", 
+            "contact", "publicFooter", "customer-portal"
+        ];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "none";
+        });
+        document.querySelectorAll('.whatsapp-float').forEach(el => el.style.display = "none");
+    }
+
+    window.openStaffLogin = function(){
+        const first = document.getElementById("firstLogin");
+        const admin = document.getElementById("adminPanel");
+        const staff = document.getElementById("staffPanel");
+        const box = document.getElementById("staffLoginBox");
+        const dash = document.getElementById("staffDashboard");
+
+        if(first) first.style.display = "none";
+        if(admin) admin.style.display = "none";
+        hideAllPublicSections(); 
+        if(staff) staff.style.display = "block";
+        if(box) box.style.display = "block";
+        if(dash) dash.style.display = "none";
+        window.scrollTo(0,0);
+    };
+
+    window.openAdminLogin = function(){
+        const first = document.getElementById("firstLogin");
+        const staff = document.getElementById("staffPanel");
+        const admin = document.getElementById("adminPanel");
+        const box = document.getElementById("adminLoginBox");
+        const dash = document.getElementById("adminDashboard");
+
+        if(first) first.style.display = "none";
+        if(staff) staff.style.display = "none";
+        hideAllPublicSections(); 
+        if(admin) admin.style.display = "block";
+        if(box) box.style.display = "block";
+        if(dash) dash.style.display = "none";
+        window.scrollTo(0,0);
+    };
+
+    // 8. WHATSAPP FORMS LOGIC
+    const whatsappNumber = "918800969880";
+    const connectionForm = document.getElementById("connectionForm");
+    if(connectionForm) {
+        connectionForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const text = `Hello JS Internet, I need a new connection.\n\n*Name:* ${document.getElementById("name").value.trim()}\n*Mobile:* ${document.getElementById("mobile").value.trim()}\n*Area:* ${document.getElementById("area").value}\n*Plan:* ${document.getElementById("plan").value}\n*Address:* ${document.getElementById("address").value.trim()}`;
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
+        });
+    }
+    const renewalForm = document.getElementById("renewalForm");
+    if(renewalForm) {
+        renewalForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const text = `Hello JS Internet, I want to renew/change my plan.\n\n*Name:* ${document.getElementById("renewalName").value.trim()}\n*Mobile:* ${document.getElementById("renewalMobile").value.trim()}\n*Renewal Plan:* ${document.getElementById("renewalPlan").value}`;
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
+        });
+    }
+    const complaintForm = document.getElementById("complaintForm");
+    if(complaintForm) {
+        complaintForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const text = `Hello JS Internet, I want to report a problem.\n\n*Name:* ${document.getElementById("complaintName").value.trim()}\n*Mobile:* ${document.getElementById("complaintMobile").value.trim()}\n*Problem Type:* ${document.getElementById("complaintType").value}\n*Details:* ${document.getElementById("complaintMessage").value.trim()}`;
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
+        });
+    }
+});
+</script>
 
 </body>
 </html>
